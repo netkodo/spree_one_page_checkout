@@ -1,0 +1,41 @@
+<%- if @order.errors.blank? %>
+    <% i = 1 %>
+    <%- @order.shipments.each_with_index do |ship_form, index| %>
+
+        <%#= ship_form.object.inventory_units.collect{|u| u.inspect} %>
+        <div class="shipment">
+          <h3 class="stock-location" data-hook="stock-location">
+            <%#= Spree.t(:package_from) %>
+            <strong class="stock-location-name" data-hook="stock-location-name">Shipment #<%= i %></strong>
+          </h3>
+
+
+          <h5 class="stock-shipping-method-title"><%= Spree.t(:shipping_method) %></h5>
+          <ul class="field radios shipping-methods">
+            <% ship_form.shipping_rates.each do |rate| %>
+
+                <li class="shipping-method">
+                  <label>
+                    <%= radio_button_tag "[shipments_attributes][#{index}][selected_shipping_rate_id]", rate.id %>
+                    <span class="rate-name"><%= rate.name %></span>
+                    <span class="rate-cost"><%= rate.display_cost %></span>
+
+                  </label>
+                </li>
+            <% end %>
+          </ul>
+          <div class="hidden">
+            <%= text_field_tag "[shipments_attributes][#{index}][id]", ship_form.id %>
+
+          </div>
+        </div>
+        <% i += 1 %>
+    <% end %>
+<% else %>
+
+    <%= render :partial => 'spree/shared/error_messages', :locals => {:target => @order} %>
+<% end %>
+
+
+
+

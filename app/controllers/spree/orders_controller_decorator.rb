@@ -11,12 +11,14 @@ Spree::OrdersController.class_eval do
 
   # change this to alias / spree
   def object_params
+
     if params[:payment_source].present? && source_params = params.delete(:payment_source)[params[:order][:payments_attributes].first[:payment_method_id].underscore]
       params[:order][:payments_attributes].first[:source_attributes] = source_params
     end
     if (params[:order][:payments_attributes])
       params[:order][:payments_attributes].first[:amount] = @order.total
     end
+
     params[:order]
   end
 

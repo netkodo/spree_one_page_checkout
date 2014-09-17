@@ -28,35 +28,7 @@
         state_select = state_para.find('select');
         state_input = state_para.find('input');
         state_span_required = state_para.find('state-required');
-        if (states) {
-          selected = parseInt(state_select.val());
-          state_select.html('');
-          states_with_blank = [['', '']].concat(states);
-          $.each(states_with_blank, function(pos, id_nm) {
-            var opt;
 
-            opt = ($(document.createElement('option'))).attr('value', id_nm[0]).html(id_nm[1]);
-            if (selected === id_nm[0]) {
-              opt.prop('selected', true);
-            }
-            return state_select.append(opt);
-          });
-          state_select.prop('disabled', false).show();
-          state_input.hide().prop('disabled', true);
-          state_para.show();
-          return state_span_required.show();
-        } else {
-          state_select.hide().prop('disabled', true);
-          state_input.show();
-          if (states_required) {
-            state_span_required.show();
-          } else {
-            state_input.val('');
-            state_span_required.hide();
-          }
-          state_para.toggle(!!states_required);
-          return state_input.prop('disabled', !states_required);
-        }
       };
       ($('p#bcountry select')).change(function() {
         return update_state('b');

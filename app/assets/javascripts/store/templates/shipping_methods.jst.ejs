@@ -1,10 +1,11 @@
 <p class='field radios'>
-  <% data.forEach(function(data){ %>
+  <% data.forEach(function(shipment){ %>
     <label>
-      <input id="order_shipping_method_id_<%= data.id %>" name="order[shipping_method_id]" type="radio" value="<%= data.id %>">
-      <%= data.name %>
-      <%= data.cost %>
+      <%= shipment.inspect %>
+
     </label>
   <% }) %>
 </p>
+
+
 
