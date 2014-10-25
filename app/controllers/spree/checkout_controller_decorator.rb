@@ -19,7 +19,9 @@ Spree::CheckoutController.class_eval do
         shipment.update_attributes({selected_shipping_rate_id: rate.id, cost: rate.cost})
 
       end
-      @order.adjustments.shipping.create(amount: @order.shipments.sum(:cost), label: 'Shipment')
+      if @order.user.present? && @order.user.store_credits_total == 0
+        @order.adjustments.shipping.create(amount: @order.shipments.sum(:cost), label: 'Shipment')
+      end
       if @order.update_from_params(params, permitted_checkout_attributes)
         persist_user_address
         unless @order.next
