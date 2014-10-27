@@ -1,117 +1,108 @@
 <% content_for :head do %>
-  <%= javascript_include_tag 'states' %>
-  <%= javascript_include_tag 'countries' %>
+    <%= javascript_include_tag 'states' %>
+    <%= javascript_include_tag 'countries' %>
 <% end %>
 
-<%= form_for @order, :url => update_checkout_path('payment'), :html => { :id => "checkout_form_payment" } do |form| %>
-  <div class="columns alpha eight" data-hook="billing_fieldset_wrapper">
-    <fieldset id="billing" data-hook>
-      <legend align="center"  class="js-bookmark left-text">1 <%= t(:billing_address) %></legend>
+<%= form_for @order, :url => update_checkout_path('payment'), :html => {:id => "checkout_form_payment"} do |form| %>
+    <div class="columns alpha eight" data-hook="billing_fieldset_wrapper">
+      <fieldset id="billing" data-hook>
+        <legend align="center" class="js-bookmark left-text">1 <%= t(:billing_address) %></legend>
 
-      <% unless spree_user_signed_in? %>
-        <%= form.label :email %><br />
-        <%= form.text_field :email, :class => 'required' %>
-      <% end %>
-
-      <%= form.fields_for :bill_address do |bill_form| %>
-
-        <%= render :partial => 'spree/address/form', :locals => {:form => bill_form, :address_type => 'billing', :address => @order.bill_address} %>
-      <% end %>
-    </fieldset>
-  </div>
-
-  <div class="columns omega eight" data-hook="shipping_fieldset_wrapper">
-    <fieldset id="shipping" data-hook>
-      <%= form.fields_for :ship_address do |ship_form| %>
-        <legend align="center"  class="js-bookmark left-text">2 <%= t(:shipping_address) %></legend>
-         <div class="inner">
-        <p class="field checkbox" data-hook="use_billing">
-          <%= check_box_tag 'order[use_billing]', '1', ((@order.bill_address.empty? && @order.ship_address.empty?) || @order.bill_address.same_as?(@order.ship_address)), disabled: false %>
-
-          <%= label_tag :order_use_billing, t(:use_billing_address), :id => 'use_billing' %>
-        </p>
-        <%= render :partial => 'spree/address/form', :locals => {:form => ship_form, :address_type => 'shipping', :address => @order.ship_address} %>
-         </div>
-      <% end %>
-    </fieldset>
-  </div>
-
-  <div class='columns eight omega' data-hook='delivery_fieldset_wrapper' id="shipping_method_wrapper" >
-    <fieldset id='shipping_method' class=' clear-checkout variant-info' data-hook="" data-order="<%= @order.id %>" data-not-delivery="<%= t(:without_delivery) %>" data-url="<%= available_shipping_methods_url %>">
-      <legend align="center" class="js-bookmark left-text" data-check="shipping" >3 <%= t(:shipping_method) %></legend>
-
-
-      <div class="inner">
-      <div id='methods'>
-        <p class='field radios'>
-        </p>
-      </div>
-      <% if Spree::Config[:shipping_instructions] && @order.rate_hash.present? %>
-        <p id='minstrs' data-hook="">
-          <%= form.label :special_instructions, t(:shipping_instructions) %>
-          <br>
-          <%= form.text_area :special_instructions, :cols => 40, :rows => 7 %>
-      <% end %>
-      <!--<center><button class="btn" id="check-shipping-methods" type="button"><%#= t(:check_shipping_methods) %></button></center>-->
-
-        <button type="button" class="btn js-next-payment btn-left">next</button>
-          </div>
-    </fieldset>
-  </div>
-
-  <div class='omega eight columns'>
-    <fieldset id="payment" class="variant-info" data-hook>
-      <legend align="center"  class="js-bookmark left-text">4 <%= t(:payment_information) %></legend>
-
-
-
-    <div class="inner">
-      <div data-hook="checkout_payment_step">
-        <% @order.available_payment_methods.each do |method| %>
-          <p>
-            <label>
-              <%= radio_button_tag "order[payments_attributes][][payment_method_id]", method.id %>
-              <%= t(method.name, :scope => :payment_methods, :default => method.name) %>
-            </label>
-          </p>
+        <% unless spree_user_signed_in? %>
+            <%= form.label :email %>
+            <br/>
+            <%= form.text_field :email, :class => 'required' %>
         <% end %>
-        <ul id="payment-methods" data-hook>
-          <% @order.available_payment_methods.each do |method| %>
-            <li id="payment_method_<%= method.id %>" class="<%= 'last' if method == @order.available_payment_methods.last %>" data-hook>
-              <fieldset>
-                <%= render :partial => "spree/checkout/payment/#{method.method_type}", :locals => { :payment_method => method } %>
-              </fieldset>
-            </li>
-          <% end %>
-        </ul>
-        <br style="clear:both;">
-        <div data-hook="coupon_code_field" data-hook></div>
-      </div>
-      <% if (spree_current_user && spree_current_user.store_credits_total > 0) %>
-          <% usable_amount = number_with_precision(@order.store_credit_maximum_usable_amount, :precision => 2, :separator => '.', :delimiter => '') %>
-          <br style='clear:both;' />
-          <p><%= Spree.t('you_have_store_credit',
-                         :amount => number_to_currency(spree_current_user.store_credits_total))%>
-          </p>
-          <p>
-            <label><%= Spree.t('enter_desired_amount_of_store_credit') %></label><br />
-            <%= form.text_field :store_credit_amount, :size => 19, :value => usable_amount, :data => { :store_credit_maximum_amount => usable_amount, :store_credit_maximum_amount_message => Spree.t('store_credit_maximum_amount', :amount => number_to_currency(@order.store_credit_maximum_usable_amount)) } %>
-          </p>
-      <% end %>
+        <div class="js-inner">
+          <%= form.fields_for :bill_address do |bill_form| %>
 
-      <div class="form-buttons" data-hook="buttons">
-        <%= submit_tag t(:checkout), :class => 'btn one-page-checkout-button', 'data-hook' => 'one_page_checout_button' %>
-        <script>
-            // disableSaveOnClick();
-        </script>
-      </div>
+              <%= render :partial => 'spree/address/form', :locals => {:form => bill_form, :address_type => 'billing', :address => @order.bill_address} %>
+          <% end %>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="columns omega eight" data-hook="shipping_fieldset_wrapper">
+      <fieldset id="shipping" data-hook>
+        <%= form.fields_for :ship_address do |ship_form| %>
+            <legend align="center" class="js-bookmark left-text">2 <%= t(:shipping_address) %></legend>
+            <div class="js-inner">
+              <p class="field checkbox" data-hook="use_billing">
+                <%= check_box_tag 'order[use_billing]', '1', ((@order.bill_address.empty? && @order.ship_address.empty?) || @order.bill_address.same_as?(@order.ship_address)), disabled: false %>
+
+                <%= label_tag :order_use_billing, t(:use_billing_address), :id => 'use_billing' %>
+              </p>
+              <%= render :partial => 'spree/address/form', :locals => {:form => ship_form, :address_type => 'shipping', :address => @order.ship_address} %>
+            </div>
+        <% end %>
+      </fieldset>
+    </div>
+
+    <div class='columns eight omega' data-hook='delivery_fieldset_wrapper' id="shipping_method_wrapper">
+      <fieldset id='shipping_method' class=' clear-checkout variant-info' data-hook="" data-order="<%= @order.id %>" data-not-delivery="<%= t(:without_delivery) %>" data-url="<%= available_shipping_methods_url %>">
+        <legend align="center" class="js-bookmark left-text" data-check="shipping">3 <%= t(:shipping_method) %></legend>
+
+
+        <div class="js-inner">
+          <div id='methods'>
+            <p class='field radios'>
+            </p>
+          </div>
+          <% if Spree::Config[:shipping_instructions] && @order.rate_hash.present? %>
+              <p id='minstrs' data-hook="">
+                <%= form.label :special_instructions, t(:shipping_instructions) %>
+                <br>
+                <%= form.text_area :special_instructions, :cols => 40, :rows => 7 %>
+          <% end %>
+          <!--<center><button class="btn" id="check-shipping-methods" type="button"><%#= t(:check_shipping_methods) %></button></center>-->
+
+          <button type="button" class="btn js-next-payment btn-left">next</button>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class='omega eight columns'>
+      <fieldset id="payment" class="variant-info" data-hook>
+        <legend align="center" class="js-bookmark left-text">4 <%= t(:payment_information) %></legend>
+
+
+        <div class="js-inner">
+          <div data-hook="checkout_payment_step">
+            <% @order.available_payment_methods.each do |method| %>
+                <p>
+                  <label>
+                    <%= radio_button_tag "order[payments_attributes][][payment_method_id]", method.id %>
+                    <%= t(method.name, :scope => :payment_methods, :default => method.name) %>
+                  </label>
+                </p>
+            <% end %>
+            <ul id="payment-methods" data-hook>
+              <% @order.available_payment_methods.each do |method| %>
+                  <li id="payment_method_<%= method.id %>" class="<%= 'last' if method == @order.available_payment_methods.last %>" data-hook>
+                    <fieldset>
+                      <%= render :partial => "spree/checkout/payment/#{method.method_type}", :locals => {:payment_method => method} %>
+                    </fieldset>
+                  </li>
+              <% end %>
+            </ul>
+            <br style="clear:both;">
+
+            <div data-hook="coupon_code_field" data-hook></div>
+          </div>
+
+          <div class="form-buttons" data-hook="buttons">
+            <%= submit_tag t(:checkout), :class => 'btn one-page-checkout-button', 'data-hook' => 'one_page_checout_button' %>
+            <script>
+                // disableSaveOnClick();
+            </script>
+          </div>
 
 
         </div>
 
-    </fieldset>
-  </div>
+      </fieldset>
+    </div>
 
-  <br class="space" />
+    <br class="space"/>
 
 <% end %>

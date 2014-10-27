@@ -17,9 +17,9 @@ $ ->
   $(document).on
     click: (e)->
       e.preventDefault()
-      $('.inner').each ()->
+      $('.js-inner').each ()->
         $(@).slideUp()
-      $('#payment .inner').slideDown()
+      $('#payment .js-inner').slideDown()
   , '.js-next-payment'
 
   $(document).on
@@ -31,15 +31,15 @@ $ ->
         my_this = $('#shipping_method legend')
       else
         my_this = $(@)
-      $('.inner').each ()->
+      $('.js-inner').each ()->
         $(@).slideUp()
       if shipping? and shipping == 'shipping'
         if $('#order_use_billing').is(':checked')
-           checkAddress('billing', my_this )
+          checkAddress('billing', my_this )
         else
-           checkAddress('shipping', my_this)
+          checkAddress('shipping', my_this)
       else
-        $(".inner", $(@).parents('fieldset')).slideToggle()
+        $(".js-inner", $(@).parents('fieldset')).slideToggle()
 
 
   , ".js-bookmark, .js-shipping-sub"
@@ -75,11 +75,11 @@ checkAddress = (value, my_this)->
       value_check = false
       return false
   if value_check == false
-    $("[id$=#{value}] .inner").slideToggle()
+    $("[id$=#{value}] .js-inner").slideToggle()
   else
 
     fetch_available_shipping_methods(params)
-    $(".inner", my_this.parents('fieldset')).slideToggle()
+    $(".js-inner", my_this.parents('fieldset')).slideToggle()
 
 
 fetch_available_shipping_methods = (params_shippment) ->
