@@ -1,8 +1,8 @@
-Deface::Override.new(:virtual_path => "spree/orders/edit",
-                     :insert_after => '#empty-cart[data-hook]',
-                     :template => "spree/orders/one_page_checkout",
-                     :name => "checkout_form",
-                     :original => 'e36b7d08e8dd32225b0dc75e5bfee8afda5c9a65')
+# Deface::Override.new(:virtual_path => "spree/orders/edit",
+#                      :insert_after => '#empty-cart[data-hook]',
+#                      :template => "spree/orders/one_page_checkout",
+#                      :name => "checkout_form",
+#                      :original => 'e36b7d08e8dd32225b0dc75e5bfee8afda5c9a65')
 Deface::Override.new(:virtual_path => "spree/orders/edit",
                      :replace => "[data-hook = 'cart_items']",
                      :text => '<%= render :partial => "spree/orders/form", :locals => { :order_form => order_form } %>',

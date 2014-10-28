@@ -14,6 +14,16 @@ $ ->
 
   , "#order_use_billing"
 
+
+#  $(document).on
+#    click: (e)->
+#      e.preventDefault()
+#      url =  $(@).attr('href')
+#      $.ajax
+#        dataType: 'html'
+#        url: url
+#  , ".js-show-one-page-checkout"
+
   $(document).on
     click: (e)->
       e.preventDefault()

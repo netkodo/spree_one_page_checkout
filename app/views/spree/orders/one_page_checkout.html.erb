@@ -1,5 +1,12 @@
 <% if !Spree::Auth::Config[:registration_step] || spree_user_signed_in? %>
+    <div class="col-md-8">
   <%= render :partial => 'spree/orders/checkout_form' %>
+        </div>
+    <div class="col-md-4">
+      <div id="order_adjustments">
+        <%= render :partial => 'spree/orders/one_page_adjustments', :locals => { :order => @order } %>
+      </div>
+    </div>
 <% else %>
   <%= render :template => 'spree/user_sessions/new' %>
 <% end %>
