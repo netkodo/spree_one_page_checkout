@@ -23,10 +23,28 @@ $ ->
 #        dataType: 'html'
 #        url: url
 #  , ".js-show-one-page-checkout"
+  $(document).on
+    click: (e)->
+
+      val = $(@).val()
+      url = $(@).data('url')
+      shipment = $(@).data('shipment-id')
+      $.ajax
+        dataType: 'json'
+        method: 'POST'
+        url: url
+        data: {id: val, shipment_id: shipment}
+        success: ()->
+          checkAdjustments()
+
+      console.log(val)
+  , '.js-select-shipment'
+
 
   $(document).on
     click: (e)->
       e.preventDefault()
+      checkAdjustments()
       $('.js-inner').each ()->
         $(@).slideUp()
       $('#payment .js-inner').slideDown()
@@ -37,6 +55,7 @@ $ ->
       e.preventDefault()
       shipping = $(@).data('check')
       next = $(@).data('next')
+
       if next?
         my_this = $('#shipping_method legend')
       else
@@ -55,6 +74,14 @@ $ ->
   , ".js-bookmark, .js-shipping-sub"
 
 
+checkAdjustments = ()->
+  url = $("#js-check-adjustments-url").attr('href')
+  $.ajax
+      dataType: 'html'
+      method: 'POST'
+      url: url
+      success: (response)->
+        $('#order_adjustments').html(response)
 
 checkAddress = (value, my_this)->
   params = {}
@@ -69,7 +96,6 @@ checkAddress = (value, my_this)->
     params['city'] = $('#order_bill_address_attributes_city').val()
     params['zipcode'] = $('#order_bill_address_attributes_zipcode').val()
     params['phone'] = $('#order_bill_address_attributes_phone').val()
-
   else
     params['country_id'] = $('#order_ship_address_attributes_country_id').val()
     params['state_id'] = $('#order_ship_address_attributes_state_id').val()
@@ -87,7 +113,6 @@ checkAddress = (value, my_this)->
   if value_check == false
     $("[id$=#{value}] .js-inner").slideToggle()
   else
-
     fetch_available_shipping_methods(params)
     $(".js-inner", my_this.parents('fieldset')).slideToggle()
 
@@ -101,6 +126,7 @@ fetch_available_shipping_methods = (params_shippment) ->
     beforeSend: ( jqXHR ) ->
       $('#methods').html '<center><img src="assets/spinner.gif" alt="loading..." class="one-page-checkout-loader"></center>'
     success: (data) ->
+      checkAdjustments()
       if data? && data.length
         $('#methods').html data
       else

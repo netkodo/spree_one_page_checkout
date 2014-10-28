@@ -49,6 +49,8 @@ Spree::CheckoutController.class_eval do
   end
 
 
+
+
   def generate_shipments
     ship_params = {}
     bill_params = {}

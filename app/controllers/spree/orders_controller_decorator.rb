@@ -28,5 +28,20 @@ Spree::OrdersController.class_eval do
     @order.payments.destroy_all if request.put?
   end
 
+  def check_adjustments
+    @order = current_order
+  end
+
+  def set_shipping_rate
+    respond_to do |format|
+      @order = current_order
+      shipment = @order.shipments.where(id: params[:shipment_id]).first
+      rate = shipment.shipping_rates.where(id: params[:id]).first
+      shipment.update(cost: rate.cost)
+
+      format.json {}
+    end
+  end
+
 
 end
