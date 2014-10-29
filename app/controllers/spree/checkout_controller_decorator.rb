@@ -10,6 +10,9 @@ Spree::CheckoutController.class_eval do
 
 
   def update
+    Rails.logger.info "=============================="
+    Rails.logger.info  "update"
+    Rails.logger.info  "==================================="
     @order.update_attribute(:state, 'cart')
     if params[:shipments_attributes].present?
       params[:shipments_attributes].each do |key, value|
@@ -28,7 +31,9 @@ Spree::CheckoutController.class_eval do
           flash[:error] = @order.errors.full_messages.join("\n")
           redirect_to checkout_state_path(@order.state) and return
         end
-
+        Rails.logger.info "=========================="
+        Rails.logger.info  @order.total.to_s
+        Rails.logger.info  "================================"
         if @order.completed?
           session[:order_id] = nil
           flash.notice = Spree.t(:order_processed_successfully)

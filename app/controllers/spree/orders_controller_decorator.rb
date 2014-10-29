@@ -1,5 +1,4 @@
 Spree::OrdersController.class_eval do
-
   def edit
     @order = current_order
     # associate_user
@@ -18,6 +17,7 @@ Spree::OrdersController.class_eval do
   def one_page_checkout
     @order = current_order
     associate_user
+    @order.discount_for_designer!
     if @order.present? and @order.bill_address_id.blank?
       @order.bill_address ||= Spree::Address.default
     end
@@ -26,6 +26,7 @@ Spree::OrdersController.class_eval do
     end
     # before_delivery
     @order.payments.destroy_all if request.put?
+
   end
 
   def check_adjustments
@@ -33,14 +34,14 @@ Spree::OrdersController.class_eval do
   end
 
   def set_shipping_rate
-    respond_to do |format|
+   respond_to do |format|
       @order = current_order
       shipment = @order.shipments.where(id: params[:shipment_id]).first
       rate = shipment.shipping_rates.where(id: params[:id]).first
       shipment.update(cost: rate.cost)
+      format.json{render json: {message: 'OK'}}
 
-      format.json {}
-    end
+ end
   end
 
 

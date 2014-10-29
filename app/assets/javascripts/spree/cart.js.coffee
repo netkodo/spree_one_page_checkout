@@ -23,6 +23,21 @@ $ ->
 #        dataType: 'html'
 #        url: url
 #  , ".js-show-one-page-checkout"
+
+  $(document).on
+    click: (e)->
+
+      if (($(this)).is(':checked'))
+        console.log('checked')
+        ($('.billing_address .inner')).hide();
+        ($('.billing_address .inner input, .billing_address .inner select')).prop('disabled', true)
+      else
+        $('.billing_address .inner').show()
+        $('.billing_address .inner input, .billing_address .inner select').prop('disabled', false)
+
+  , 'input#order_use_billing'
+
+
   $(document).on
     click: (e)->
 
@@ -63,10 +78,7 @@ $ ->
       $('.js-inner').each ()->
         $(@).slideUp()
       if shipping? and shipping == 'shipping'
-        if $('#order_use_billing').is(':checked')
-          checkAddress('billing', my_this )
-        else
-          checkAddress('shipping', my_this)
+        checkAddress('shipping', my_this)
       else
         $(".js-inner", $(@).parents('fieldset')).slideToggle()
 
@@ -84,27 +96,18 @@ checkAdjustments = ()->
         $('#order_adjustments').html(response)
 
 checkAddress = (value, my_this)->
+  console.log value
   params = {}
   params['bill_id'] = $('#order_bill_address_attributes_id').val()
   params['ship_id'] = $('#order_ship_address_attributes_id').val()
-  if $('input#order_use_billing').is(':checked')
-    params['country_id'] = $('#order_bill_address_attributes_country_id').val()
-    params['state_id'] = $('#order_bill_address_attributes_state_id').val()
-    params['firstname'] = $('#order_bill_address_attributes_firstname').val()
-    params['lastname'] = $('#order_bill_address_attributes_lastname').val()
-    params['address1'] = $('#order_bill_address_attributes_address1').val()
-    params['city'] = $('#order_bill_address_attributes_city').val()
-    params['zipcode'] = $('#order_bill_address_attributes_zipcode').val()
-    params['phone'] = $('#order_bill_address_attributes_phone').val()
-  else
-    params['country_id'] = $('#order_ship_address_attributes_country_id').val()
-    params['state_id'] = $('#order_ship_address_attributes_state_id').val()
-    params['firstname'] = $('#order_ship_address_attributes_firstname').val()
-    params['lastname'] = $('#order_ship_address_attributes_lastname').val()
-    params['address1'] = $('#order_ship_address_attributes_address1').val()
-    params['city'] = $('#order_ship_address_attributes_city').val()
-    params['zipcode'] = $('#order_ship_address_attributes_zipcode').val()
-    params['phone'] = $('#order_ship_address_attributes_phone').val()
+  params['country_id'] = $('#order_ship_address_attributes_country_id').val()
+  params['state_id'] = $('#order_ship_address_attributes_state_id').val()
+  params['firstname'] = $('#order_ship_address_attributes_firstname').val()
+  params['lastname'] = $('#order_ship_address_attributes_lastname').val()
+  params['address1'] = $('#order_ship_address_attributes_address1').val()
+  params['city'] = $('#order_ship_address_attributes_city').val()
+  params['zipcode'] = $('#order_ship_address_attributes_zipcode').val()
+  params['phone'] = $('#order_ship_address_attributes_phone').val()
   value_check = true
   $("[id$=#{value}] input.required").each ()->
     if $(@).val() == ""

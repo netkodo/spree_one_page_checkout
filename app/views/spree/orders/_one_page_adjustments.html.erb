@@ -1,24 +1,23 @@
 <tbody id="cart_adjustments" data-hook>
   <% if order.line_item_adjustments.exists? %>
     <% order.line_item_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments| %>
-      <%= render "spree/orders/adjustment_row", :label => label, :adjustments => adjustments, :type => Spree.t(:promotion) %>
+      <%= render "spree/orders/adjustment_one_page_row", :label => label, :adjustments => adjustments, :type => Spree.t(:promotion) %>
     <% end %>
   <% end %>
 
   <% order.all_adjustments.tax.eligible.group_by(&:label).each do |label, adjustments| %>
-    <%= render "spree/orders/adjustment_row", :label => label, :adjustments => adjustments, :type => Spree.t(:tax) %>
+    <%= render "spree/orders/adjustment_one_page_row", :label => label, :adjustments => adjustments, :type => Spree.t(:tax) %>
   <% end %>
 
   <% order.shipments.each do |shipment| %>
-    <tr>
-      <td colspan="4" align='right'><h5><%= Spree.t(:shipping) %>: <%= shipment.shipping_method.name %></h5></td>
-      <td colspan='2'>
-        <h5><%= shipment.display_discounted_cost %></h5>
-      </td>
-    </tr>
+    <div class="my_adjustment col-md-12">
+     <div class="adjustment_title col-md-6"><%= shipment.shipping_method.name %></div>
+
+    <div class="adjustment_title col-md-6"><strong><%= shipment.display_discounted_cost %></strong></div>
+   </div>
   <% end %>
 
   <% order.adjustments.where.not(source_type: 'Spree::TaxRate').eligible.group_by(&:label).each do |label, adjustments| %>
-    <%= render "spree/orders/adjustment_row", :label => label, :adjustments => adjustments, :type => Spree.t(:adjustment) %>
+    <%= render "spree/orders/adjustment_one_page_row", :label => label, :adjustments => adjustments, :type => Spree.t(:adjustment) %>
   <% end %>
 </tbody>

@@ -1,12 +1,25 @@
 <% if !Spree::Auth::Config[:registration_step] || spree_user_signed_in? %>
     <div class="col-md-8">
-  <%= render :partial => 'spree/orders/checkout_form' %>
-        </div>
+      <%= render :partial => 'spree/orders/checkout_form' %>
+    </div>
     <div class="col-md-4">
       <div id="order_adjustments">
-        <%= render :partial => 'spree/orders/one_page_adjustments', :locals => { :order => @order } %>
+        <%= render :partial => 'spree/orders/one_page_adjustments', :locals => {:order => @order} %>
+      </div>
+      <div class="order_line_items">
+        <% @order.line_items.each do |line_item| %>
+            <div class="list_product">
+              <%= small_image(line_item.product, :itemprop => 'image', :class => "board-lightbox-product-img") %>
+              <h3><%= line_item.product.name %></h3>
+
+              <div class="price">Price: <strong><%= display_price(line_item.product) %></strong></div>
+              <div class="quantity">Quantity: <strong> <%= line_item.quantity %></strong></div>
+            </div>
+        <% end %>
+
+
       </div>
     </div>
 <% else %>
-  <%= render :template => 'spree/user_sessions/new' %>
+    <%= render :template => 'spree/user_sessions/new' %>
 <% end %>

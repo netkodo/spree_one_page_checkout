@@ -1,0 +1,6 @@
+
+  <div class="my_adjustment col-md-12">
+    <div class="adjustment_title col-md-6"><%= label %></div>
+
+    <div class="adjustment_title col-md-6"><strong><%= Spree::Money.new(adjustments.sum(&:amount), :currency => @order.currency) %></strong></div>
+  </div>
