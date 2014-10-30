@@ -1,5 +1,28 @@
 $ ->
 
+
+  $(document).on
+    change: (e)->
+      if $(@).val() != '49'
+        $('#order_ship_address_attributes_state_id').hide()
+        $('#order_ship_address_attributes_state_name').removeClass('hidden')
+      else
+        $('#order_ship_address_attributes_state_name').addClass('hidden')
+        $('#order_ship_address_attributes_state_id').show()
+
+  , '#order_ship_address_attributes_country_id'
+
+  $(document).on
+    change: (e)->
+      if $(@).val() != '49'
+        $('#order_bill_address_attributes_state_id').hide()
+        $('#order_bill_address_attributes_state_name').removeClass('hidden')
+      else
+        $('#order_bill_address_attributes_state_name').addClass('hidden')
+        $('#order_bill_address_attributes_state_id').show()
+
+  , '#order_bill_address_attributes_country_id'
+
   if $('#order_use_billing').is(':checked')
     $(".js-shipment_form").hide()
   else
@@ -93,7 +116,7 @@ checkAdjustments = ()->
       method: 'POST'
       url: url
       success: (response)->
-        $('#order_adjustments').html(response)
+        $('#js-order-adjustments').html response
 
 checkAddress = (value, my_this)->
   console.log value

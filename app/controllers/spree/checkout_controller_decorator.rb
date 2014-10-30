@@ -10,9 +10,6 @@ Spree::CheckoutController.class_eval do
 
 
   def update
-    Rails.logger.info "=============================="
-    Rails.logger.info  "update"
-    Rails.logger.info  "==================================="
     @order.update_attribute(:state, 'cart')
     if params[:shipments_attributes].present?
       params[:shipments_attributes].each do |key, value|
@@ -88,6 +85,7 @@ Spree::CheckoutController.class_eval do
       if @order.errors.blank?
         @order.update_from_params({"state" => "delivery"}, permitted_checkout_attributes)
       end
+
     end
   end
 

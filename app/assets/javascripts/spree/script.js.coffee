@@ -3,6 +3,7 @@ $ ->
 
 
 
+
   if ($ '#checkout_form_payment').is('*')
     ($ 'input[type="radio"][name="order[payments_attributes][][payment_method_id]"]').click(->
       ($ '#payment-methods li').hide()

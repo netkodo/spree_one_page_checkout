@@ -1,4 +1,6 @@
-<tbody id="cart_adjustments" data-hook>
+<% if order.adjustments.present? %>
+    <h2 class="adjustments_title">Order Summary</h2>
+<div id="load_cart_adjustments" data-hook>
   <% if order.line_item_adjustments.exists? %>
     <% order.line_item_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments| %>
       <%= render "spree/orders/adjustment_one_page_row", :label => label, :adjustments => adjustments, :type => Spree.t(:promotion) %>
@@ -20,4 +22,11 @@
   <% order.adjustments.where.not(source_type: 'Spree::TaxRate').eligible.group_by(&:label).each do |label, adjustments| %>
     <%= render "spree/orders/adjustment_one_page_row", :label => label, :adjustments => adjustments, :type => Spree.t(:adjustment) %>
   <% end %>
-</tbody>
+
+  <div class="my_adjustment col-md-12">
+    <div class="adjustment_title col-md-6"><%=  Spree.t(:sub_total)%></div>
+
+    <div class="adjustment_title col-md-6"><strong><%= order.display_item_total.to_html %></strong></div>
+  </div>
+</div>
+<% end %>
