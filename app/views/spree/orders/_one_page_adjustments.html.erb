@@ -1,6 +1,13 @@
 <% if order.adjustments.present? %>
     <h2 class="adjustments_title">Order Summary</h2>
+
 <div id="load_cart_adjustments" data-hook>
+  <div class="my_adjustment col-md-12">
+    <div class="adjustment_title col-md-6"><%=  Spree.t(:sub_total)%></div>
+
+    <div class="adjustment_title col-md-6"><strong><%= order.display_item_total.to_html %></strong></div>
+  </div>
+
   <% if order.line_item_adjustments.exists? %>
     <% order.line_item_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments| %>
       <%= render "spree/orders/adjustment_one_page_row", :label => label, :adjustments => adjustments, :type => Spree.t(:promotion) %>
@@ -23,10 +30,12 @@
     <%= render "spree/orders/adjustment_one_page_row", :label => label, :adjustments => adjustments, :type => Spree.t(:adjustment) %>
   <% end %>
 
-  <div class="my_adjustment col-md-12">
-    <div class="adjustment_title col-md-6"><%=  Spree.t(:sub_total)%></div>
+  <div class="summary_adjustment col-md-12">
+    <div class="adjustment_title col-md-6"><strong><%=  Spree.t(:total)%></strong></div>
 
-    <div class="adjustment_title col-md-6"><strong><%= order.display_item_total.to_html %></strong></div>
+    <div class="adjustment_title col-md-6"><strong><%= order.total + order.shipments.sum(&:cost)%> $ USD</strong></div>
   </div>
-</div>
+
+
 <% end %>
+</div>
