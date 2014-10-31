@@ -26,6 +26,7 @@ Spree::OrdersController.class_eval do
     end
     # before_delivery
     @order.payments.destroy_all if request.put?
+    @order.update_totals
 
   end
 
@@ -34,14 +35,33 @@ Spree::OrdersController.class_eval do
   end
 
   def set_shipping_rate
-   respond_to do |format|
+    respond_to do |format|
       @order = current_order
       shipment = @order.shipments.where(id: params[:shipment_id]).first
       rate = shipment.shipping_rates.where(id: params[:id]).first
       shipment.update(cost: rate.cost)
-      format.json{render json: {message: 'OK'}}
+      format.json { render json: {message: 'OK'} }
 
- end
+    end
+  end
+
+  def set_store_credit
+    respond_to do |format|
+      @order = current_order
+      if @order.user.store_credits.present? and @order.user.store_credits.sum(&:remaining_amount) > 0
+
+        amount = params[:amount]
+        remaining_amount = @order.user.store_credits.sum(&:remaining_amount)
+
+        if amount.to_d > remaining_amount
+          @order.update(store_credit_amount: remaining_amount)
+        else
+          @order.update(store_credit_amount: amount.to_d)
+        end
+
+      end
+      format.json { render json: {message: 'OK'} }
+    end
   end
 
 

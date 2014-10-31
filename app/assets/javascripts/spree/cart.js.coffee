@@ -1,5 +1,16 @@
 $ ->
 
+  $(".js-inner:first").slideDown()
+
+  $(document).on
+    keyup: (e)->
+      e.preventDefault()
+      delay ()->
+        GetStoreCredit()
+      , 900
+  , "#order_store_credit_amount"
+
+
 
   $(document).on
     change: (e)->
@@ -107,6 +118,29 @@ $ ->
 
 
   , ".js-bookmark, .js-shipping-sub"
+
+
+
+
+GetStoreCredit = ()->
+  url = $("#order_store_credit_amount").data('url-check')
+  value = $("#order_store_credit_amount").val()
+  $.ajax
+    dataType: 'json'
+    method: 'POST'
+    url:  url
+    data: {amount: value}
+    success: ()->
+      checkAdjustments()
+
+
+
+
+@delay = (->
+  timer = 0
+  (callback, ms) ->
+    clearTimeout timer
+    timer = setTimeout(callback, ms))()
 
 
 checkAdjustments = ()->

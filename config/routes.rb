@@ -10,4 +10,5 @@ Spree::Core::Engine.routes.draw do
 
   get 'one_page_checkout', to: 'orders#one_page_checkout', as: :one_page_checkout
   post 'check_adjustments', to: 'orders#check_adjustments', as: :check_adjustments
+  post 'set_store_credit', to: 'orders#set_store_credit', as: :set_store_credit
 end
