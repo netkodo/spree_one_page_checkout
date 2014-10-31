@@ -12,6 +12,7 @@
 
           <h5 class="stock-shipping-method-title"><%= Spree.t(:shipping_method) %></h5>
           <ul class="field radios shipping-methods">
+            <% if ship_form.shipping_rates.present? %>
             <% ship_form.shipping_rates.each do |rate| %>
 
                 <li class="shipping-method">
@@ -27,6 +28,9 @@
                   </label>
                 </li>
             <% end %>
+                <%else%>
+                <div class="show_shipping_info"><h2>Shipping not available for your destinantion.</h2></div>
+                <% end%>
           </ul>
           <div class="hidden">
             <%= text_field_tag "[shipments_attributes][#{index}][id]", ship_form.id %>
