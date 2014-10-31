@@ -184,7 +184,7 @@ fetch_available_shipping_methods = (params_shippment) ->
     url: $('#shipping_method').data('url')
     data: params_shippment
     beforeSend: ( jqXHR ) ->
-      $('#methods').html '<center><img src="assets/spinner.gif" alt="loading..." class="one-page-checkout-loader"></center>'
+      $('#methods .time-load').show()
     success: (data) ->
       checkAdjustments()
       if data? && data.length
