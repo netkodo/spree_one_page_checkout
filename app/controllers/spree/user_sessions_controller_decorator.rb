@@ -7,7 +7,7 @@ Spree::UserSessionsController.class_eval do
       respond_to do |format|
         format.html {
           flash[:success] = t(:logged_in_succesfully)
-          redirect_to cart_path
+          redirect_to request.referer
         }
         format.js {
           user = resource.record
