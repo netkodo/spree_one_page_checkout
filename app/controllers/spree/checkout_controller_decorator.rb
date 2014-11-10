@@ -59,6 +59,10 @@ Spree::CheckoutController.class_eval do
     state = [:cart, :address]
     if params[:state_id].present?
       @order = current_order(lock: true)
+      if @order.adjustments.where(source_type: 'Spree::Shipment').present?
+        @order.adjustments.where(source_type: 'Spree::Shipment').destroy_all
+      end
+
       if @order.shipments.present?
         @order.shipments.destroy_all
       end
