@@ -19,11 +19,14 @@
   <% end %>
 
   <% order.shipments.each do |shipment| %>
-    <div class="my_adjustment col-md-12">
-     <div class="adjustment_title col-md-6"><%= shipment.shipping_method.name %></div>
+      <%- if shipment.shipping_method.present? %>
+          <div class="my_adjustment col-md-12">
 
-    <div class="adjustment_title col-md-6"><strong><%= shipment.display_discounted_cost %></strong></div>
-   </div>
+            <div class="adjustment_title col-md-6"><%= shipment.shipping_method.name %></div>
+
+            <div class="adjustment_title col-md-6"><strong><%= shipment.display_discounted_cost %></strong></div>
+          </div>
+      <%- end %>
   <% end %>
 
   <% order.adjustments.where.not(source_type: 'Spree::TaxRate').eligible.group_by(&:label).each do |label, adjustments| %>
