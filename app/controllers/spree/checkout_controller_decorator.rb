@@ -10,6 +10,7 @@ Spree::CheckoutController.class_eval do
 
 
   def update
+
     @order.update_attribute(:state, 'cart')
     if params[:shipments_attributes].present?
       params[:shipments_attributes].each do |key, value|
@@ -25,13 +26,13 @@ Spree::CheckoutController.class_eval do
       if @order.update_from_params(params, permitted_checkout_attributes)
         persist_user_address
         unless @order.next
+
           flash[:error] = @order.errors.full_messages.join("\n")
           redirect_to checkout_state_path(@order.state) and return
         end
-        Rails.logger.info "=========================="
-        Rails.logger.info  @order.total.to_s
-        Rails.logger.info  "================================"
+
         if @order.completed?
+
           session[:order_id] = nil
           flash.notice = Spree.t(:order_processed_successfully)
           flash[:commerce_tracking] = "nothing special"
@@ -40,6 +41,7 @@ Spree::CheckoutController.class_eval do
           redirect_to checkout_state_path(@order.state)
         end
       else
+
         render :edit
       end
     else
@@ -63,8 +65,9 @@ Spree::CheckoutController.class_eval do
         @order.adjustments.where(source_type: 'Spree::Shipment').destroy_all
       end
 
-      if @order.shipments.present?
-        @order.shipments.destroy_all
+      shipment = @order.adjustments.where(label: 'Shipment')
+      if shipment.present?
+        shipment.destroy_all
       end
 
       @order.update_attribute(:state, 'address')
