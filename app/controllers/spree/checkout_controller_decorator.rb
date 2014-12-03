@@ -16,9 +16,12 @@ Spree::CheckoutController.class_eval do
       params[:shipments_attributes].each do |key, value|
 
         shipment = @order.shipments.where(id: value[:id]).first
-        rate = shipment.shipping_rates.where(id: value[:selected_shipping_rate_id]).first
-        shipment.update_attributes({selected_shipping_rate_id: rate.id, cost: rate.cost})
-
+        if  shipment.present?
+          rate = shipment.shipping_rates.where(id: value[:selected_shipping_rate_id]).first
+        end
+        if rate.present?
+          shipment.update_attributes({selected_shipping_rate_id: rate.id, cost: rate.cost})
+        end
       end
 
       @order.adjustments.shipping.create(amount: @order.shipments.sum(:cost), label: 'Shipment')
@@ -51,8 +54,6 @@ Spree::CheckoutController.class_eval do
     end
 
   end
-
-
 
 
   def generate_shipments
