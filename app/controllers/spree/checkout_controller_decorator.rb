@@ -18,14 +18,14 @@ Spree::CheckoutController.class_eval do
         shipment = @order.shipments.where(id: value[:id]).first
         if  shipment.present?
           rate = shipment.shipping_rates.where(id: value[:selected_shipping_rate_id]).first
+
+          if rate.present?
+            shipment.update_attributes({selected_shipping_rate_id: rate.id, cost: rate.cost})
+          end
         end
-        if rate.present?
-          shipment.update_attributes({selected_shipping_rate_id: rate.id, cost: rate.cost})
-        end
+
+        @order.adjustments.shipping.create(amount: @order.shipments.sum(:cost), label: 'Shipment')
       end
-
-      @order.adjustments.shipping.create(amount: @order.shipments.sum(:cost), label: 'Shipment')
-
       if @order.update_from_params(params, permitted_checkout_attributes)
         persist_user_address
         unless @order.next
