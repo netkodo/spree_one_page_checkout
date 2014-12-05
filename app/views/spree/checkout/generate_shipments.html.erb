@@ -1,4 +1,4 @@
-<%- if @order.errors.blank? %>
+<%- if @order.present? and  @order.errors.blank? %>
     <% i = 1 %>
     <%- @order.shipments.each_with_index do |ship_form, index| %>
 
@@ -8,6 +8,35 @@
             <%#= Spree.t(:package_from) %>
             <strong class="stock-location-name" data-hook="stock-location-name">Shipment #<%= i %></strong>
           </h3>
+
+          <table class="stock-contents" data-hook="stock-contents">
+            <colgroup>
+              <col style="width: 10%;" />
+              <col style="width: 60%;" />
+              <col style="width: 10%;" />
+              <col style="width: 20%;" />
+            </colgroup>
+            <thead>
+            <th></th>
+            <th align='left'><%= Spree.t(:item) %></th>
+            <th><%= Spree.t(:qty) %></th>
+            <th><%= Spree.t(:price) %></th>
+
+            </thead>
+            <tbody>
+            <% ship_form.manifest.each do |item| %>
+                <tr class="stock-item">
+                  <td class="item-image"><%= mini_image(item.variant) %> </td>
+                  <td class="item-name"><%= item.variant.name %>
+                    <br /><%= estimated_arrival(item) %>
+                  </td>
+                  <td class="item-qty"><%= item.quantity %></td>
+                  <td class="item-price"><%= display_price(item.variant) %></td>
+
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
 
 
           <h5 class="stock-shipping-method-title"><%= Spree.t(:shipping_method) %></h5>
