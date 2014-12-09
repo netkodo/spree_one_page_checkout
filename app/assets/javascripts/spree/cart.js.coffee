@@ -10,6 +10,16 @@ $ ->
       , 900
   , "#order_store_credit_amount"
 
+  $(document).on
+    click: (e)->
+      if $(@).is(':checked')
+        $('.js-hidden-radio').click()
+      else
+        $('.js-special-radio').click()
+
+
+  , '#js-select_white_glove'
+
 
 
   $(document).on
