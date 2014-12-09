@@ -22,9 +22,10 @@ $ ->
 
   $(document).on
     click: (e)->
-      $('#js-select_white_glove').click()
+      $('#js-select_white_glove').attr("checked", false);
 
   , '.js-special-radio'
+
 
 
 
