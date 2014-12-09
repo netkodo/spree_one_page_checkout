@@ -20,6 +20,11 @@ $ ->
 
   , '#js-select_white_glove'
 
+  $(document).on
+    click : (e)->
+      $('#js-select_white_glove').click()
+  , '.js-special-radio'
+
 
 
   $(document).on
