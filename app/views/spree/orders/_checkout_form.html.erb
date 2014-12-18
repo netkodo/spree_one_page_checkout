@@ -44,50 +44,54 @@
 
 
         <div class="js-inner">
-          <div class="col-md-5" data-hook="checkout_payment_step">
-            <% @order.available_payment_methods.each do |method| %>
-                <p>
-                  <label>
-                    <%= radio_button_tag "order[payments_attributes][][payment_method_id]", method.id, true %>
-                    <%= t(method.name, :scope => :payment_methods, :default => method.name) %>
-                  </label>
-                </p>
-            <% end %>
-            <ul id="payment-methods" data-hook>
+          <div class="payment clearfix">
+            <div class="col-md-6" data-hook="checkout_payment_step">
               <% @order.available_payment_methods.each do |method| %>
-                  <li id="payment_method_<%= method.id %>" class="<%= 'last' if method == @order.available_payment_methods.last %>" data-hook>
-                    <fieldset>
-                      <%= render :partial => "spree/checkout/payment/#{method.method_type}", :locals => {:payment_method => method} %>
-                    </fieldset>
-                  </li>
+                  <p>
+                    <label>
+                      <%= radio_button_tag "order[payments_attributes][][payment_method_id]", method.id, true %>
+                      <%= t(method.name, :scope => :payment_methods, :default => method.name) %>
+                    </label>
+                  </p>
               <% end %>
-
-            </ul>
-
-            <fieldset id="billing" data-hook>
-              <p class="field checkbox" data-hook="use_billing">
-                <%= check_box_tag 'order[use_billing]', '1', ((@order.bill_address.empty? && @order.ship_address.empty?) || @order.bill_address.same_as?(@order.ship_address)), disabled: false %>
-
-                <%= label_tag :order_use_billing, t(:use_billing_address), :id => 'use_shipping' %>
-              </p>
-
-              <div class="billing_address">
-                <%= form.fields_for :bill_address do |bill_form| %>
-
-                    <%= render :partial => 'spree/address/form', :locals => {:form => bill_form, :address_type => 'billing', :address => @order.bill_address} %>
+              <ul id="payment-methods" data-hook>
+                <% @order.available_payment_methods.each do |method| %>
+                    <li id="payment_method_<%= method.id %>" class="<%= 'last' if method == @order.available_payment_methods.last %>" data-hook>
+                      <fieldset>
+                        <%= render :partial => "spree/checkout/payment/#{method.method_type}", :locals => {:payment_method => method} %>
+                      </fieldset>
+                    </li>
                 <% end %>
-              </div>
-            </fieldset>
-            <br style="clear:both;">
 
-            <div data-hook="coupon_code_field" data-hook></div>
+              </ul>
+
+              <fieldset id="billing" data-hook>
+                <p class="field checkbox" data-hook="use_billing">
+                  <%= check_box_tag 'order[use_billing]', '1', ((@order.bill_address.empty? && @order.ship_address.empty?) || @order.bill_address.same_as?(@order.ship_address)), disabled: false %>
+
+                  <%= label_tag :order_use_billing, t(:use_billing_address), :id => 'use_shipping' %>
+                </p>
+
+                <div class="billing_address">
+                  <%= form.fields_for :bill_address do |bill_form| %>
+
+                      <%= render :partial => 'spree/address/form', :locals => {:form => bill_form, :address_type => 'billing', :address => @order.bill_address} %>
+                  <% end %>
+                </div>
+              </fieldset>
+              <br style="clear:both;">
+
+              <div data-hook="coupon_code_field" data-hook></div>
+            </div>
+            <div class="col-md-5">
+
+              <%= image_tag "frontend/payments.png" %>
+
+
+            </div>
+
           </div>
-          <div class="col-md-3">
 
-            <%= image_tag "frontend/payments.png" %>
-          
-
-          </div>
           <% if (spree_current_user && spree_current_user.store_credits_total > 0) %>
               <% usable_amount = number_with_precision(@order.store_credit_maximum_usable_amount, :precision => 2, :separator => '.', :delimiter => '') %>
               <br style='clear:both;'/>
