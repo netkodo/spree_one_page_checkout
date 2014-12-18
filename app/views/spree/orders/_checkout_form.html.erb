@@ -44,7 +44,7 @@
 
 
         <div class="js-inner">
-          <div data-hook="checkout_payment_step">
+          <div class="col-md-5" data-hook="checkout_payment_step">
             <% @order.available_payment_methods.each do |method| %>
                 <p>
                   <label>
@@ -82,6 +82,12 @@
 
             <div data-hook="coupon_code_field" data-hook></div>
           </div>
+          <div class="col-md-3">
+
+            <%= image_tag "frontend/payments.png" %>
+          
+
+          </div>
           <% if (spree_current_user && spree_current_user.store_credits_total > 0) %>
               <% usable_amount = number_with_precision(@order.store_credit_maximum_usable_amount, :precision => 2, :separator => '.', :delimiter => '') %>
               <br style='clear:both;'/>
@@ -92,7 +98,7 @@
 
               <p>
                 <label><%= Spree.t('enter_desired_amount_of_store_credit') %></label><br/>
-                <%= form.text_field :store_credit_amount, :size => 19, :value => usable_amount, :data => {:url_check => set_store_credit_path(format: :json) ,:store_credit_maximum_amount => usable_amount, :store_credit_maximum_amount_message => Spree.t('store_credit_maximum_amount', :amount => number_to_currency(@order.store_credit_maximum_usable_amount))} %>
+                <%= form.text_field :store_credit_amount, :size => 19, :value => usable_amount, :data => {:url_check => set_store_credit_path(format: :json), :store_credit_maximum_amount => usable_amount, :store_credit_maximum_amount_message => Spree.t('store_credit_maximum_amount', :amount => number_to_currency(@order.store_credit_maximum_usable_amount))} %>
               </p>
           <% end %>
 
