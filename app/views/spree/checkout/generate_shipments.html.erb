@@ -57,8 +57,9 @@
                             <% end %>
                             <span class="rate-name"><%= rate.name %></span>
                             <span class="rate-cost"><%= rate.display_cost %></span>
-                             <span class="price-percentage-off"> 20% </span>
-
+                            <%- if rate.display_cost != BigDecimal.new(0.0) %>
+                                <span class="price-percentage-off"> 20% </span>
+                            <%- end %>
                           </label>
                         </li>
                     <% end %>
