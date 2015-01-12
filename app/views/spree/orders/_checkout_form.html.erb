@@ -45,7 +45,7 @@
 
         <div class="js-inner">
           <div class="payment clearfix">
-            <div class="col-md-5" data-hook="checkout_payment_step">
+            <div class="col-md-7" data-hook="checkout_payment_step">
               <% @order.available_payment_methods.each do |method| %>
                   <p>
                     <label>
@@ -83,12 +83,7 @@
 
               <div data-hook="coupon_code_field" data-hook></div>
             </div>
-            <div class="col-md-6">
 
-              <%= image_tag "frontend/payments.jpg" %>
-
-
-            </div>
 
           </div>
 
