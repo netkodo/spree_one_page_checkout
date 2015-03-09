@@ -24,7 +24,9 @@ Spree::CheckoutController.class_eval do
           end
         end
 
+        if @order.adjustments.where(label: 'Shipment').blank?
         @order.adjustments.shipping.create(amount: @order.shipments.sum(:cost), label: 'Shipment')
+        end
       end
       if @order.update_from_params(params, permitted_checkout_attributes)
         persist_user_address
