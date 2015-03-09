@@ -13,7 +13,7 @@
         <h3 class="adjustments_title">In your cart</h3>
         <% @order.line_items.each do |line_item| %>
             <div class="list_product">
-              <%- if line_item.variant,present? and line_item.variant.images.present? %>
+              <%- if line_item.variant.present? and line_item.variant.images.present? %>
               <%= image_tag(line_item.variant.images.first.attachment.url(:small)) %>
                   <%-else%>
               <%= small_image(line_item.product, :itemprop => 'image', :class => "board-lightbox-product-img") %>
