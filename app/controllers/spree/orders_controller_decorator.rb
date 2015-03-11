@@ -49,7 +49,6 @@ Spree::OrdersController.class_eval do
       shipment = @order.shipments.where(id: params[:shipment_id]).first
       rate = shipment.shipping_rates.where(id: params[:id]).first
       shipment.update(cost: rate.cost)
-      @order.set_shipments_cost
       format.json { render json: {message: 'OK'} }
 
     end
