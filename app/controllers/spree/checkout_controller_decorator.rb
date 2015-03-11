@@ -23,10 +23,11 @@ Spree::CheckoutController.class_eval do
             shipment.update_attributes({selected_shipping_rate_id: rate.id, cost: rate.cost})
           end
         end
+        shipment.adjustments.create(amount: shipment.cost, source_type: 'Spree::Order', order_id: @order.id, label: 'Shipment')
 
-        if @order.adjustments.where(label: 'Shipment').blank?
-        @order.adjustments.shipping.create(amount: @order.shipments.sum(:cost), label: 'Shipment')
-        end
+        #if @order.adjustments.where(label: 'Shipment').blank?
+        #@order.adjustments.shipping.create(amount: @order.shipments.sum(:cost), source_type: 'Spree::Shipment' ,label: 'Shipment')
+        #end
       end
       if @order.update_from_params(params, permitted_checkout_attributes)
         persist_user_address
@@ -65,7 +66,7 @@ Spree::CheckoutController.class_eval do
     if params[:state_id].present?
       @order = current_order(lock: true)
       if @order.adjustments.where(source_type: 'Spree::Shipment').present?
-        @order.adjustments.where(source_type: 'Spree::Shipment').destroy_all
+      @order.adjustments.where(source_type: 'Spree::Shipment').destroy_all
       end
 
       shipment = @order.adjustments.where(label: 'Shipment')
