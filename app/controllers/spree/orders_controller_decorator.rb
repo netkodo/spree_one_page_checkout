@@ -49,6 +49,12 @@ Spree::OrdersController.class_eval do
       shipment = @order.shipments.where(id: params[:shipment_id]).first
       rate = shipment.shipping_rates.where(id: params[:id]).first
       shipment.update(cost: rate.cost)
+      shipment.update(cost: rate.cost)
+      @order.update(shipment_total: @order.shipments.sum(&:cost))
+      Rails.logger.info "=============================="
+      Rails.logger.info  @order.shipment_total
+      Rails.logger.info "===================================="
+      @order.update(total: @order.item_total + @order.adjustment_total +  @order.additional_tax_total + @order.shipment_total)
       format.json { render json: {message: 'OK'} }
 
     end
