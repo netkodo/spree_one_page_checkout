@@ -168,9 +168,9 @@ checkAdjustments = ()->
     url: url
     success: (response)->
       $('#js-order-adjustments').html response
-#      $(".js-hidden-radio").each  ()->
-#
-#        $('.js-special-radio', $('.shipping-method')).click()
+      $(".js-hidden-radio").each  ()->
+        if $('#js-select_white_glove', $(@).parents('.white_glove_checkbox')).is(':checked') == false and $(@).is(':checked') == true
+          $('.js-special-radio', $('.shipping-method')).click()
 
 checkAddress = (value, my_this)->
   console.log value
