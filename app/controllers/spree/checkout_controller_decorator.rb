@@ -1,124 +1,87 @@
-Spree::CheckoutController.class_eval do
+Spree::OrdersController.class_eval do
+  def edit
+    @order = current_order
+    if @order.shipments.present?
+      @order.update(shipment_total: @order.shipments.sum(&:cost))
+    end
+    @order.update(total: @order.item_total + @order.adjustment_total +  @order.additional_tax_total + @order.shipment_total)
 
-  #skip_filter(:check_registration)
+    # associate_user
+    # if @order.present? and @order.bill_address_id.blank?
+    #   @order.bill_address ||= Spree::Address.default
+    # end
+    # if @order.present? and @order.ship_address.blank?
+    #   @order.ship_address ||= Spree::Address.default
+    # end
+    # # before_delivery
+    # @order.payments.destroy_all if request.put?
+  end
 
-  #helper 'spree/products'
+  # change this to alias / spree
 
-  # For payment step, filter order parameters to produce the expected nested
-  # attributes for a single payment and its source, discarding attributes
-  # for payment methods other than the one selected
+  def one_page_checkout
+    @order = current_order
+    if @order.present?
+
+      associate_user
+      if @order.present?
+        @order.discount_for_designer!
 
 
-  def update
-
-    @order.update_attribute(:state, 'cart')
-    if params[:shipments_attributes].present?
-      params[:shipments_attributes].each do |key, value|
-
-        shipment = @order.shipments.where(id: value[:id]).first
-        if  shipment.present?
-          rate = shipment.shipping_rates.where(id: value[:selected_shipping_rate_id]).first
-
-          if rate.present?
-            shipment.update_attributes({selected_shipping_rate_id: rate.id, cost: rate.cost})
-          end
+        if  @order.bill_address_id.blank?
+          @order.bill_address ||= Spree::Address.default
         end
-        shipment.adjustments.create(amount: shipment.cost, source_type: 'Spree::Order', order_id: @order.id, label: 'Shipment')
-
-        #if @order.adjustments.where(label: 'Shipment').blank?
-        #@order.adjustments.shipping.create(amount: @order.shipments.sum(:cost), source_type: 'Spree::Shipment' ,label: 'Shipment')
-        #end
-      end
-
-      if @order.update_from_params(params, permitted_checkout_attributes)
-        persist_user_address
-        unless @order.next
-
-          flash[:error] = @order.errors.full_messages.join("\n")
-          redirect_to checkout_state_path(@order.state) and return
+        if  @order.ship_address.blank?
+          @order.ship_address ||= Spree::Address.default
         end
+        # before_delivery
+        @order.payments.destroy_all if request.put?
+        @order.update_totals
+        @order.update(shipment_total: @order.shipments.sum(&:cost))
+        @order.update(total: @order.item_total + @order.adjustment_total +  @order.additional_tax_total + @order.shipment_total)
 
-        if @order.completed?
-
-          session[:order_id] = nil
-          flash.notice = Spree.t(:order_processed_successfully)
-          flash[:commerce_tracking] = "nothing special"
-          redirect_to completion_route
-        else
-          redirect_to checkout_state_path(@order.state)
-        end
       else
-
-        render :edit
+        redirect_to cart_path
       end
     else
-      @order.errors.add(:shipments, "Can't be blank")
-      flash[:error] = @order.errors.full_messages.join("\n")
       redirect_to cart_path
     end
-
   end
 
+  def check_adjustments
+    @order = current_order
+  end
 
-  def generate_shipments
-    ship_params = {}
-    bill_params = {}
-    state = [:cart, :address]
-    if params[:state_id].present?
-      @order = current_order(lock: true)
-      if @order.adjustments.where(adjustable_type: 'Spree::Shipment').present?
-      @order.adjustments.where(adjustable_type: 'Spree::Shipment').destroy_all
-      end
-
-
-
-      @order.update_attribute(:state, 'address')
-
-      if params[:bill_id].present?
-        bill_params = params.dup
-        bill_params[:id] = params[:bill_id]
-      else
-        bill_params = params
-      end
-
-      if params[:ship_id].present?
-        ship_params = params.dup
-        ship_params[:id]= params[:ship_id]
-      else
-        ship_params = params
-      end
-      all_params = {order: {bill_address_attributes: bill_params, ship_address_attributes: ship_params}, state: "address", save_user_address: 1}
-      @params = ActionController::Parameters.new(all_params.except!(:controller, :action, :bill_id, :ship_id))
-      @order.update_from_params(@params, permitted_checkout_attributes)
-
-      if @order.errors.blank?
-        @order.before_my_delivery
-
-        @order.update_from_params({"state" => "delivery"}, permitted_checkout_attributes)
-
-      else
-        render 'generate_shipments'
-        return false
-      end
+  def set_shipping_rate
+    respond_to do |format|
+      @order = current_order
+      shipment = @order.shipments.where(id: params[:shipment_id]).first
+      rate = shipment.shipping_rates.where(id: params[:id]).first
+      shipment.update(cost: rate.cost)
+      @order.update(shipment_total: @order.shipments.sum(&:cost))
+      @order.update(total: @order.item_total + @order.adjustment_total +  @order.additional_tax_total + @order.shipment_total)
+      format.json { render json: {message: 'OK'} }
 
     end
   end
 
+  def set_store_credit
+    respond_to do |format|
+      @order = current_order
+      if @order.user.store_credits.present? and @order.user.store_credits.sum(&:remaining_amount) > 0
 
-  def object_params_checkout
-    if @params[:order]
-      @params[:order].permit(permitted_checkout_attributes)
-    else
-      {}
+        amount = params[:amount]
+        remaining_amount = @order.user.store_credits.sum(&:remaining_amount)
+
+        if amount.to_d > remaining_amount
+          @order.update(store_credit_amount: remaining_amount)
+        else
+          @order.update(store_credit_amount: amount.to_d)
+        end
+
+      end
+      format.json { render json: {message: 'OK'} }
     end
-
-  end
-
-
-  private
-
-  def skip_state_validation?
-    true
   end
 
 
