@@ -168,8 +168,9 @@ checkAdjustments = ()->
     url: url
     success: (response)->
       $('#js-order-adjustments').html response
-      $(".js-hidden-radio").each  ()->
-        $('.js-special-radio', $('.shipping-method')).click()
+#      $(".js-hidden-radio").each  ()->
+#
+#        $('.js-special-radio', $('.shipping-method')).click()
 
 checkAddress = (value, my_this)->
   console.log value
