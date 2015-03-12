@@ -70,10 +70,6 @@ Spree::CheckoutController.class_eval do
       @order.adjustments.where(adjustable_type: 'Spree::Shipment').destroy_all
       end
 
-
-
-      @order.update_attribute(:state, 'address')
-
       if params[:bill_id].present?
         bill_params = params.dup
         bill_params[:id] = params[:bill_id]
@@ -89,7 +85,12 @@ Spree::CheckoutController.class_eval do
       end
       all_params = {order: {bill_address_attributes: bill_params, ship_address_attributes: ship_params}, state: "address", save_user_address: 1}
       @params = ActionController::Parameters.new(all_params.except!(:controller, :action, :bill_id, :ship_id))
+
+
+      @order.update_attribute(:state, 'address')
       @order.update_from_params(@params, permitted_checkout_attributes)
+
+      @order.create_tax_from_cloud!
 
       if @order.errors.blank?
         @order.before_my_delivery
@@ -97,7 +98,6 @@ Spree::CheckoutController.class_eval do
         @order.update_from_params({"state" => "delivery"}, permitted_checkout_attributes)
 
       else
-
         render 'generate_shipments'
       end
 
