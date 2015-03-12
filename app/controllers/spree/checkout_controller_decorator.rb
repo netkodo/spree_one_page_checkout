@@ -29,6 +29,7 @@ Spree::CheckoutController.class_eval do
         #@order.adjustments.shipping.create(amount: @order.shipments.sum(:cost), source_type: 'Spree::Shipment' ,label: 'Shipment')
         #end
       end
+
       if @order.update_from_params(params, permitted_checkout_attributes)
         persist_user_address
         unless @order.next
@@ -89,9 +90,15 @@ Spree::CheckoutController.class_eval do
       all_params = {order: {bill_address_attributes: bill_params, ship_address_attributes: ship_params}, state: "address", save_user_address: 1}
       @params = ActionController::Parameters.new(all_params.except!(:controller, :action, :bill_id, :ship_id))
       @order.update_from_params(@params, permitted_checkout_attributes)
-      @order.before_my_delivery
+
       if @order.errors.blank?
+        @order.before_my_delivery
+
         @order.update_from_params({"state" => "delivery"}, permitted_checkout_attributes)
+
+      else
+        render 'generate_shipments'
+        return false
       end
 
     end
