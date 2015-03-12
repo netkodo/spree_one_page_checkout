@@ -3,6 +3,9 @@ Spree::OrdersController.class_eval do
     @order = current_order
     @order.update(shipment_total: @order.shipments.sum(&:cost))
     @order.update(total: @order.item_total + @order.adjustment_total +  @order.additional_tax_total + @order.shipment_total)
+    Rails.logger.info "====================="
+    Rails.logger.info  @order.total.to_s
+    Rails.logger.info "========================"
     # associate_user
     # if @order.present? and @order.bill_address_id.blank?
     #   @order.bill_address ||= Spree::Address.default
@@ -19,9 +22,11 @@ Spree::OrdersController.class_eval do
   def one_page_checkout
     @order = current_order
     if @order.present?
+
       associate_user
       if @order.present?
         @order.discount_for_designer!
+
 
         if  @order.bill_address_id.blank?
           @order.bill_address ||= Spree::Address.default
@@ -32,6 +37,8 @@ Spree::OrdersController.class_eval do
         # before_delivery
         @order.payments.destroy_all if request.put?
         @order.update_totals
+        @order.update(shipment_total: @order.shipments.sum(&:cost))
+        @order.update(total: @order.item_total + @order.adjustment_total +  @order.additional_tax_total + @order.shipment_total)
 
       else
         redirect_to cart_path
