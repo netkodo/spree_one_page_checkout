@@ -97,6 +97,7 @@ Spree::CheckoutController.class_eval do
         @order.update_from_params({"state" => "delivery"}, permitted_checkout_attributes)
 
       else
+        @order.update_attribute(:state, 'cart')
         render 'generate_shipments'
         return false
       end
