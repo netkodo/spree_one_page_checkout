@@ -94,7 +94,7 @@ Spree::CheckoutController.class_eval do
 
       if @order.errors.blank?
         @order.before_my_delivery
-
+         @order.check_tax!
         @order.update_from_params({"state" => "delivery"}, permitted_checkout_attributes)
 
       else
