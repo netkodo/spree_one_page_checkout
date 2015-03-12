@@ -13,16 +13,15 @@ $ ->
   $(document).on
     click: (e)->
       if $(@).is(':checked')
-        $('.js-hidden-radio').click()
+        $('.js-hidden-radio', $(@).parents('.shipping-methods')).click()
       else
-        $('.js-special-radio').click()
-
+        $('.js-special-radio', $(@).parents('.shipping-methods')).click()
 
   , '#js-select_white_glove'
 
   $(document).on
     click: (e)->
-      $('#js-select_white_glove').attr("checked", false);
+      $('#js-select_white_glove', $(@).parents('.shipping-methods')).attr("checked", false);
 
   , '.js-special-radio'
 
@@ -66,14 +65,14 @@ $ ->
   , "#order_use_billing"
 
 
-#  $(document).on
-#    click: (e)->
-#      e.preventDefault()
-#      url =  $(@).attr('href')
-#      $.ajax
-#        dataType: 'html'
-#        url: url
-#  , ".js-show-one-page-checkout"
+  #  $(document).on
+  #    click: (e)->
+  #      e.preventDefault()
+  #      url =  $(@).attr('href')
+  #      $.ajax
+  #        dataType: 'html'
+  #        url: url
+  #  , ".js-show-one-page-checkout"
 
   $(document).on
     click: (e)->
@@ -163,11 +162,11 @@ GetStoreCredit = ()->
 checkAdjustments = ()->
   url = $("#js-check-adjustments-url").attr('href')
   $.ajax
-      dataType: 'html'
-      method: 'POST'
-      url: url
-      success: (response)->
-        $('#js-order-adjustments').html response
+    dataType: 'html'
+    method: 'POST'
+    url: url
+    success: (response)->
+      $('#js-order-adjustments').html response
 
 checkAddress = (value, my_this)->
   console.log value
