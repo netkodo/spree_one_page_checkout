@@ -29,7 +29,7 @@
       <%- end %>
   <% end %>
 
-  <% order.adjustments.where.not(source_type: 'Spree::TaxRate').eligible.group_by(&:label).each do |label, adjustments| %>
+  <% order.adjustments.eligible.group_by(&:label).each do |label, adjustments| %>
     <%= render "spree/orders/adjustment_one_page_row", :label => label, :adjustments => adjustments, :type => Spree.t(:adjustment) %>
   <% end %>
 
