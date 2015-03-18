@@ -130,11 +130,28 @@ $ ->
         $(@).slideUp()
       if shipping? and shipping == 'shipping'
         checkAddress('shipping', my_this)
+        checkValid('shipping')
       else
         $(".js-inner", $(@).parents('fieldset')).slideToggle()
 
 
   , ".js-bookmark, .js-shipping-sub"
+
+
+checkValid = (fieldset)->
+  class_name= ""
+  if fieldset is 'shipping'
+    class_name = $("#shipping  .required")
+  else if fieldset is 'billing'
+    class_name = $("#billing  .required")
+
+  class_name.each ()->
+    console.log $('.error', $(@).parents('.field'))
+    $('.error', $(@).parents('.field')).remove()
+    field = $(".required", $(@).parents('.field'))
+    val = $(@).val()
+    if field.length >0 and val.length is 0
+      $(@).closest('.field').append('<label class="error">This field is required</label>')
 
 
 
