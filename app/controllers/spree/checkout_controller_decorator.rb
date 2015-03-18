@@ -13,22 +13,22 @@ Spree::CheckoutController.class_eval do
 
     @order.update_attribute(:state, 'cart')
     if params[:shipments_attributes].present?
-      params[:shipments_attributes].each do |key, value|
-
-        shipment = @order.shipments.where(id: value[:id]).first
-        if  shipment.present?
-          rate = shipment.shipping_rates.where(id: value[:selected_shipping_rate_id]).first
-
-          if rate.present?
-            shipment.update_attributes({selected_shipping_rate_id: rate.id, cost: rate.cost})
-          end
-        end
-        shipment.adjustments.create(amount: shipment.cost, source_type: 'Spree::Order', order_id: @order.id, label: 'Shipment')
-
-        #if @order.adjustments.where(label: 'Shipment').blank?
-        #@order.adjustments.shipping.create(amount: @order.shipments.sum(:cost), source_type: 'Spree::Shipment' ,label: 'Shipment')
-        #end
-      end
+      #params[:shipments_attributes].each do |key, value|
+      #
+      #  shipment = @order.shipments.where(id: value[:id]).first
+      #  if  shipment.present?
+      #    rate = shipment.shipping_rates.where(id: value[:selected_shipping_rate_id]).first
+      #
+      #    if rate.present?
+      #      shipment.update_attributes({selected_shipping_rate_id: rate.id, cost: rate.cost})
+      #    end
+      #  end
+      #  shipment.adjustments.create(amount: shipment.cost, source_type: 'Spree::Order', order_id: @order.id, label: 'Shipment')
+      #
+      #  #if @order.adjustments.where(label: 'Shipment').blank?
+      #  #@order.adjustments.shipping.create(amount: @order.shipments.sum(:cost), source_type: 'Spree::Shipment' ,label: 'Shipment')
+      #  #end
+      #end
 
       if @order.update_from_params(params, permitted_checkout_attributes)
         persist_user_address
@@ -58,6 +58,8 @@ Spree::CheckoutController.class_eval do
     end
 
   end
+
+
 
 
   def generate_shipments
@@ -94,9 +96,9 @@ Spree::CheckoutController.class_eval do
 
       if @order.errors.blank?
         @order.before_my_delivery
-         @order.check_tax!
+        @order.check_tax!
         @order.update_from_params({"state" => "delivery"}, permitted_checkout_attributes)
-
+        @order.generate_shipment_adjustments
       else
         render 'generate_shipments'
       end
