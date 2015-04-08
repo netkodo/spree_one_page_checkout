@@ -13,6 +13,9 @@ Spree::CheckoutController.class_eval do
 
     @order.update_attribute(:state, 'cart')
     if params[:shipments_attributes].present?
+      if cookies[:board_id].present?
+        @order.room_cookie = cookies[:board_id]
+      end
       #params[:shipments_attributes].each do |key, value|
       #
       #  shipment = @order.shipments.where(id: value[:id]).first
