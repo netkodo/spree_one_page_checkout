@@ -5,7 +5,7 @@ Spree::OrdersController.class_eval do
       if @order.shipments.present?
         @order.update(shipment_total: @order.shipments.sum(&:cost))
       end
-      @order.update(total: @order.item_total + @order.adjustment_total +  @order.additional_tax_total + @order.shipment_total)
+      @order.update(total: @order.item_total + @order.adjustment_total +  @order.additional_tax_total + @order.shipment_total + @order.promo_total)
     end
     # associate_user
     # if @order.present? and @order.bill_address_id.blank?
@@ -39,7 +39,7 @@ Spree::OrdersController.class_eval do
         @order.payments.destroy_all if request.put?
         @order.update_totals
         @order.update(shipment_total: @order.shipments.sum(&:cost))
-        @order.update(total: @order.item_total + @order.adjustment_total +  @order.additional_tax_total + @order.shipment_total)
+        @order.update(total: @order.item_total + @order.adjustment_total +  @order.additional_tax_total + @order.shipment_total + @order.promo_total)
 
       else
         redirect_to cart_path
@@ -62,7 +62,7 @@ Spree::OrdersController.class_eval do
       shipment.update(selected_shipping_rate_id: rate.id, cost: rate.cost)
       @order.generate_shipment_adjustments
       @order.update(shipment_total: @order.shipments.sum(&:cost))
-      @order.update(total: @order.item_total + @order.adjustment_total +  @order.additional_tax_total + @order.shipment_total)
+      @order.update(total: @order.item_total + @order.adjustment_total +  @order.additional_tax_total + @order.shipment_total + @order.promo_total)
       format.json { render json: {message: 'OK'} }
 
     end
