@@ -1,3 +1,5 @@
+<div class="time-load"><%= image_tag "spinner.gif" %></div>
+<div class="temporary-show">
 <%- if @order.present? and @order.errors.blank? %>
     <% i = 1 %>
     <%- @order.shipments.each_with_index do |ship_form, index| %>
@@ -80,6 +82,6 @@
     <%= render :partial => 'spree/shared/error_messages', locals: {target: @order} %>
 <% end %>
 
-
+</div>
 
 

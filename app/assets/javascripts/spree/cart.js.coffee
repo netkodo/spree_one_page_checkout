@@ -113,12 +113,16 @@ $ ->
       checkAdjustments()
       $('.js-inner').each ()->
         $(@).slideUp()
-      $('#payment .js-inner').slideDown()
+      if $('#errorExplanation').length > 0
+        $('#shipping .js-inner').slideDown()
+      else
+        $('#payment .js-inner').slideDown()
   , '.js-next-payment'
 
   $(document).on
     click: (e)->
       e.preventDefault()
+      $('#methods .temporary-show').html ''
       shipping = $(@).data('check')
       next = $(@).data('next')
 
