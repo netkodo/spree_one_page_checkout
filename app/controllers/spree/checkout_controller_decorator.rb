@@ -42,11 +42,12 @@ Spree::CheckoutController.class_eval do
         end
 
         if @order.completed?
-
-          session[:order_id] = nil
+          # Rails.logger.info session[:order_id]
+          # session[:order_id] = nil
           flash.notice = Spree.t(:order_processed_successfully)
           flash[:commerce_tracking] = "nothing special"
-          redirect_to completion_route
+
+          redirect_to order_confirmation_path
         else
           redirect_to checkout_state_path(@order.state)
         end
