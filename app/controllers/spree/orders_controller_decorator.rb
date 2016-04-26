@@ -22,6 +22,14 @@ Spree::OrdersController.class_eval do
 
   def one_page_checkout
     @order = current_order
+
+    @order.line_items.each do |item|
+      if Spree::Variant.find_by(id: item.variant_id).product.quantity_on_hand == 0
+        flash[:error] = "You have items in cart which are no longer available, please remove them"
+        redirect_to cart_path
+      end
+    end
+
     if @order.present?
 
       associate_user
