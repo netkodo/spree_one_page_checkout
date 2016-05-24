@@ -13,12 +13,3 @@
 .safe_payment_logo{
     padding: 10px 0 ;
 }
-
-.cart-adjustments td{
-    border-bottom: 1px solid #eee;
-    padding-bottom: 0px;
-    padding-right: 0px;
-    padding-top: 0px;
-    vertical-align: top;
-    text-align: right;
-}
