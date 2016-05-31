@@ -33,6 +33,10 @@
     <%= render "spree/orders/adjustment_one_page_row", :label => label, :adjustments => adjustments, :type => Spree.t(:adjustment) %>
   <% end %>
 
+  <% order.shipment_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments| %>
+      <%= render "spree/orders/adjustment_one_page_row", :label => label, :adjustments => adjustments, :type => Spree.t(:adjustment) %>
+  <% end %>
+
   <div class="summary_adjustment col-md-12">
     <div class="adjustment_title col-md-6"><strong><%=  Spree.t(:total)%></strong></div>
 

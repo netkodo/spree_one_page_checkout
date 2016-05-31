@@ -61,6 +61,22 @@ Spree::OrdersController.class_eval do
 
   def check_adjustments
     @order = current_order
+
+    Rails.logger.info "=++++++++++++++++++++++++++====++==++==+++=++++=++++++++==+++==+++==+++++++"
+    p=Spree::PromotionRule.find_by(type:"Spree::Promotion::Rules::ItemTotal")
+    Rails.logger.info p.inspect
+    Rails.logger.info p.eligible?(@order)
+    Rails.logger.info p.preferred_amount
+    Rails.logger.info p.preferred_operator
+    Rails.logger.info "=++++++++++++++++++++++++++====++==++==+++=++++=++++++++==+++==+++==+++++++"
+
+    # p.preferred_operator == 'gte' ? :>= : :>
+    if p.eligible?(@order)
+      @order.payments.destroy_all if request.put?
+      @order.update_totals
+      @order.update(shipment_total: @order.shipments.sum(&:cost))
+      @order.update(total: @order.item_total +  @order.additional_tax_total + @order.shipment_total + @order.promo_total)
+    end
   end
 
   def set_shipping_rate
