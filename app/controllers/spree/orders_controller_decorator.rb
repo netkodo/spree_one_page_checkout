@@ -7,7 +7,7 @@ Spree::OrdersController.class_eval do
       if @order.shipments.present?
         @order.update(shipment_total: @order.shipments.sum(&:cost))
       end
-      @order.update(total: @order.item_total + @order.additional_tax_total + @order.shipment_total + @order.promo_total)
+      @order.update(total: @order.item_total + @order.adjustment_total+ @order.additional_tax_total + @order.shipment_total + @order.promo_total)
     end
     # associate_user
     # if @order.present? and @order.bill_address_id.blank?
@@ -49,7 +49,7 @@ Spree::OrdersController.class_eval do
         @order.payments.destroy_all if request.put?
         @order.update_totals
         @order.update(shipment_total: @order.shipments.sum(&:cost))
-        @order.update(total: @order.item_total +  @order.additional_tax_total + @order.shipment_total + @order.promo_total)
+        @order.update(total: @order.item_total + @order.adjustment_total+  @order.additional_tax_total + @order.shipment_total + @order.promo_total)
 
       else
         redirect_to cart_path
@@ -64,6 +64,7 @@ Spree::OrdersController.class_eval do
 
     Rails.logger.info "=++++++++++++++++++++++++++====++==++==+++=++++=++++++++==+++==+++==+++++++"
     p=Spree::PromotionRule.find_by(type:"Spree::Promotion::Rules::ItemTotal")
+    Rails.logger.info @order.inspect
     Rails.logger.info p.inspect
     Rails.logger.info p.eligible?(@order)
     Rails.logger.info p.preferred_amount
@@ -71,11 +72,13 @@ Spree::OrdersController.class_eval do
     Rails.logger.info "=++++++++++++++++++++++++++====++==++==+++=++++=++++++++==+++==+++==+++++++"
 
     # p.preferred_operator == 'gte' ? :>= : :>
-    if p.eligible?(@order)
-      @order.payments.destroy_all if request.put?
-      @order.update_totals
-      @order.update(shipment_total: @order.shipments.sum(&:cost))
-      @order.update(total: @order.item_total +  @order.additional_tax_total + @order.shipment_total + @order.promo_total)
+    if p.present?
+      if p.eligible?(@order)
+        @order.payments.destroy_all if request.put?
+        @order.update_totals
+        @order.update(shipment_total: @order.shipments.sum(&:cost))
+        @order.update(total: @order.item_total + @order.adjustment_total+  @order.additional_tax_total + @order.shipment_total + @order.promo_total)
+      end
     end
   end
 

@@ -32,7 +32,6 @@ Spree::CheckoutController.class_eval do
       #  #@order.adjustments.shipping.create(amount: @order.shipments.sum(:cost), source_type: 'Spree::Shipment' ,label: 'Shipment')
       #  #end
       #end
-
       if @order.update_from_params(params, permitted_checkout_attributes)
         persist_user_address
         unless @order.next
@@ -42,6 +41,10 @@ Spree::CheckoutController.class_eval do
         end
 
         if @order.completed?
+          @order.payments.destroy_all if request.put?
+          @order.update_totals
+          @order.update(shipment_total: @order.shipments.sum(&:cost))
+          @order.update(total: @order.item_total + @order.adjustment_total+  @order.additional_tax_total + @order.shipment_total + @order.promo_total)
           # Rails.logger.info session[:order_id]
           # session[:order_id] = nil
           flash.notice = Spree.t(:order_processed_successfully)
