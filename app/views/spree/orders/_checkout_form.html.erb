@@ -7,6 +7,14 @@
             <legend align="center" class="js-bookmark left-text">1 <%= t(:shipping_address) %></legend>
             <div class="js-inner">
 
+              <% if !@order.user_id.present? and !@order.email.present? and !spree_current_user.present? %>
+                <%= form.fields_for :email do |form_email| %>
+                    <p class="field">
+                      <%= form_email.label :email, Spree.t(:email) %><span class="required">*</span><br />
+                      <%= form_email.text_field :email, :class => 'required' %>
+                    </p>
+                <% end %>
+              <% end %>
               <%= render :partial => 'spree/address/form', :locals => {:form => ship_form, :address_type => 'shipping', :address => @order.ship_address} %>
               <button class="btn js-next js-shipping-sub btn-primary btn-left" data-next="next" data-check="shipping" type="button">next</button>
             </div>
