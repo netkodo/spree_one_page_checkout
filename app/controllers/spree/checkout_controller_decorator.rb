@@ -1,6 +1,6 @@
 Spree::CheckoutController.class_eval do
 
-  #skip_filter(:check_registration)
+  skip_filter(:check_registration)
 
   #helper 'spree/products'
 
