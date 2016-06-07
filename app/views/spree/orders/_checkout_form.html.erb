@@ -3,7 +3,7 @@
       <fieldset id="shipping" data-hook>
         <legend align="center" class="js-bookmark left-text">1 <%= t(:shipping_address) %></legend>
         <div class="js-inner">
-        <% if !@order.email.present? and !spree_current_user.present? %>
+        <% if !spree_current_user.present? %>
             <p class="field">
               <%= form.label :email, Spree.t(:email) %><span class="required">*</span><br />
               <%= form.text_field :email, :class => 'required' %>
