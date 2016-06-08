@@ -1,11 +1,15 @@
 <%= form_for @order, :url => update_checkout_path('payment'), :html => {:id => "checkout_form_payment"} do |form| %>
-
-
     <div class="columns omega eight" data-hook="shipping_fieldset_wrapper">
       <fieldset id="shipping" data-hook>
+        <legend align="center" class="js-bookmark left-text">1 <%= t(:shipping_address) %></legend>
+        <div class="js-inner">
+        <% if !spree_current_user.present? %>
+            <p class="field">
+              <%= form.label :email, Spree.t(:email) %><span class="required">*</span><br />
+              <%= form.text_field :email, :class => 'required' %>
+            </p>
+        <% end %>
         <%= form.fields_for :ship_address do |ship_form| %>
-            <legend align="center" class="js-bookmark left-text">1 <%= t(:shipping_address) %></legend>
-            <div class="js-inner">
 
               <%= render :partial => 'spree/address/form', :locals => {:form => ship_form, :address_type => 'shipping', :address => @order.ship_address} %>
               <button class="btn js-next js-shipping-sub btn-primary btn-left" data-next="next" data-check="shipping" type="button">next</button>
