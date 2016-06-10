@@ -40,7 +40,7 @@
   <div class="summary_adjustment col-md-12">
     <div class="adjustment_title col-md-6"><strong><%=  Spree.t(:total)%></strong></div>
 
-    <div class="adjustment_title col-md-6"><strong>$<%= order.total %> USD</strong></div>
+    <div class="adjustment_title col-md-6"><strong>$<%= order.item_total + order.adjustment_total+  order.additional_tax_total + order.shipment_total + order.promo_total %> USD</strong></div>
   </div>
 
 
