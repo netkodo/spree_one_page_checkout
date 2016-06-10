@@ -62,6 +62,7 @@ Spree::OrdersController.class_eval do
   def check_adjustments
     @order = current_order
 
+    p = nil
     promotions=Spree::PromotionRule.where(type:"Spree::Promotion::Rules::ItemTotal")
     promotions.each do |promo|
       if promo.promotion.name == "FREE SHIPPING"
