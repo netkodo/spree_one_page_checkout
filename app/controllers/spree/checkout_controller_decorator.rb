@@ -43,8 +43,9 @@ Spree::CheckoutController.class_eval do
         if @order.completed?
           @order.payments.destroy_all if request.put?
           @order.update_totals
-          @order.update(shipment_total: @order.shipments.sum(&:cost))
-          @order.update(total: @order.item_total + @order.adjustment_total+  @order.additional_tax_total + @order.shipment_total + @order.promo_total)
+          # @order.update(shipment_total: @order.shipments.sum(&:cost))
+          shipment_total = @order.shipments.sum(&:cost)
+          @order.update(total: @order.item_total + @order.adjustment_total+  @order.additional_tax_total + shipment_total + @order.promo_total,shipment_total: shipment_total)
           # Rails.logger.info session[:order_id]
           # session[:order_id] = nil
           flash.notice = Spree.t(:order_processed_successfully)
