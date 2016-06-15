@@ -74,8 +74,8 @@ Spree::OrdersController.class_eval do
       if p.eligible?(@order)
         @order.payments.destroy_all if request.put?
         @order.update_totals
-        @order.update(shipment_total: @order.shipments.sum(&:cost))
-        @order.update(total: @order.item_total + @order.adjustment_total+  @order.additional_tax_total + @order.shipment_total + @order.promo_total)
+        shipment_total = @order.shipments.sum(&:cost)
+        @order.update(total: @order.item_total + @order.adjustment_total+  @order.additional_tax_total + shipment_total + @order.promo_total,shipment_total: shipment_total)
       end
     end
   end
@@ -88,8 +88,10 @@ Spree::OrdersController.class_eval do
       rate.update(selected: true)
       shipment.update(selected_shipping_rate_id: rate.id, cost: rate.cost)
       @order.generate_shipment_adjustments
-      @order.update(shipment_total: @order.shipments.sum(&:cost))
-      @order.update(total: @order.item_total + @order.adjustment_total +  @order.additional_tax_total + @order.shipment_total + @order.promo_total)
+      # @order.update(shipment_total: @order.shipments.sum(&:cost))
+      shipment_total = @order.shipments.sum(&:cost)
+      @order.update(total: @order.item_total + @order.adjustment_total +  @order.additional_tax_total + shipment_total + @order.promo_total,shipment_total: shipment_total)
+
       format.json { render json: {message: 'OK'} }
 
     end
