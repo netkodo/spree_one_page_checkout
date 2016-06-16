@@ -37,7 +37,7 @@ Spree::CheckoutController.class_eval do
         unless @order.next
 
           flash[:error] = @order.errors.full_messages.join("\n")
-          redirect_to checkout_state_path(@order.state) and return
+          redirect_to one_page_checkout_path and return
         end
 
         if @order.completed?
@@ -48,6 +48,16 @@ Spree::CheckoutController.class_eval do
           @order.update(total: @order.item_total + @order.adjustment_total+  @order.additional_tax_total + shipment_total + @order.promo_total,shipment_total: shipment_total)
           # Rails.logger.info session[:order_id]
           # session[:order_id] = nil
+          if @order.subscribe == true
+            @subscriber = Spree::Subscriber.find_by_email(@order.email)
+            if @subscriber.present?
+              @subscriber.update_attribute("last_subscribed_at", Time.now)
+            else
+              sub = Spree::Subscriber.create(:email => @order.email, :last_subscribed_at => Time.now)
+              Rails.logger.info "ADDED TO MAILCHIMP LIST" if sub.add_subscriber_to_mailchimp('subscribers')
+            end
+          end
+
           flash.notice = Spree.t(:order_processed_successfully)
           flash[:commerce_tracking] = "nothing special"
 

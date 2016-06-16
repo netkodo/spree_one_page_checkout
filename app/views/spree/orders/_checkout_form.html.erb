@@ -49,7 +49,7 @@
 
         <div class="js-inner">
           <div class="payment clearfix">
-            <div class="col-md-7" data-hook="checkout_payment_step">
+            <div class="col-md-12" data-hook="checkout_payment_step">
               <% @order.available_payment_methods.each do |method| %>
                   <p>
                     <label>
@@ -68,6 +68,14 @@
                 <% end %>
 
               </ul>
+
+              <fieldset id="subscribe" class=<%= spree_current_user.present? ? 'hidden' : '' %> data-hook>
+                <p class="field checkbox" data-hook="order_subscribe">
+                  <%= form.check_box :subscribe %>
+
+                  <%= form.label :subscribe, "I’d like to receive exclusive discounts and news from Scout and Nimble by email.", :id => 'subscribe' %>
+                </p>
+              </fieldset>
 
               <fieldset id="billing" data-hook>
                 <p class="field checkbox" data-hook="use_billing">

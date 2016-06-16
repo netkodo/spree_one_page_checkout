@@ -124,12 +124,14 @@ $ ->
       e.preventDefault()
       $('#methods .temporary-show').html ''
       shipping = $(@).data('check')
+      console.log shipping
       next = $(@).data('next')
-
+      console.log next
       if next?
         my_this = $('#shipping_method legend')
       else
         my_this = $(@)
+      console.log my_this
       $('.js-inner').each ()->
         $(@).slideUp()
       if shipping? and shipping == 'shipping'
@@ -152,10 +154,14 @@ checkValid = (fieldset)->
   class_name.each ()->
     console.log $('.error', $(@).parents('.field'))
     $('.error', $(@).parents('.field')).remove()
+    $(@).closest('.field').removeClass('error')
+#    $(@).closest('.field').find('input').removeClass('error')
     field = $(".required", $(@).parents('.field'))
     val = $(@).val()
     if field.length >0 and val.length is 0
       $(@).closest('.field').append('<label class="error">This field is required</label>')
+#      $(@).closest('.field').find('span input').addClass('error')
+      $(@).closest('.field').addClass('error')
 
 
 
@@ -196,6 +202,7 @@ checkAdjustments = ()->
 checkAddress = (value, my_this)->
   console.log value
   params = {}
+  params['email'] = $('#order_bill_address_attributes_id').val()
   params['bill_id'] = $('#order_bill_address_attributes_id').val()
   params['ship_id'] = $('#order_ship_address_attributes_id').val()
   params['country_id'] = $('#order_ship_address_attributes_country_id').val()
