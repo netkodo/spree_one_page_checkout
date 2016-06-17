@@ -152,15 +152,19 @@ checkValid = (fieldset)->
     class_name = $("#billing  .required")
 
   class_name.each ()->
-    console.log $('.error', $(@).parents('.field'))
+#    console.log $('.error', $(@).parents('.field'))
     $('.error', $(@).parents('.field')).remove()
     $(@).closest('.field').removeClass('error')
+    $(@).closest('.field').find('label.error').remove()
 #    $(@).closest('.field').find('input').removeClass('error')
     field = $(".required", $(@).parents('.field'))
     val = $(@).val()
-    if field.length >0 and val.length is 0
+    if field[1].id == "order_email" and field.length >0 and val.length != 0 and !validateEmail( $(field[1]).val() )
+      $(@).closest('.field').append('<label class="error">Email has invalid format</label>')
+      $(@).closest('.field').addClass('error')
+      liveEmailCheck()
+    else if field.length >0 and val.length is 0
       $(@).closest('.field').append('<label class="error">This field is required</label>')
-#      $(@).closest('.field').find('span input').addClass('error')
       $(@).closest('.field').addClass('error')
 
 
@@ -215,9 +219,14 @@ checkAddress = (value, my_this)->
   params['phone'] = $('#order_ship_address_attributes_phone').val()
   value_check = true
   $("[id$=#{value}] input.required").each ()->
-    if $(@).val() == ""
-      value_check = false
-      return false
+    if @.id == "order_email"
+      if !validateEmail($(@).val())
+        value_check = false
+        return false
+    else
+      if $(@).val() == ""
+        value_check = false
+        return false
   if value_check == false
     $("[id$=#{value}] .js-inner").slideToggle()
   else
@@ -239,3 +248,13 @@ fetch_available_shipping_methods = (params_shippment) ->
         $('#methods').html data
       else
         $('#methods').html "<center><p class='info'> #{$('#shipping_method').data('not-delivery')} </p></center>"
+
+validateEmail = (email) ->
+  re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email)
+
+liveEmailCheck = () ->
+  $('#order_email').keyup () ->
+    if validateEmail( $('#order_email').val() )
+      $(@).closest('.field').find('label.error').remove()
+      $(@).closest('.field').removeClass('error')
