@@ -24,7 +24,7 @@
 
             <div class="adjustment_title col-md-6"><%= shipment.shipping_method.name %></div>
 
-            <div class="adjustment_title col-md-6"><strong><%= shipment.display_discounted_cost %></strong></div>
+            <div class="adjustment_title col-md-6"><strong><%= shipment.cost %> $ USD</strong></div>
           </div>
       <%- end %>
   <% end %>
@@ -40,7 +40,7 @@
   <div class="summary_adjustment col-md-12">
     <div class="adjustment_title col-md-6"><strong><%=  Spree.t(:total)%></strong></div>
 
-    <div class="adjustment_title col-md-6"><strong>$<%= order.item_total + order.adjustment_total+  order.additional_tax_total + order.shipment_total + order.promo_total %> USD</strong></div>
+    <div class="adjustment_title col-md-6"><strong><%= order.item_total + order.adjustment_total+  order.additional_tax_total + order.shipment_total + order.promo_total %> $ USD</strong></div>
   </div>
 
 
