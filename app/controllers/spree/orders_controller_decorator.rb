@@ -10,12 +10,7 @@ Spree::OrdersController.class_eval do
       end
       @order.update(total: @order.item_total + @order.additional_tax_total + @order.shipment_total + @order.promo_total)
     else
-      Spree::OrderPopulator.new(current_order(create_order_if_necessary: true), current_currency)
-      @o = Spree::Order.find_by_id!(session[:order_id])
-      if !spree_current_user.present?
-        @o.user_id = session[:session_id]
-        @o.save
-      end
+      render "spree/orders/blank_order"
     end
     # associate_user
     # if @order.present? and @order.bill_address_id.blank?
