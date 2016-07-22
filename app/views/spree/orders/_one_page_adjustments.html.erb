@@ -34,7 +34,9 @@
   <% end %>
 
   <% order.shipment_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments| %>
-      <%= render "spree/orders/adjustment_one_page_row", :label => label, :adjustments => adjustments, :type => Spree.t(:adjustment) %>
+      <% if adjustments.sum(&:amount) != 0 %>
+        <%= render "spree/orders/adjustment_one_page_row", :label => label, :adjustments => adjustments, :type => Spree.t(:adjustment) %>
+      <% end %>
   <% end %>
 
   <div class="summary_adjustment col-md-12">
