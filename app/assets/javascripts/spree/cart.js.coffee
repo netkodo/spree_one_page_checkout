@@ -206,7 +206,7 @@ checkAdjustments = ()->
 checkAddress = (value, my_this)->
   console.log value
   params = {}
-  params['email'] = $('#order_bill_address_attributes_id').val()
+  params['email'] = $('#order_email').val()
   params['bill_id'] = $('#order_bill_address_attributes_id').val()
   params['ship_id'] = $('#order_ship_address_attributes_id').val()
   params['country_id'] = $('#order_ship_address_attributes_country_id').val()
