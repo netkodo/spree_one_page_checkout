@@ -206,7 +206,16 @@ checkAdjustments = ()->
           children_count = $(@).children().length
           $(@).children().each ->
             if $(@).hasClass('white_glove_checkbox') and children_count == 1
-              $('input',$(@)).prop('checked',true)
+              $('input',$(@)).attr('checked',true)#prop('checked',true)
+              val = $('.js-select-radio-button input',$(@)).val()
+              url = $('.js-select-radio-button input',$(@)).data('url')
+              shipment = $('.js-select-radio-button input',$(@)).data('shipment-id')
+              $.ajax
+                dataType: 'json'
+                method: 'POST'
+                url: url
+                data: {id: val, shipment_id: shipment}
+                success: ()->
 
 checkAddress = (value, my_this)->
   console.log value
