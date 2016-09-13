@@ -95,6 +95,10 @@ Spree::OrdersController.class_eval do
       shipment_total = @order.shipments.sum(&:cost)
       @order.update(total: @order.item_total + @order.adjustment_total +  @order.additional_tax_total + shipment_total + @order.promo_total,shipment_total: shipment_total)
 
+      wg=Spree::ShippingMethod.find_by_name("White Glove Shipping")
+      amount=Spree::Order.last.shipments.map{|x| x.shipping_rates.map{|z| z if z.id == x.selected_shipping_rate_id}.compact[0]}.select{|x| x.shipping_method_id == wg.id}.sum(&:cost)
+      @order.all_adjustments.create(adjustable_type: "Spree::Order",amount: amount, label: "Test", mandatory: nil, eligible: true)
+
       format.json { render json: {message: 'OK'} }
 
     end
