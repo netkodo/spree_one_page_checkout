@@ -30,4 +30,15 @@ Spree::Order.class_eval do
     end
   end
 
+  def include_custom_product?
+    f = false
+    self.line_items.each do |item|
+      if item.variant.made_to_order?
+        f = true
+        break
+      end
+    end
+    f
+  end
+
 end
