@@ -27,6 +27,7 @@
             </thead>
             <tbody>
             <% ship_form.manifest.each do |item| %>
+              <% @line_item = item %>
                 <tr class="stock-item">
                   <td class="item-image"><%= mini_image(item.variant) %> </td>
                   <td class="item-name"><%= item.variant.name %>
@@ -47,7 +48,7 @@
           <ul class="field radios shipping-methods">
             <% if check_shipping_categories(ship_form) %>
 
-                <%= set_shipping_methods(ship_form, index) %>
+                <%= set_shipping_methods(ship_form,@line_item.variant.made_to_order?, index) %>
             <% else %>
                 <% if ship_form.shipping_rates.present? %>
                     <% ship_form.shipping_rates.each do |rate| %>
