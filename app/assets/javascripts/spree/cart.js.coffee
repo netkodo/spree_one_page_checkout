@@ -205,9 +205,7 @@ checkAdjustments = ()->
         $(@).parents('.shipment').children('.shipping-methods').each ->
           children_count = $(@).children().length
           $(@).children().each ->
-            console.log if $(@).hasClass('white_glove_checkbox') and children_count == 1 and !$('input',$(@)).is(':checked')
             if $(@).hasClass('white_glove_checkbox') and children_count == 1
-              console.log 'tak'
               $('input',$(@)).prop('checked',true)
 
 checkAddress = (value, my_this)->
