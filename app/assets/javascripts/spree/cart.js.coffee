@@ -26,6 +26,17 @@ $ ->
 
   , '.js-special-radio'
 
+  $(document).on
+    click: (e) ->
+      url = $('.js-select-radio-button input',$(@).parents('.white_glove_checkbox')).data('url')
+      $.ajax
+        dataType: 'json'
+        method: 'POST'
+        url: url
+        data: {check: $(@).is(':checked')}
+        success: ()->
+          checkAdjustments()
+  ,"#js-select_white_glove"
 
 
 
@@ -202,20 +213,29 @@ checkAdjustments = ()->
       $(".js-hidden-radio").each  ()->
         if $('#js-select_white_glove', $(@).parents('.white_glove_checkbox')).is(':checked') == false and $(@).is(':checked') == true
           $('.js-special-radio', $('.shipping-method')).click()
-        $(@).parents('.shipment').children('.shipping-methods').each ->
-          children_count = $(@).children().length
-          $(@).children().each ->
-            if $(@).hasClass('white_glove_checkbox') and children_count == 1
-              $('input',$(@)).attr('checked',true)#prop('checked',true)
-              val = $('.js-select-radio-button input',$(@)).val()
-              url = $('.js-select-radio-button input',$(@)).data('url')
-              shipment = $('.js-select-radio-button input',$(@)).data('shipment-id')
-              $.ajax
-                dataType: 'json'
-                method: 'POST'
-                url: url
-                data: {id: val, shipment_id: shipment}
-                success: ()->
+      if $('.white_glove_checkbox').length > 0
+        $('.white_glove_checkbox input').attr('checked',true)
+#          $(@).parents('.shipment').children('.shipping-methods').each ->
+#            children_count = $(@).children().length
+#            $(@).children().each ->
+#              if $(@).hasClass('white_glove_checkbox') and children_count == 1
+#                $('input',$(@)).attr('checked',true)#prop('checked',true)
+#                val = $('.js-select-radio-button input',$(@)).val()
+#                url = $('.js-select-radio-button input',$(@)).data('url')
+#                shipment = $('.js-select-radio-button input',$(@)).data('shipment-id')
+#                $.ajax
+#                  dataType: 'json'
+#                  method: 'POST'
+#                  url: url
+#                  data: {id: val, shipment_id: shipment}
+#                  success: ()->
+#                    url = $("#js-check-adjustments-url").attr('href')
+#                    $.ajax
+#                      dataType: 'html'
+#                      method: 'POST'
+#                      url: url
+#                      success: (response)->
+#                        $('#js-order-adjustments').html response
 
 checkAddress = (value, my_this)->
   console.log value

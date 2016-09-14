@@ -3,6 +3,7 @@ Spree::Core::Engine.routes.draw do
   resources :orders do
     collection do
       post :set_shipping_rate
+      post :set_white_glove
     end
   end
   # post 'ajax/order/available_shipping_methods' => 'shipping_methods#index', :as => :available_shipping_methods

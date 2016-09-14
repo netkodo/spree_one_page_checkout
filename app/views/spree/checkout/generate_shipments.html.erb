@@ -48,7 +48,7 @@
           <ul class="field radios shipping-methods">
             <% if check_shipping_categories(ship_form) %>
 
-                <%= set_shipping_methods(ship_form,@line_item.variant.made_to_order?, index) %>
+                <%= set_shipping_methods(ship_form, index) %>
             <% else %>
                 <% if ship_form.shipping_rates.present? %>
                     <% ship_form.shipping_rates.each do |rate| %>
@@ -76,6 +76,12 @@
 
           </div>
         </div>
+          <hr>
+          <div>
+            <% if check_shipping_categories(ship_form) %>
+              <%= set_white_glove_separate(ship_form,@line_item.variant.made_to_order?, index) %>
+            <% end %>
+          </div>
         <% i += 1 %>
     <% end %>
 <% else %>

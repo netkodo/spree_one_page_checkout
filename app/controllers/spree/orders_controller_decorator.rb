@@ -93,14 +93,42 @@ Spree::OrdersController.class_eval do
       @order.generate_shipment_adjustments
       # @order.update(shipment_total: @order.shipments.sum(&:cost))
       shipment_total = @order.shipments.sum(&:cost)
-      @order.update(total: @order.item_total + @order.adjustment_total +  @order.additional_tax_total + shipment_total + @order.promo_total,shipment_total: shipment_total)
 
-      wg=Spree::ShippingMethod.find_by_name("White Glove Shipping")
-      amount=Spree::Order.last.shipments.map{|x| x.shipping_rates.map{|z| z if z.id == x.selected_shipping_rate_id}.compact[0]}.select{|x| x.shipping_method_id == wg.id}.sum(&:cost)
-      @order.all_adjustments.create(adjustable_type: "Spree::Order",amount: amount, label: "Test", mandatory: nil, eligible: true)
+      if @order.include_custom_product?
+        adj = @order.adjustments.where(label: "White Glove Shipping")
+        adj.present? ? adj.destroy_all : ''
+        cost = @order.shipments.map{|x| x.shipping_rates.joins(:shipping_method).where('spree_shipping_methods.name = "White Glove Shipping"').first.cost}.first
+        @order.adjustments.create(amount: cost, label: "White Glove Shipping")
+      end
+      @order.update_columns(adjustment_total: @order.adjustments.eligible.map(&:amount).sum)
+
+      @order.update(total: @order.item_total + @order.adjustment_total +  @order.additional_tax_total + shipment_total + @order.promo_total,shipment_total: shipment_total)
 
       format.json { render json: {message: 'OK'} }
 
+    end
+  end
+
+  def set_white_glove
+    respond_to do |format|
+
+      @order = current_order
+      shipment_total = @order.shipments.sum(&:cost)
+      if params[:checked]
+        puts "create"
+        # if @order.include_custom_product?
+          cost = @order.shipments.map{|x| x.shipping_rates.joins(:shipping_method).where('spree_shipping_methods.name = "White Glove Shipping"').first.cost}.first
+          @order.adjustments.create(amount: cost, label: "White Glove Shipping")
+        # end
+      else
+        puts "destroy"
+        @order.adjustments.where(label: "White Glove Shipping").destroy_all
+      end
+      puts "----"
+      @order.update_columns(adjustment_total: @order.adjustments.eligible.map(&:amount).sum)
+      @order.update(total: @order.item_total + @order.adjustment_total +  @order.additional_tax_total + shipment_total + @order.promo_total,shipment_total: shipment_total)
+
+      format.json { render json: {message: 'WHITE GLOVE SET'} }
     end
   end
 
