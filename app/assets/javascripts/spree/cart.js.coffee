@@ -29,12 +29,22 @@ $ ->
   $(document).on
     click: (e) ->
       url = $('.js-select-radio-button input',$(@).parents('.white_glove_checkbox')).data('url')
+      my_this = $(@)
       $.ajax
         dataType: 'json'
         method: 'POST'
         url: url
         data: {check: $(@).is(':checked')}
-        success: ()->
+        success: (response)->
+          console.log response
+          if response.check == 'true'
+            my_this.attr('checked',true)
+          else
+            my_this.attr('checked',false)
+            my_this.append("<span class='notification-to-remove error'>YOU HAVE CUSTOMIZED ITEM U CANNOT DROP WHITEGLOVE SHIPPING</span>")
+            setTimeout (->
+              $('.notification-to-remove').remove()
+            ), 3000
           checkAdjustments()
   ,"#js-select_white_glove"
 
