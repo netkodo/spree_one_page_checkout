@@ -83,6 +83,7 @@ Spree::CheckoutController.class_eval do
   def generate_shipments
     ship_params = {}
     bill_params = {}
+    @is_check = @order.include_custom_product?
     @order.update(email: params[:email]) if params[:email].present?
     state = [:cart, :address]
     if params[:state_id].present?

@@ -11,14 +11,14 @@ $ ->
       , 900
   , "#order_store_credit_amount"
 
-  $(document).on
-    click: (e)->
-      if $(@).is(':checked')
-        $('.js-hidden-radio', $(@).parents('.shipping-methods')).click()
-      else
-        $('.js-special-radio', $(@).parents('.shipping-methods')).click()
-
-  , '#js-select_white_glove'
+#  $(document).on
+#    click: (e)->
+#      if $(@).is(':checked')
+#        $('.js-hidden-radio', $(@).parents('.shipping-methods')).click()
+#      else
+#        $('.js-special-radio', $(@).parents('.shipping-methods')).click()
+#
+#  , '#js-select_white_glove'
 
   $(document).on
     click: (e)->
@@ -44,7 +44,7 @@ $ ->
                   $('.notification-to-remove').remove()
                 ), 3000
           else
-            my_this.attr('checked',false)
+            $('.white_glove_checkbox input').prop('checked',false)
           checkAdjustments()
   ,"#js-select_white_glove"
 
@@ -121,7 +121,7 @@ $ ->
         method: 'POST'
         url: url
         data: {id: val, shipment_id: shipment}
-        success: ()->
+        success: (response)->
           checkAdjustments()
 
       console.log(val)
@@ -221,31 +221,10 @@ checkAdjustments = ()->
     success: (response)->
       $('#js-order-adjustments').html response
       $(".js-hidden-radio").each  ()->
-        if $('#js-select_white_glove', $(@).parents('.white_glove_checkbox')).is(':checked') == false and $(@).is(':checked') == true
+        if $(@).is(':checked') == true
           $('.js-special-radio', $('.shipping-method')).click()
-      if $('.white_glove_checkbox').length > 0
+      if $('.white_glove_checkbox').length > 0 and $('.white_glove_checkbox').data('first-check') == true
         $('.white_glove_checkbox input').attr('checked',true)
-#          $(@).parents('.shipment').children('.shipping-methods').each ->
-#            children_count = $(@).children().length
-#            $(@).children().each ->
-#              if $(@).hasClass('white_glove_checkbox') and children_count == 1
-#                $('input',$(@)).attr('checked',true)#prop('checked',true)
-#                val = $('.js-select-radio-button input',$(@)).val()
-#                url = $('.js-select-radio-button input',$(@)).data('url')
-#                shipment = $('.js-select-radio-button input',$(@)).data('shipment-id')
-#                $.ajax
-#                  dataType: 'json'
-#                  method: 'POST'
-#                  url: url
-#                  data: {id: val, shipment_id: shipment}
-#                  success: ()->
-#                    url = $("#js-check-adjustments-url").attr('href')
-#                    $.ajax
-#                      dataType: 'html'
-#                      method: 'POST'
-#                      url: url
-#                      success: (response)->
-#                        $('#js-order-adjustments').html response
 
 checkAddress = (value, my_this)->
   console.log value
