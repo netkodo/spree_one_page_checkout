@@ -49,7 +49,7 @@
           <ul class="field radios shipping-methods">
             <% if check_shipping_categories(ship_form) %>
 
-                <%= set_shipping_methods(ship_form, index) %>
+                <%= set_shipping_methods(ship_form, index, @new_ship_price) %>
             <% else %>
                 <% if ship_form.shipping_rates.present? %>
                     <% ship_form.shipping_rates.each do |rate| %>

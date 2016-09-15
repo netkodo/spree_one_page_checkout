@@ -114,6 +114,22 @@ Spree::CheckoutController.class_eval do
 
       @order.create_tax_from_cloud!
 
+      p = nil
+      promotions=Spree::PromotionRule.where(type:"Spree::Promotion::Rules::ItemTotal")
+      promotions.each do |promo|
+        if promo.promotion.name == "FREE SHIPPING"
+          p = promo
+        end
+      end
+
+      if p.present?
+        p.eligible?(@order) ? @new_ship_price = true : @new_ship_price = false
+      end
+
+      Rails.logger.info @order.shipment_adjustments.promotion.inspect
+      Rails.logger.info @order.shipment_adjustments.promotion.inspect
+      Rails.logger.info @order.shipment_adjustments.promotion.inspect
+
       if @order.errors.blank?
         @order.before_my_delivery
         @order.check_tax!
