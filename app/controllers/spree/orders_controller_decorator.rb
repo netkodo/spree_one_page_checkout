@@ -29,7 +29,8 @@ Spree::OrdersController.class_eval do
     @order = current_order
 
     @order.line_items.each do |item|
-      if Spree::Variant.find_by(id: item.variant_id).product.quantity_on_hand == 0
+      v= Spree::Variant.find_by(id: item.variant_id)
+      if v.product.quantity_on_hand == 0 and !v.backorderable
         flash[:error] = "You have items in cart which are no longer available, please remove them"
         redirect_to cart_path
       end
