@@ -98,7 +98,7 @@ Spree::OrdersController.class_eval do
       if @order.include_custom_product?
         adj = @order.adjustments.where(label: "White Glove Shipping")
         adj.present? ? adj.destroy_all : ''
-        cost = @order.shipments.map{|x| x.shipping_rates.joins(:shipping_method).where('spree_shipping_methods.name = "White Glove Shipping"').first.cost}.first
+        cost = @order.shipments.map{|x| x.shipping_rates.joins(:shipping_method).where('spree_shipping_methods.name = "White Glove Shipping"').first}.compact.first.cost
         @order.adjustments.create(amount: cost, label: "White Glove Shipping")
       end
       @order.update_columns(adjustment_total: @order.adjustments.eligible.map(&:amount).sum)
