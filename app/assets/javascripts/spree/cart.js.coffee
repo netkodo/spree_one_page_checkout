@@ -222,9 +222,9 @@ checkAdjustments = ()->
       $('#js-order-adjustments').html response
       $(".js-hidden-radio").each  ()->
         if $(@).is(':checked') == true
-          $('.js-special-radio', $('.shipping-method')).click()
+          $('.js-special-radio', $('.shipping-method')).prop('checked',true)
       if $('.white_glove_checkbox').length > 0 and $('.white_glove_checkbox').data('first-check') == true
-        $('.white_glove_checkbox input').attr('checked',true)
+        $('.white_glove_checkbox input').prop('checked',true)
 
 checkAddress = (value, my_this)->
   console.log value
