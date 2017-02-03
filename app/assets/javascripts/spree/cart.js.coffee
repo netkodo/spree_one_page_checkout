@@ -226,6 +226,15 @@ checkAdjustments = ()->
       if $('.white_glove_checkbox').length > 0 and $('.white_glove_checkbox').data('first-check') == true
         $('.white_glove_checkbox input').prop('checked',true)
 
+checkAdjustmentsOnce = ()->
+  url = $("#js-check-adjustments-url").attr('href')
+  $.ajax
+    dataType: 'html'
+    method: 'POST'
+    url: url
+    success: (response)->
+      $('#js-order-adjustments').html response
+
 checkAddress = (value, my_this)->
   console.log value
   params = {}
@@ -269,6 +278,9 @@ fetch_available_shipping_methods = (params_shippment) ->
       checkAdjustments()
       if data? && data.length
         $('#methods').html data
+        $(".js-hidden-radio").each  ()->
+          if $(@).is(':checked') == true
+            $('.js-special-radio', $('.shipping-method')).click()
       else
         $('#methods').html "<center><p class='info'> #{$('#shipping_method').data('not-delivery')} </p></center>"
 
