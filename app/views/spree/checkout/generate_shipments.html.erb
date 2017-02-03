@@ -57,10 +57,8 @@
                         <li class="shipping-method">
                           <label>
                             <% if ship_form.shipping_rates.minimum('cost') == rate.cost %>
-                                TRUE
                                 <%= radio_button_tag "[shipments_attributes][#{index}][selected_shipping_rate_id]", rate.id, true, class: 'js-select-shipment', data: {url: set_shipping_rate_orders_path(format: :json), shipment_id: rate.shipment.id} %>
                             <% else %>
-                                FALSE
                                 <%= radio_button_tag "[shipments_attributes][#{index}][selected_shipping_rate_id]", rate.id, false, class: 'js-select-shipment', data: {url: set_shipping_rate_orders_path(format: :json), shipment_id: rate.shipment.id} %>
                             <% end %>
                             <span class="rate-name"><%= rate.name %></span>
