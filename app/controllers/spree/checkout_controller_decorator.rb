@@ -114,6 +114,8 @@ Spree::CheckoutController.class_eval do
 
       @order.create_tax_from_cloud!
 
+      @order.order_ac_event("PaymentPage")  #Camecase coz inside method undersore
+
       p = nil
       promotions=Spree::PromotionRule.where(type:"Spree::Promotion::Rules::ItemTotal")
       promotions.each do |promo|
