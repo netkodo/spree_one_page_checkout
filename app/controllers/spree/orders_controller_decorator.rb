@@ -30,7 +30,7 @@ Spree::OrdersController.class_eval do
 
     @order.line_items.each do |item|
       v= Spree::Variant.find_by(id: item.variant_id)
-      if v.product.quantity_on_hand == 0 and !v.backorderable
+      if v.product.total_on_hand == 0 and !v.backorderable
         flash[:error] = "You have items in cart which are no longer available, please remove them"
         redirect_to cart_path
       end
@@ -54,7 +54,7 @@ Spree::OrdersController.class_eval do
         @order.update_totals
         @order.update(shipment_total: @order.shipments.sum(&:cost))
         @order.update(total: @order.item_total + @order.adjustment_total+  @order.additional_tax_total + @order.shipment_total + @order.promo_total)
-
+        @order.update_column(:state,"initial_checkout")
       else
         redirect_to cart_path
       end
@@ -65,7 +65,7 @@ Spree::OrdersController.class_eval do
 
   def check_adjustments
     @order = current_order
-
+    @order.define_cart_state
     p = nil
     promotions=Spree::PromotionRule.where(type:"Spree::Promotion::Rules::ItemTotal")
     promotions.each do |promo|
