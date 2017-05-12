@@ -1,6 +1,7 @@
 Spree::OrdersController.class_eval do
   def edit
     @order = current_order
+    @order.update_column(:state, "cart")
     if @order.present?
       @order.adjustments.delete_all
       @order.update_promotion
