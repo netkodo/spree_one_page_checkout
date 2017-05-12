@@ -66,7 +66,7 @@ Spree::OrdersController.class_eval do
 
   def check_adjustments
     @order = current_order
-    @order.define_cart_state
+    @order.update_column(:state,"shipping")
     p = nil
     promotions=Spree::PromotionRule.where(type:"Spree::Promotion::Rules::ItemTotal")
     promotions.each do |promo|
@@ -159,6 +159,17 @@ Spree::OrdersController.class_eval do
 
       end
       format.json { render json: {message: 'OK'} }
+    end
+  end
+
+  def set_state
+    @order = current_order
+    respond_to do |format|
+      if @order.update_column(:state,params[:state])
+        format.json {render json: {message: "success"}, status: :ok}
+      else
+        format.json {render json: {message: "success"}, status: :unprocessable_entity}
+      end
     end
   end
 
