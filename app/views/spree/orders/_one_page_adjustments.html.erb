@@ -41,7 +41,7 @@
 
   <div class="summary_adjustment col-md-12">
     <div class="adjustment_title col-md-6"><strong><%=  Spree.t(:total)%></strong></div>
-    <div class="adjustment_title col-md-6"><strong>$<%= '%.2f' % [order.item_total +  order.additional_tax_total + order.shipment_total + order.promo_total] %></strong></div>
+    <div class="adjustment_title col-md-6"><strong>$<%= '%.2f' % [order.item_total + order.adjustment_total + order.additional_tax_total + order.shipment_total + order.promo_total] %></strong></div>
     <!--+ order.adjustment_total-->
   </div>
 
