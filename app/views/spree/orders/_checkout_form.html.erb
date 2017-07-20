@@ -50,6 +50,21 @@
         <div class="js-inner">
           <div class="payment clearfix">
             <div class="col-md-12" data-hook="checkout_payment_step">
+              <fieldset id="billing" data-hook>
+                <p class="field checkbox" data-hook="use_billing">
+                  <%= check_box_tag 'order[use_billing]', '1', ((@order.bill_address.empty? && @order.ship_address.empty?) || @order.bill_address.same_as?(@order.ship_address)), disabled: false %>
+
+                  <%= label_tag :order_use_billing, t(:use_shipping_address), :id => 'use_shipping' %>
+                </p>
+
+                <div class="billing_address">
+                  <%= form.fields_for :bill_address do |bill_form| %>
+
+                      <%= render :partial => 'spree/address/form', :locals => {:form => bill_form, :address_type => 'billing', :address => @order.bill_address} %>
+                  <% end %>
+                </div>
+              </fieldset>
+
               <% @order.available_payment_methods.each do |method| %>
                   <p>
                     <label>
@@ -77,20 +92,7 @@
                 </p>
               </fieldset>
 
-              <fieldset id="billing" data-hook>
-                <p class="field checkbox" data-hook="use_billing">
-                  <%= check_box_tag 'order[use_billing]', '1', ((@order.bill_address.empty? && @order.ship_address.empty?) || @order.bill_address.same_as?(@order.ship_address)), disabled: false %>
 
-                  <%= label_tag :order_use_billing, t(:use_shipping_address), :id => 'use_shipping' %>
-                </p>
-
-                <div class="billing_address">
-                  <%= form.fields_for :bill_address do |bill_form| %>
-
-                      <%= render :partial => 'spree/address/form', :locals => {:form => bill_form, :address_type => 'billing', :address => @order.bill_address} %>
-                  <% end %>
-                </div>
-              </fieldset>
               <br style="clear:both;">
 
               <div data-hook="coupon_code_field" data-hook></div>
@@ -113,16 +115,54 @@
               </p>
           <% end %>
 
-          <div class="form-buttons" data-hook="buttons">
-            <%= submit_tag t(:checkout), :class => 'btn btn-primary one-page-checkout-button', 'data-hook' => 'one_page_checout_button' %>
+          <button type="button" class="btn btn-primary js-next-order-summary btn-left">next</button>
+          <!--<div class="form-buttons" data-hook="buttons">-->
+            <%#= submit_tag t(:checkout), :class => 'btn btn-primary one-page-checkout-button', 'data-hook' => 'one_page_checout_button' %>
             <script>
                 // disableSaveOnClick();
             </script>
-          </div>
+          <!--</div>-->
 
 
         </div>
 
+      </fieldset>
+    </div>
+
+
+    <div class='omega eight columns'>
+      <fieldset id="order_summary" class="variant-info" data-hook>
+        <legend align="center" class="js-bookmark left-text" data-summary="true">4 <%= t(:order_summary) %></legend>
+
+        <div class="js-inner">
+          <div class="order_summary clearfix">
+
+            <div class="col-md-4 col-sm-4 col-xs-12 shipping_address">
+              <span class="header">Shipping Address</span>
+              <div class="summary data"></div>
+              <div class="summary phone"></div>
+              <div class="edit-action js-edit-checkout-step" data-step="shipping">EDIT</div>
+            </div>
+
+            <div class="col-md-4 col-sm-4 col-xs-12 billing_address">
+              <span class="header">Billing Address</span>
+              <div class="summary data"></div>
+              <div class="summary phone"></div>
+              <div class="edit-action js-edit-checkout-step" data-step="payment">EDIT</div>
+            </div>
+
+            <div class="col-md-4 col-sm-4 col-xs-12 payment_information">
+              <span class="header">Payment Information</span>
+              <div class="summary data"></div>
+              <div class="summary phone"></div>
+              <div class="edit-action js-edit-checkout-step" data-step="payment">EDIT</div>
+            </div>
+
+          </div>
+          <div class="form-buttons checkout-center" data-hook="buttons">
+            <%= submit_tag t(:checkout), :class => 'btn btn-primary one-page-checkout-button', 'data-hook' => 'one_page_checout_button' %>
+          </div>
+        </div>
       </fieldset>
     </div>
 

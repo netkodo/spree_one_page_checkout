@@ -140,25 +140,106 @@ $ ->
         $('#payment .js-inner').slideDown()
   , '.js-next-payment'
 
+  UpdateAddressInSummary = (o,type='shipping') ->
+    $("#order_summary .#{type}_address .summary.data").html("#{o.first_name} #{o.last_name}<br>#{o.address1} #{o.address2}<br>#{o.city}, #{o.state} #{o.zip}")
+    $("#order_summary .#{type}_address .summary.phone").html(o.phone)
+
+  UpdatePaymentInSUmmary = (o) ->
+    $("#order_summary .payment_information .summary.data").html(o.payment_data)
+    $("#order_summary .payment_information .summary.phone").html(o.payment)
+
+  UpdateOrderSummary = () ->
+    console.log "IN"
+    #shipping address
+    shipping_address = {
+      first_name: $("#order_ship_address_attributes_firstname").val(),
+      last_name: $("#order_ship_address_attributes_lastname").val(),
+      address1: $("#order_ship_address_attributes_address1").val(),
+      address2: $("#order_ship_address_attributes_address2").val(),
+      city: $("#order_ship_address_attributes_city").val(),
+      country: $("#order_ship_address_attributes_country_id option:selected").text(),
+      state: $("#order_ship_address_attributes_state_id option:selected").text(),
+      zip: $("#order_ship_address_attributes_zipcode").val(),
+      phone: $("#order_ship_address_attributes_phone").val()
+    }
+    UpdateAddressInSummary(shipping_address)
+
+    if !$('#order_use_billing').is(':checked')
+      billing_address = {
+        first_name: $("#order_bill_address_attributes_firstname").val(),
+        last_name: $("#order_bill_address_attributes_lastname").val(),
+        address1: $("#order_bill_address_attributes_address1").val(),
+        address2: $("#order_bill_address_attributes_address2").val(),
+        city: $("#order_bill_address_attributes_city").val(),
+        country: $("#order_bill_address_attributes_country_id option:selected").text(),
+        state: $("#order_bill_address_attributes_state_id option:selected").text(),
+        zip: $("#order_bill_address_attributes_zipcode").val(),
+        phone: $("#order_bill_address_attributes_phone").val()
+      }
+    else
+      billing_address = shipping_address
+    UpdateAddressInSummary(billing_address,'billing')
+
+#      for payments
+    payment = $("#payment .payment input[type='radio']:checked").val()
+    payment_data = ""
+    $("#payment-methods li#payment_method_#{payment} input:visible").each (index) ->
+      if index == 0
+        payment_data = $(@).val()
+      else
+        payment_data = payment_data + "<br>" + $(@).val()
+
+    payment_information = {
+      payment: $("#payment .payment input[type='radio']:checked").parent().text(),
+      payment_data: payment_data
+    }
+    UpdatePaymentInSUmmary(payment_information)
+
+  $(document).on
+    click: (e)->
+      e.preventDefault()
+      checkAdjustments()
+
+      UpdateOrderSummary()
+
+      $('.js-inner').each ()->
+        $(@).slideUp()
+      if $('#errorExplanation').length > 0
+        $('#order_summary .js-inner').slideDown()
+      else
+        $('#order_summary .js-inner').slideDown()
+    ,'.js-next-order-summary'
+
+  $(document).on
+    click: (e) ->
+      step = $(@).data('step')
+      $('.js-inner').each ()->
+        $(@).slideUp()
+      $("fieldset##{step} .js-inner").slideDown()
+  ,".js-edit-checkout-step"
+
   $(document).on
     click: (e)->
       e.preventDefault()
       $('#methods .temporary-show').html ''
       shipping = $(@).data('check')
-      console.log shipping
+#      console.log shipping
       next = $(@).data('next')
-      console.log next
+#      console.log next
+      summary = $(@).data('summary')
       if next?
         my_this = $('#shipping_method legend')
       else
         my_this = $(@)
-      console.log my_this
+#      console.log my_this
       $('.js-inner').each ()->
         $(@).slideUp()
       if shipping? and shipping == 'shipping'
         checkAddress('shipping', my_this)
         checkValid('shipping')
       else
+        if summary? and (summary == 'true' or summary == true)
+          UpdateOrderSummary()
         $(".js-inner", $(@).parents('fieldset')).slideToggle()
 
 
