@@ -1,5 +1,6 @@
 Spree::Order.class_eval do
   attr_accessor :room_cookie
+  attr_accessor :portfolio_cookie
   checkout_flow do
     remove_checkout_step :address
     remove_checkout_step :delivery
