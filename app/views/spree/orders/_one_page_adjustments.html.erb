@@ -41,7 +41,7 @@
           <div class="adjustment_title col-md-6"><strong>FREE</strong></div>
         </div>
       <% else %>
-        <%= render "spree/orders/adjustment_one_page_row", :label => "Shipping", :adjustments => order.shipment_adjustments.sum(:amount), :type => Spree.t(:adjustment) %>
+        <%= render "spree/orders/adjustment_one_page_row", :label => "Shipping", :adjustments => order.shipment_adjustments, :type => Spree.t(:adjustment) %>
       <% end %>
   <%# end %>
 
