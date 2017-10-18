@@ -24,7 +24,7 @@
 
             <div class="adjustment_title col-md-6"><%= shipment.shipping_method.name %></div>
 
-            <div class="adjustment_title col-md-6"><strong>$<%= shipment.cost %></strong></div>
+            <div class="adjustment_title col-md-6"><strong>$<%= '%.2f' % shipment.cost %></strong></div>
           </div>
       <%- end %>
   <% end %>
