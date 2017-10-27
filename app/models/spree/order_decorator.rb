@@ -34,7 +34,7 @@ Spree::Order.class_eval do
   def include_custom_product?
     f = false
     self.line_items.each do |item|
-      if item.variant.made_to_order?
+      if item.variant.present? and item.variant.made_to_order?
         f = true
         break
       end
