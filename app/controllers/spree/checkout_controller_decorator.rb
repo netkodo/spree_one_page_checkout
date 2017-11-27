@@ -49,7 +49,10 @@ Spree::CheckoutController.class_eval do
           # @order.update(shipment_total: @order.shipments.sum(&:cost))
           shipment_total = @order.shipments.sum(&:cost)
           @order.update(total: @order.item_total +  @order.additional_tax_total + shipment_total + @order.promo_total + @order.adjustment_total,shipment_total: shipment_total)#+ @order.adjustment_total
-          @order.deliver_order_confirmation_email unless @order.confirmation_delivered?
+          unless @order.confirmation_delivered?
+            @order.deliver_order_confirmation_email
+            @order.update_columns(send_order_confirmation_email: true, order_confirmation_sent: true)
+          end
           # Rails.logger.info session[:order_id]
           # session[:order_id] = nil
           if @order.subscribe == true
