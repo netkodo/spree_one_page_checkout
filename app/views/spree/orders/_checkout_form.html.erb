@@ -12,7 +12,7 @@
         <%= form.fields_for :ship_address do |ship_form| %>
 
               <%= render :partial => 'spree/address/form', :locals => {:form => ship_form, :address_type => 'shipping', :address => @order.ship_address} %>
-              <button class="btn js-next js-shipping-sub btn-primary btn-left" data-next="next" data-check="shipping" type="button">next</button>
+              <button class="btn js-next js-shipping-sub btn-primary btn-left" data-next="next" data-check="shipping" type="button">Next</button>
             </div>
         <% end %>
       </fieldset>
@@ -37,7 +37,7 @@
           <% end %>
           <!--<center><button class="btn" id="check-shipping-methods" type="button"><%#= t(:check_shipping_methods) %></button></center>-->
 
-          <button type="button" class="btn btn-primary js-next-payment btn-left" data-state="payment">next</button>
+          <button type="button" class="btn btn-primary js-next-payment btn-left" data-state="payment">Next</button>
         </div>
       </fieldset>
     </div>
@@ -115,7 +115,7 @@
               </p>
           <% end %>
 
-          <button type="button" class="btn btn-primary js-next-order-summary btn-left">next</button>
+          <button type="button" class="btn btn-primary js-next-order-summary btn-left">Next</button>
           <!--<div class="form-buttons" data-hook="buttons">-->
             <%#= submit_tag t(:checkout), :class => 'btn btn-primary one-page-checkout-button', 'data-hook' => 'one_page_checout_button' %>
             <script>
