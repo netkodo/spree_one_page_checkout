@@ -58,11 +58,6 @@
         <div class="payment clearfix">
           <div class="col-md-12" data-hook="checkout_payment_step">
             <fieldset id="billing" data-hook>
-                <p class="field checkbox" data-hook="use_billing">
-                  <%= check_box_tag 'order[use_billing]', '1', ((@order.bill_address.empty? && @order.ship_address.empty?) || @order.bill_address.same_as?(@order.ship_address)), disabled: false %>
-
-                  <%= label_tag :order_use_billing, t(:use_shipping_address), :id => 'use_shipping' %>
-                </p>
 
                 <div class="billing_address">
                   <%= form.fields_for :bill_address do |bill_form| %>
@@ -103,7 +98,11 @@
               <p class="field checkbox" data-hook="use_billing">
                 <%= check_box_tag 'order[use_billing]', '1', ((@order.bill_address.empty? && @order.ship_address.empty?) || @order.bill_address.same_as?(@order.ship_address)), disabled: false %>
 
-                  <br style="clear:both;">
+                <%= label_tag :order_use_billing, t(:use_shipping_address), :id => 'use_shipping' %>
+                <br style="clear:both;">
+
+              </p>
+            </fieldset>
 
             <div data-hook="coupon_code_field" data-hook></div>
           </div>
