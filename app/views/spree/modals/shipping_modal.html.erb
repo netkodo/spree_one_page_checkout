@@ -1,0 +1,98 @@
+<div id="more_details" class="modal fade" role="dialog">
+    <div class="modal-dialog sn-modal-size">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header sn-modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div>SHIPPING & DELIVERY INFORMATION</div>
+            </div>
+
+            <div class="">
+
+
+
+
+
+                <ul class="nav nav-pills sn-modal-tabs sn-nav-modal-pills">
+                    <li class="active"><a data-toggle="pill" href="#home">CURBSIDE DELIVERY</a></li>
+                    <li><a data-toggle="pill" href="#menu1">WHITE GLOVE DELIVERY</a></li>
+                    <li><a data-toggle="pill" href="#menu2">SMALL PARCEL SHIPMENT</a></li>
+                </ul>
+
+
+
+
+
+
+
+
+
+            </div>
+            <div class="modal-body sn-modal-body">
+
+                <div class="tab-content">
+                    <div id="home" class="tab-pane fade in active">
+                        <div>
+                          <%= image_tag 'telefon.png' %>
+
+                        </div>
+                        <p>Some content.</p>
+                    </div>
+                    <div id="menu1" class="tab-pane fade">
+                        <h3>Menu 1</h3>
+                        <p>Some content in menu 1.</p>
+                    </div>
+                    <div id="menu2" class="tab-pane fade">
+                        <h3>Menu 2</h3>
+                        <p>Some content in menu 2.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+
+    .sn-modal-size{
+        width: 1000px;
+    }
+
+    .sn-modal-header div{
+        font-family: 'Arial';
+        font-size: 38px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .sn-nav-modal-pills{
+        display:flex;
+        justify-content:center;
+    }
+
+    .sn-nav-modal-pills > li{
+        margin: 2px;
+        border: 3px solid black;
+
+    }
+    .sn-nav-modal-pills > li:nth-child(2){
+        border: 3px solid #e8bb77;
+    }
+
+    .sn-modal-tabs li a{
+        padding: 5px 40px 2px 40px;
+        border-radius: 0px;
+        font-family: 'Abraham Lincoln';
+        font-size: 25px;
+        letter-spacing: 3px;
+        font-weight: normal;
+    }
+
+    .sn-modal-body{
+        padding: 25px 50px;
+    }
+
+
+
+</style>

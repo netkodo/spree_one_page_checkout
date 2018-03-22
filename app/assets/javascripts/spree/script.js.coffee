@@ -1,6 +1,10 @@
 $ ->
 
-
+  if ('.js-more-details').length > 0
+    $(document).on
+      click: (e) ->
+        $('#more_details').modal('show')
+    , '.js-more-details'
 
 
 
