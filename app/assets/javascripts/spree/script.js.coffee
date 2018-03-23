@@ -4,6 +4,9 @@ $ ->
     $(document).on
       click: (e) ->
         $('#more_details').modal('show')
+        data = $(@).data('modal-target')
+        console.log('data')
+        $("a[href=##{data}]").click()
     , '.js-more-details'
 
 

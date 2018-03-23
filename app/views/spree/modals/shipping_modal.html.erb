@@ -1,5 +1,5 @@
-<div id="more_details" class="modal fade" role="dialog">
-    <div class="modal-dialog sn-modal-size">
+<div id="more_details" class="modal fade sn-modal-size" role="dialog">
+    <div class="modal-dialog ">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header sn-modal-header">
@@ -8,43 +8,138 @@
             </div>
 
             <div class="">
-
-
-
-
-
                 <ul class="nav nav-pills sn-modal-tabs sn-nav-modal-pills">
-                    <li class="active"><a data-toggle="pill" href="#home">CURBSIDE DELIVERY</a></li>
-                    <li><a data-toggle="pill" href="#menu1">WHITE GLOVE DELIVERY</a></li>
-                    <li><a data-toggle="pill" href="#menu2">SMALL PARCEL SHIPMENT</a></li>
+                    <li class="active"><a data-toggle="pill" href="#curbside_delivery">CURBSIDE DELIVERY</a></li>
+                    <li><a data-toggle="pill" href="#white_glove">WHITE GLOVE DELIVERY</a></li>
+                    <li><a data-toggle="pill" href="#small_parcel">SMALL PARCEL SHIPMENT</a></li>
                 </ul>
-
-
-
-
-
-
-
-
-
             </div>
             <div class="modal-body sn-modal-body">
-
                 <div class="tab-content">
-                    <div id="home" class="tab-pane fade in active">
-                        <div>
-                          <%= image_tag 'telefon.png' %>
+                    <div id="curbside_delivery" class="tab-pane fade in active">
+                        <div class="sn-modal-img-wrapper">
+                          <div class="sn-modal-img">
+                            <%= image_tag 'telefon.png' %>
+                            <div>Scheduled</div>
+                          </div>
+                          <div class="sn-modal-img">
+                            <%= image_tag 'telefon.png' %>
+                            <div>Scheduled</div>
+                          </div>
+
+                          <div class="sn-modal-img">
+                            <%= image_tag 'telefon.png' %>
+                            <div>Scheduled</div>
+                          </div>
+
+                          <div class="sn-modal-img">
+                            <%= image_tag 'telefon.png' %>
+                            <div>Scheduled</div>
+                          </div>
 
                         </div>
-                        <p>Some content.</p>
+
+                        <p>
+                          Our curbside delivery service means that your item is required to ship 3rd party freight due to one or more of your
+                          items exceeding Fed Ex & UPS small parcel requirements.
+                        </p>
+                        <p>
+                            Freight items do take additional time to prep for shipping and will ship within 3-7 days of placing your order if your
+                            item is in stock. 3rd party freight deliveries often take 1-3 weeks to reach our service providers warehouse in your
+                            area once shipped. Timeframes will vary based on your delivery area.
+                        </p>
+                        <p>
+                            Once your item(s) reach our professional service providers warehouse, you will be contacted by phone to schedule
+                            your curbside delivery.
+                        </p>
+                        <p>
+                            At checkout, please be sure to provide a good daytime phone number and email address so that our delivery
+                            providers can reach you to schedule your delivery. Please be sure to carefully inspect your item(s) at the time of
+                            delivery prior to signing and delivery documents, and notate any visible damages on the delivery documents at that
+                            time.
+                        </p>
                     </div>
-                    <div id="menu1" class="tab-pane fade">
-                        <h3>Menu 1</h3>
-                        <p>Some content in menu 1.</p>
+                    <div id="white_glove" class="tab-pane fade">
+
+                      <div class="sn-modal-img-wrapper">
+
+                        <div class="sn-modal-img">
+                          <%= image_tag 'telefon.png' %>
+                          <div>Scheduled</div>
+                        </div>
+
+                        <div class="sn-modal-img">
+                          <%= image_tag 'telefon.png' %>
+                          <div>Scheduled</div>
+                        </div>
+
+                        <div class="sn-modal-img">
+                          <%= image_tag 'telefon.png' %>
+                          <div>Scheduled</div>
+                        </div>
+
+                        <div class="sn-modal-img">
+                          <%= image_tag 'telefon.png' %>
+                          <div>Scheduled</div>
+                        </div>
+
+                        <div class="sn-modal-img">
+                          <%= image_tag 'telefon.png' %>
+                          <div>Scheduled</div>
+                        </div>
+
+                      </div>
+
+                      <p>
+                        White Glove Delivery gets you the best One of our professional service providers will contact you to schedule your
+                        delivery, carefully inspect your item(s), place your items in the room of your choice, and remove all packaging
+                        debris at the time of delivery.
+                      </p>
+                      <p>
+                        All white glove items require freight shipping and do take additional time to prep for shipping and will ship within
+                        3-7 days of placing your order if your item is in stock. 3rd party freight deliveries often take 1-3 weeks to reach our
+                        service providers warehouse in your area once shipped. Timeframes will vary based on your delivery area.
+                      </p>
+                      <p>
+                        <strong>
+                          Once your item(s) reach our professional service providers warehouse, you will be contacted by phone to
+                          schedule your white glove delivery.
+                        </strong>
+                      </p>
+                      <p>
+                        At checkout, please be sure to provide a good daytime phone number and email address so that our delivery
+                        providers can reach you to schedule your delivery. Please be sure to carefully inspect your item(s) at the time of
+                        delivery prior to signing any delivery documents, and notate any visible damages on the delivery documents at that
+                        time.
+                      </p>
                     </div>
-                    <div id="menu2" class="tab-pane fade">
-                        <h3>Menu 2</h3>
-                        <p>Some content in menu 2.</p>
+                    <div id="small_parcel" class="tab-pane fade">
+
+                      <div class="sn-modal-img-wrapper">
+
+                        <div class="sn-modal-img">
+                          <%= image_tag 'telefon.png' %>
+                          <div>Scheduled</div>
+                        </div>
+
+                        <div class="sn-modal-img">
+                          <%= image_tag 'telefon.png' %>
+                          <div>Scheduled</div>
+                        </div>
+
+                      </div>
+
+                      <p>
+                        This item will ship via UPS or Fed Ex ground as a small parcel shipment. Unless an upgraded form of
+                        shipping is selected, the estimated delivery time will be 1-5 days from the date the item is shipped. This item
+                        does not require a signature and will be dropped at your front door. The shipper can use their discretion to
+                        require a signature when they drop your shipment. You will receive an email that contains your tracking
+                        information when your item ships.
+                      </p>
+                      <p>
+                        Please note that we do not ship items to PO Boxes, Military APO’s, or anywhere outside the contiguous United
+                        States.
+                      </p>
                     </div>
                 </div>
 
@@ -55,8 +150,23 @@
 
 <style>
 
-    .sn-modal-size{
-        width: 1000px;
+    .sn-modal-img-wrapper{
+        width: 100%;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .sn-modal-img{
+        margin: 5px;
+        display: inline-block;
+    }
+
+    .sn-modal-size > .modal-dialog{
+        max-width: 1000px;
+        width: auto;
+    }
+    .sn-modal-size > .active{
+      background-color: black;
     }
 
     .sn-modal-header div{
@@ -81,6 +191,7 @@
     }
 
     .sn-modal-tabs li a{
+        height:100%;
         padding: 5px 40px 2px 40px;
         border-radius: 0px;
         font-family: 'Abraham Lincoln';
@@ -94,5 +205,32 @@
     }
 
 
+    @media (max-width: 920px){
+      .sn-modal-tabs li a{
+        padding: 5px 15px 2px 15px;
+        border-radius: 0px;
+        font-family: 'Abraham Lincoln';
+        font-size: 22px;
+        letter-spacing: 3px;
+        font-weight: normal;
+      }
 
+    }
+
+    @media (max-width: 480px){
+      .sn-modal-img > img{
+        width: 85px;
+      }
+      .sn-modal-tabs li a{
+        padding: 5px 5px 2px 5px;
+        border-radius: 0px;
+        font-family: 'Abraham Lincoln';
+        font-size: 14px;
+        letter-spacing: 3px;
+        font-weight: normal;
+      }
+      .sn-modal-header div{
+        font-size: 26px;
+      }
+    }
 </style>
