@@ -1,7 +1,7 @@
 <div id="more_details" class="modal fade sn-modal-size" role="dialog">
     <div class="modal-dialog ">
         <!-- Modal content-->
-        <div class="modal-content">
+        <div class="modal-content sn-modal-content">
             <div class="modal-header sn-modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <div>SHIPPING & DELIVERY INFORMATION</div>
@@ -9,14 +9,14 @@
 
             <div class="">
                 <ul class="nav nav-pills sn-modal-tabs sn-nav-modal-pills">
-                    <li class="active"><a data-toggle="pill" href="#curbside_delivery">CURBSIDE DELIVERY</a></li>
+                    <li class="active"><a data-toggle="pill" href="#threshold_delivery">Threshold Delivery</a></li>
                     <li><a data-toggle="pill" href="#white_glove">WHITE GLOVE DELIVERY</a></li>
                     <li><a data-toggle="pill" href="#small_parcel">SMALL PARCEL SHIPMENT</a></li>
                 </ul>
             </div>
             <div class="modal-body sn-modal-body">
                 <div class="tab-content">
-                    <div id="curbside_delivery" class="tab-pane fade in active">
+                    <div id="threshold_delivery" class="tab-pane fade in active">
                         <div class="sn-modal-img-wrapper">
                           <div class="sn-modal-img">
                             <%= image_tag 'telefon.png' %>
@@ -148,89 +148,3 @@
     </div>
 </div>
 
-<style>
-
-    .sn-modal-img-wrapper{
-        width: 100%;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .sn-modal-img{
-        margin: 5px;
-        display: inline-block;
-    }
-
-    .sn-modal-size > .modal-dialog{
-        max-width: 1000px;
-        width: auto;
-    }
-    .sn-modal-size > .active{
-      background-color: black;
-    }
-
-    .sn-modal-header div{
-        font-family: 'Arial';
-        font-size: 38px;
-        width: 100%;
-        text-align: center;
-    }
-
-    .sn-nav-modal-pills{
-        display:flex;
-        justify-content:center;
-    }
-
-    .sn-nav-modal-pills > li{
-        margin: 2px;
-        border: 3px solid black;
-
-    }
-    .sn-nav-modal-pills > li:nth-child(2){
-        border: 3px solid #e8bb77;
-    }
-
-    .sn-modal-tabs li a{
-        height:100%;
-        padding: 5px 40px 2px 40px;
-        border-radius: 0px;
-        font-family: 'Abraham Lincoln';
-        font-size: 25px;
-        letter-spacing: 3px;
-        font-weight: normal;
-    }
-
-    .sn-modal-body{
-        padding: 25px 50px;
-    }
-
-
-    @media (max-width: 920px){
-      .sn-modal-tabs li a{
-        padding: 5px 15px 2px 15px;
-        border-radius: 0px;
-        font-family: 'Abraham Lincoln';
-        font-size: 22px;
-        letter-spacing: 3px;
-        font-weight: normal;
-      }
-
-    }
-
-    @media (max-width: 480px){
-      .sn-modal-img > img{
-        width: 85px;
-      }
-      .sn-modal-tabs li a{
-        padding: 5px 5px 2px 5px;
-        border-radius: 0px;
-        font-family: 'Abraham Lincoln';
-        font-size: 14px;
-        letter-spacing: 3px;
-        font-weight: normal;
-      }
-      .sn-modal-header div{
-        font-size: 26px;
-      }
-    }
-</style>
