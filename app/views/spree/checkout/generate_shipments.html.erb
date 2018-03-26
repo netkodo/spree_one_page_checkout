@@ -38,14 +38,12 @@
                   <td class="item-name"><%= item.variant.name %>
                     <br/>
                     <br/>
-
                     <% arrival_time = estimated_arrival(item) %>
-                    <% if arrival_time != "Unable to calculate arrival date." %>
-                      <%= arrival_time %>
-                    <% else %>
+                    <% if arrival_time == "Unable to calculate arrival date." && ship_form.shipping_methods.where(name: 'Standard Freight Shipping').present? %>
                       <span class="js-arrival-time-modal sn-see-more">When will my item arrive?</span>
+                    <% else %>
+                      <%= arrival_time %>
                     <% end %>
-
                   </td>
                   <td class="item-qty"><%= item.quantity %></td>
                   <td class="item-price"><%= display_price(item.variant) %></td>
@@ -93,8 +91,10 @@
     </div>
       <hr>
       <div>
+        <%= @order_has_ltl_items %>
+        <#% if @tab.present? and check_shipping_categories(@tab[0]) and @order_has_ltl_items %>
         <% if @tab.present? and check_shipping_categories(@tab[0]) %>
-          <%= set_white_glove_separate(@tab[0],@order.include_custom_product?, i) %>
+          <%= set_white_glove_separate(@tab[0],@order.include_custom_product?, i, @order) %>
         <% end %>
       </div>
 <% else %>
