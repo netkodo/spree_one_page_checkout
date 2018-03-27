@@ -56,53 +56,56 @@
 
       <div class="js-inner">
         <div class="payment clearfix">
-          <div class="col-md-12" data-hook="checkout_payment_step">
-            <% @order.available_payment_methods.each do |method| %>
-              <p>
-                <label>
-                  <%= radio_button_tag "order[payments_attributes][][payment_method_id]", method.id, true %>
-                  <%= t(method.name, :scope => :payment_methods, :default => method.name) %>
-                </label>
-              </p>
-            <% end %>
-            <ul id="payment-methods" data-hook>
+
+          <div class="row">
+            <div class="col-md-12" data-hook="checkout_payment_step" id="payment-methods">
               <% @order.available_payment_methods.each do |method| %>
-                <li id="payment_method_<%= method.id %>" class="<%= 'last' if method == @order.available_payment_methods.last %>" data-hook>
-                  <fieldset>
-                    <%= render :partial => "spree/checkout/payment/#{method.method_type}", :locals => {:payment_method => method} %>
-                  </fieldset>
-                </li>
+                <p>
+                  <label class="sn-payment-label-wrapper">
+                    <span class="sn-payment-label">
+                      <%= radio_button_tag "order[payments_attributes][][payment_method_id]", method.id, true %>
+                      <span>
+                        <%= t(method.name, :scope => :payment_methods, :default => method.name) %>
+                      </span>
+                      <%= additional_payment_attribute(method.type) %>
+                    </span>
+                    <%= payment_description(method.type) %>
+                  </label>
+                  <li id="payment_method_<%= method.id %>" class="<%= 'last' if method == @order.available_payment_methods.last %>" data-hook>
+                    <fieldset>
+                      <%= render :partial => "spree/checkout/payment/#{method.method_type}", :locals => {:payment_method => method} %>
+                    </fieldset>
+                  </li>
+                </p>
               <% end %>
 
-            </ul>
+              <fieldset id="subscribe" class=<%= spree_current_user.present? ? 'hidden' : '' %> data-hook>
+                <p class="field checkbox" data-hook="order_subscribe">
+                  <%= form.check_box :subscribe %>
 
-            <fieldset id="subscribe" class=<%= spree_current_user.present? ? 'hidden' : '' %> data-hook>
-              <p class="field checkbox" data-hook="order_subscribe">
-                <%= form.check_box :subscribe %>
+                  <%= form.label :subscribe, "I’d like to receive exclusive discounts and news from Scout and Nimble by email.", :id => 'subscribe' %>
+                </p>
+              </fieldset>
 
-                <%= form.label :subscribe, "I’d like to receive exclusive discounts and news from Scout and Nimble by email.", :id => 'subscribe' %>
-              </p>
-            </fieldset>
+              <fieldset id="billing" data-hook>
+                <p class="field checkbox" data-hook="use_billing">
+                  <%= check_box_tag 'order[use_billing]', '1', ((@order.bill_address.empty? && @order.ship_address.empty?) || @order.bill_address.same_as?(@order.ship_address)), disabled: false %>
 
-            <fieldset id="billing" data-hook>
-              <p class="field checkbox" data-hook="use_billing">
-                <%= check_box_tag 'order[use_billing]', '1', ((@order.bill_address.empty? && @order.ship_address.empty?) || @order.bill_address.same_as?(@order.ship_address)), disabled: false %>
+                  <%= label_tag :order_use_billing, t(:use_shipping_address), :id => 'use_shipping' %>
+                </p>
 
-                <%= label_tag :order_use_billing, t(:use_shipping_address), :id => 'use_shipping' %>
-              </p>
+                <div class="billing_address">
+                  <%= form.fields_for :bill_address do |bill_form| %>
 
-              <div class="billing_address">
-                <%= form.fields_for :bill_address do |bill_form| %>
+                    <%= render :partial => 'spree/address/form', :locals => {:form => bill_form, :address_type => 'billing', :address => @order.bill_address} %>
+                  <% end %>
+                </div>
+              </fieldset>
+              <br style="clear:both;">
 
-                  <%= render :partial => 'spree/address/form', :locals => {:form => bill_form, :address_type => 'billing', :address => @order.bill_address} %>
-                <% end %>
-              </div>
-            </fieldset>
-            <br style="clear:both;">
-
-            <div data-hook="coupon_code_field" data-hook></div>
+              <div data-hook="coupon_code_field" data-hook></div>
+            </div>
           </div>
-
 
         </div>
 
