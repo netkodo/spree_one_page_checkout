@@ -1,6 +1,5 @@
 $ ->
 
-  if ('.js-more-details').length > 0
     $(document).on
       click: (e) ->
         $('#more_details').modal('show')
@@ -8,7 +7,6 @@ $ ->
         $("a[href=##{data}]").click()
     , '.js-more-details'
 
-  if ('.js-arrival-time-modal').length > 0
     $(document).on
       click: (e) ->
         $("#freight_item_arrival_time").modal('show')
