@@ -118,7 +118,6 @@ Spree::OrdersController.class_eval do
       notification = ""
       if params[:check] == "true"
         @order.adjustments.where(label: "White Glove Shipping").destroy_all
-        debugger
         # cost = @order.shipments.map{|x| x.shipping_rates.joins(:shipping_method).where('spree_shipping_methods.name = "White Glove Shipping"').first}.compact.first.cost
         cost = @order.white_glove_cost
         @order.adjustments.create(amount: cost, label: "White Glove Shipping")

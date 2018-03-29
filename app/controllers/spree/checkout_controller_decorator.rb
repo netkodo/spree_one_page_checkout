@@ -95,7 +95,6 @@ Spree::CheckoutController.class_eval do
     state = [:cart, :address]
     if params[:state_id].present?
       @order = current_order(lock: true)
-      @show_white_glove = (@order.shipments.joins(:shipping_methods).where('spree_shipping_methods.name = ?', 'Standard Freight Shipping').present? || @order.include_custom_product?)
       if @order.adjustments.where(adjustable_type: 'Spree::Shipment').present?
       @order.adjustments.where(adjustable_type: 'Spree::Shipment').destroy_all
       end
@@ -148,7 +147,7 @@ Spree::CheckoutController.class_eval do
       else
         render 'generate_shipments'
       end
-
+      @show_white_glove = (@order.shipments.joins(:shipping_methods).where('spree_shipping_methods.name = ?', 'Standard Freight Shipping').present? || @order.include_custom_product?)
     end
   end
 
