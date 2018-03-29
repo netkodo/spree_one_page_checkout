@@ -68,3 +68,100 @@
 fieldset#billing{
     margin-bottom:30px;
 }
+.white_glove_checkbox{
+    padding-left: 40px;
+}
+
+.sn-modal-img-wrapper{
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sn-modal-img{
+    margin: 8px;
+    display: inline-block;
+    max-width: 200px;
+}
+.sn-modal-content{
+    border-radius: 0px;
+    border: 2px solid black;
+}
+.sn-modal-flex-img{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.sn-modal-size > .modal-dialog{
+    max-width: 1000px;
+    width: auto;
+}
+.sn-modal-size > .active{
+    background-color: black;
+}
+
+.sn-modal-header div{
+    font-family: 'Arial';
+    font-size: 38px;
+    width: 100%;
+    text-align: center;
+}
+
+.sn-nav-modal-pills{
+    display:flex;
+    justify-content:center;
+}
+
+.sn-nav-modal-pills > li{
+    margin: 2px;
+    border: 3px solid black;
+
+}
+.sn-nav-modal-pills > li:nth-child(2){
+    border: 3px solid #e8bb77;
+}
+
+.sn-modal-tabs li a{
+    height:100%;
+    padding: 5px 40px 2px 40px;
+    border-radius: 0px;
+    font-family: 'Abraham Lincoln';
+    font-size: 25px;
+    letter-spacing: 3px;
+    font-weight: normal;
+}
+
+.sn-modal-body{
+    padding: 25px 50px;
+}
+
+
+@media (max-width: 920px){
+    .sn-modal-tabs li a{
+        padding: 5px 15px 2px 15px;
+        border-radius: 0px;
+        font-family: 'Abraham Lincoln';
+        font-size: 22px;
+        letter-spacing: 3px;
+        font-weight: normal;
+    }
+
+}
+
+@media (max-width: 480px){
+    .sn-modal-img > img{
+        width: 85px;
+    }
+    .sn-modal-tabs li a{
+        padding: 5px 5px 2px 5px;
+        border-radius: 0px;
+        font-family: 'Abraham Lincoln';
+        font-size: 14px;
+        letter-spacing: 3px;
+        font-weight: normal;
+    }
+    .sn-modal-header div{
+        font-size: 26px;
+    }
+}
