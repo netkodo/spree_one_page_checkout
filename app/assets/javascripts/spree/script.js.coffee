@@ -1,16 +1,16 @@
 $ ->
 
-    $(document).on
-      click: (e) ->
-        $('#more_details').modal('show')
-        data = $(@).data('modal-target')
-        $("a[href=##{data}]").click()
-    , '.js-more-details'
+  $(document).on
+    click: (e) ->
+      $('#more_details').modal('show')
+      data = $(@).data('modal-target')
+      $("a[href=##{data}]").click()
+  , '.js-more-details'
 
-    $(document).on
-      click: (e) ->
-        $("#freight_item_arrival_time").modal('show')
-    , '.js-arrival-time-modal'
+  $(document).on
+    click: (e) ->
+      $("#freight_item_arrival_time").modal('show')
+  , '.js-arrival-time-modal'
 
 
 
