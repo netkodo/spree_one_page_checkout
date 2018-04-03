@@ -89,7 +89,6 @@
         <% i += 1 %>
     <% end %>
     </div>
-      <hr>
       <div>
         <% if @tab.present? and check_shipping_categories(@tab[0]) and @show_white_glove %>
           <%= set_white_glove_separate(@tab[0],@order.include_custom_product?, i, @order) %>
