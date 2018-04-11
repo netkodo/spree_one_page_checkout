@@ -28,6 +28,11 @@
     display: inline-block;
     max-width: 130px;
 }
+.sn-modal-img-200{
+    margin: 8px;
+    display: inline-block;
+    max-width: 200px;
+}
 .sn-modal-img > div{
     text-align: center;
     font-family: 'Abraham Lincoln';

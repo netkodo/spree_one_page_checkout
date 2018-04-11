@@ -39,7 +39,7 @@
                     <br/>
                     <br/>
                     <% arrival_time = estimated_arrival(item) %>
-                    <% if arrival_time == "Unable to calculate arrival date." && ship_form.shipping_methods.where(name: 'Standard Freight Shipping').present? %>
+                    <% if ship_form.shipping_methods.where(name: 'Standard Freight Shipping').present? %>
                       <span class="js-arrival-time-modal sn-see-more">When will my item arrive?</span>
                     <% else %>
                       <%= arrival_time %>
