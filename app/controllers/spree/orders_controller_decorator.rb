@@ -4,7 +4,7 @@ Spree::OrdersController.class_eval do
 
     if @order.present?
       @order.update_column(:state, "cart")
-      @order.adjustments.delete_all
+      @order.adjustments.where(admin_adjustment: false).delete_all
       @order.update_promotion
 
       if @order.shipments.present?
