@@ -21,13 +21,13 @@ $ ->
   $(document).on
     mouseleave: (e) ->
       console.log 'qweqweqwe2222'
-      $('.js-sn-collapse').slideUp()
+      $(@).find('.js-sn-collapse').slideUp()
   , '.sn-item-shipping-wrapper'
 
   $(document).on
     mouseenter: (e) ->
       console.log 'qweqweqwe'
-      $('.js-sn-collapse').slideDown()
+      $(@).find('.js-sn-collapse').slideDown()
   , '.sn-item-shipping-wrapper'
 
 

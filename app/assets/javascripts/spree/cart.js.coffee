@@ -1,5 +1,20 @@
 $ ->
 
+  $(document).on
+    click: (e) ->
+      radiobutton = $(@).find('input')
+      rates_to_select = radiobutton.data('shipping-rates-to-select').split(',').map (e) ->
+        parseInt e
+
+      if radiobutton.is(':checked')
+        rates_to_select.forEach (el) ->
+          $("input[data-rate-id=\"#{el}\"]").prop 'checked', true
+      else
+        rates_to_select.forEach (el) ->
+          console.log el
+          $("input[data-rate-id=\"#{el}\"]").prop 'checked', false
+  , '.js-select-other-radiobuttons'
+
 
   $(".js-inner:first").slideDown()
 
