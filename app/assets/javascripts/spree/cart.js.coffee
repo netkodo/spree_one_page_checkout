@@ -3,7 +3,7 @@ $ ->
   $(document).on
     click: (e) ->
       radiobutton = $(@).find('input')
-      rates_to_select = radiobutton.data('shipping-rates-to-select').split(',').map (e) ->
+      rates_to_select = radiobutton.data('shipping-rates-to-select').toString().split(',').map (e) ->
         parseInt e
 
       if radiobutton.is(':checked')
@@ -17,6 +17,7 @@ $ ->
 
 
   $(".js-inner:first").slideDown()
+  
 
   $(document).on
     keyup: (e)->
@@ -54,14 +55,21 @@ $ ->
             if $('.white_glove_checkbox').length > 0
               $('.white_glove_checkbox input').prop('checked',true)
               if response.message.length > 0
+                $('.js-threshold').prop('checked', false)
                 $("<span class='notification-to-remove error'>#{response.message}</span>").insertAfter($('.white_glove_checkbox'))
                 setTimeout (->
                   $('.notification-to-remove').remove()
                 ), 3000
           else
             $('.white_glove_checkbox input').prop('checked',false)
+            $('.js-threshold').prop('checked', true)
+
           checkAdjustments()
   ,"#js-select_white_glove"
+  $(document).on
+    click: (e) ->
+      $("#js-select_white_glove").click();
+  ,".js-threshold"
 
 
 

@@ -17,7 +17,6 @@
   <% order.all_adjustments.tax.eligible.group_by(&:label).each do |label, adjustments| %>
     <%= render "spree/orders/adjustment_one_page_row", :label => label, :adjustments => adjustments, :type => Spree.t(:tax) %>
   <% end %>
-  
   <% if @shipment_sorted.present? %>
     <% @shipment_sorted.each do |key, val| %>
       <%- shipping_method = Spree::ShippingMethod.find_by_id(key) %>
