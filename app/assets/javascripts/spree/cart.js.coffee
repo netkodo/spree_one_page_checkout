@@ -2,18 +2,21 @@ $ ->
 
   $(document).on
     click: (e) ->
-      radiobutton = $(@).find('input')
+      if $(@).hasClass('js-select-other-radiobuttons')
+        radiobutton = $(@).find('input')
+      else
+        radiobutton = $(@).parents('.js-select-other-radiobuttons').find('input')
       rates_to_select = radiobutton.data('shipping-rates-to-select').toString().split(',').map (e) ->
         parseInt e
 
+      $(@).find('input').prop('checked', !$(@).find('input').is(':checked'))
       if radiobutton.is(':checked')
         rates_to_select.forEach (el) ->
           $("input[data-rate-id=\"#{el}\"]").prop 'checked', true
       else
         rates_to_select.forEach (el) ->
-          console.log el
           $("input[data-rate-id=\"#{el}\"]").prop 'checked', false
-  , '.js-select-other-radiobuttons'
+  , '.js-select-other-radiobuttons, .js-select-other-radiobuttons > input'
 
 
   $(".js-inner:first").slideDown()
@@ -66,9 +69,11 @@ $ ->
 
           checkAdjustments()
   ,"#js-select_white_glove"
+
   $(document).on
     click: (e) ->
       $("#js-select_white_glove").click();
+#      $('.js-select-other-radiobuttons').click();
   ,".js-threshold"
 
 
