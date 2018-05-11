@@ -2,6 +2,7 @@ $ ->
 
   $(document).on
     click: (e) ->
+      e.stopPropagation()
       if $(@).hasClass('js-select-other-radiobuttons')
         radiobutton = $(@).find('input')
       else
