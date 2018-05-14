@@ -10,8 +10,28 @@ $ ->
         console.log (response.message)
       error: (response) ->
         console.log (response.message)
+  $(document).on
+    click: (e) ->
+      e.stopPropagation()
+      if $(@).hasClass('js-select-other-radiobuttons')
+        radiobutton = $(@).find('input')
+      else
+        radiobutton = $(@).parents('.js-select-other-radiobuttons').find('input')
+      rates_to_select = radiobutton.data('shipping-rates-to-select').toString().split(',').map (e) ->
+        parseInt e
+
+      $(@).find('input').prop('checked', !$(@).find('input').is(':checked'))
+      if radiobutton.is(':checked')
+        rates_to_select.forEach (el) ->
+          $("input[data-rate-id=\"#{el}\"]").prop 'checked', true
+      else
+        rates_to_select.forEach (el) ->
+          $("input[data-rate-id=\"#{el}\"]").prop 'checked', false
+  , '.js-select-other-radiobuttons, .js-select-other-radiobuttons > input'
+
 
   $(".js-inner:first").slideDown()
+
 
   $(document).on
     keyup: (e)->
@@ -49,14 +69,23 @@ $ ->
             if $('.white_glove_checkbox').length > 0
               $('.white_glove_checkbox input').prop('checked',true)
               if response.message.length > 0
+                $('.js-threshold').prop('checked', false)
                 $("<span class='notification-to-remove error'>#{response.message}</span>").insertAfter($('.white_glove_checkbox'))
                 setTimeout (->
                   $('.notification-to-remove').remove()
                 ), 3000
           else
             $('.white_glove_checkbox input').prop('checked',false)
+            $('.js-threshold').prop('checked', true)
+
           checkAdjustments()
   ,"#js-select_white_glove"
+
+  $(document).on
+    click: (e) ->
+      $("#js-select_white_glove").click();
+#      $('.js-select-other-radiobuttons').click();
+  ,".js-threshold"
 
 
 

@@ -56,6 +56,7 @@ Spree::OrdersController.class_eval do
         @order.update(shipment_total: @order.shipments.sum(&:cost))
         @order.update(total: @order.item_total + @order.adjustment_total+  @order.additional_tax_total + @order.shipment_total + @order.promo_total)
         @order.update_column(:state,"initial_checkout")
+        @shipment_sorted = @order.sort_order_shipments_by_shipping_method
       else
         redirect_to cart_path
       end
@@ -83,6 +84,7 @@ Spree::OrdersController.class_eval do
         @order.update(total: @order.item_total + @order.adjustment_total+  @order.additional_tax_total + shipment_total + @order.promo_total,shipment_total: shipment_total)
       end
     end
+    @shipment_sorted = @order.sort_order_shipments_by_shipping_method
   end
 
   def set_shipping_rate

@@ -6,15 +6,17 @@
     <div class="shipment">
       <h3 class="stock-location" data-hook="stock-location">
         <%#= Spree.t(:package_from) %>
-        <strong class="stock-location-name" data-hook="stock-location-name">Shipment</strong>
+        <strong class="stock-location-name" data-hook="stock-location-name">&nbsp</strong>
       </h3>
-      <%- @order.shipments.each_with_index do |ship_form, index| %>
-        <% unless index.zero? %>
-          <br />
-          <br />
-        <% end %>
-        <%#= ship_form.object.inventory_units.collect{|u| u.inspect} %>
 
+
+
+
+      <%- @shipment_sorted.each_with_index do |(shipping_method_id,sm_payments), index| %>
+
+
+          <%= set_shipment_description sm_payments.first%>
+          <%#= ship_form.object.inventory_units.collect{|u| u.inspect} %>
 
           <table class="stock-contents" data-hook="stock-contents">
             <colgroup>
@@ -31,15 +33,17 @@
 
             </thead>
             <tbody>
-            <% ship_form.manifest.each do |item| %>
-              <% @line_item = item %>
+
+            <% sm_payments.each do |ship_form|%>
+              <% ship_form.manifest.each do |item| %>
+                <% @line_item = item %>
                 <tr class="stock-item">
                   <td class="item-image"><%= mini_image(item.variant) %> </td>
                   <td class="item-name"><%= item.variant.name %>
                     <br/>
                     <br/>
                     <% arrival_time = estimated_arrival(item) %>
-                    <% if arrival_time == "Unable to calculate arrival date." && ship_form.shipping_methods.where(name: 'Standard Freight Shipping').present? %>
+                    <% if ship_form.shipping_methods.where(name: 'Standard Freight Shipping').present? %>
                       <span class="js-arrival-time-modal sn-see-more">When will my item arrive?</span>
                     <% else %>
                       <%= arrival_time %>
@@ -49,50 +53,61 @@
                   <td class="item-price"><%= display_price(item.variant) %></td>
 
                 </tr>
+              <% end %>
             <% end %>
+
             </tbody>
           </table>
 
 
-          <h5 class="stock-shipping-method-title"><%= Spree.t(:shipping_method) %></h5>
+          <h5 class="stock-shipping-method-title"><%= Spree.t(:delivery_method) %></h5>
           <ul class="field radios shipping-methods">
-            <% if check_shipping_categories(ship_form) %>
+            <%= set_visible_shipping_method(sm_payments, @new_ship_price) %>
+            <% sm_payments.each do |ship_form|%>
 
-                <%= set_shipping_methods(ship_form, index, @new_ship_price) %>
-            <% else %>
+              <% if check_shipping_categories(ship_form) %>
+                <%- index_q = set_shipment_payment_method_index(@shipment_sorted, ship_form) %>
+
+                <%= set_shipping_methods(ship_form, index_q, @new_ship_price) %>
+              <% else %>
                 <% if ship_form.shipping_rates.present? %>
-                    <% ship_form.shipping_rates.each do |rate| %>
+                  <% ship_form.shipping_rates.each do |rate| %>
+                    <%- index_q = set_shipment_payment_method_index(@shipment_sorted, ship_form) %>
+                    <li class="shipping-method hidden">
+                      <label>
+                        <% if ship_form.shipping_rates.minimum('cost') == rate.cost %>
+                          <%= radio_button_tag "[shipments_attributes][#{index_q}][selected_shipping_rate_id]", rate.id, true, class: 'js-select-shipment', data: {url: set_shipping_rate_orders_path(format: :json), shipment_id: rate.shipment.id} %>
+                        <% else %>
+                          <%= radio_button_tag "[shipments_attributes][#{index_q}][selected_shipping_rate_id]", rate.id, false, class: 'js-select-shipment', data: {url: set_shipping_rate_orders_path(format: :json), shipment_id: rate.shipment.id} %>
+                        <% end %>
+                        <span class="rate-name"><%= rate.name %></span>
+                        <span class="rate-cost"><%= @new_ship_price ? 'Free Shipping' : rate.display_cost %></span>
 
-                        <li class="shipping-method">
-                          <label>
-                            <% if ship_form.shipping_rates.minimum('cost') == rate.cost %>
-                                <%= radio_button_tag "[shipments_attributes][#{index}][selected_shipping_rate_id]", rate.id, true, class: 'js-select-shipment', data: {url: set_shipping_rate_orders_path(format: :json), shipment_id: rate.shipment.id} %>
-                            <% else %>
-                                <%= radio_button_tag "[shipments_attributes][#{index}][selected_shipping_rate_id]", rate.id, false, class: 'js-select-shipment', data: {url: set_shipping_rate_orders_path(format: :json), shipment_id: rate.shipment.id} %>
-                            <% end %>
-                            <span class="rate-name"><%= rate.name %></span>
-                            <span class="rate-cost"><%= @new_ship_price ? 'Free Shipping' : rate.display_cost %></span>
-
-                          </label>
-                        </li>
-                    <% end %>
+                      </label>
+                    </li>
+                  <% end %>
                 <% else %>
-                    <div class="show_shipping_info"><h2>Shipping not available for your destinantion.</h2></div>
+                  <div class="show_shipping_info"><h2>Shipping not available for your destinantion.</h2></div>
                 <% end %>
+              <% end %>
             <% end %>
-          </ul>
-          <div class="hidden">
-            <%= text_field_tag "[shipments_attributes][#{index}][id]", ship_form.id %>
 
-          </div>
-        <% @tab << ship_form if ship_form.shipping_rates.joins(:shipping_method).where('spree_shipping_methods.name = "White Glove Shipping"').first.present? %>
-        <% i += 1 %>
-    <% end %>
+          </ul>
+        <% sm_payments.each do |ship_form|%>
+          <%- index_q = set_shipment_payment_method_index(@shipment_sorted, ship_form) %>
+            <div class="hidden">
+              <%= text_field_tag "[shipments_attributes][#{index_q}][id]", ship_form.id %>
+            </div>
+          <% @tab << ship_form if ship_form.shipping_rates.joins(:shipping_method).where('spree_shipping_methods.name = "White Glove Shipping"').first.present? %>
+          <% i += 1 %>
+        <% end %>
+
+      <% end %>
+
     </div>
-      <hr>
       <div>
         <% if @tab.present? and check_shipping_categories(@tab[0]) and @show_white_glove %>
-          <%= set_white_glove_separate(@tab[0],@order.include_custom_product?, i, @order) %>
+          <%= set_white_glove_separate(@tab[0],@order.include_custom_product?, i, @order, @shipment_sorted.values.last) %>
         <% end %>
       </div>
 <% else %>

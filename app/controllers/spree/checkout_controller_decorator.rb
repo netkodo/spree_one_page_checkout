@@ -96,7 +96,7 @@ Spree::CheckoutController.class_eval do
     if params[:state_id].present?
       @order = current_order(lock: true)
       if @order.adjustments.where(adjustable_type: 'Spree::Shipment').present?
-      @order.adjustments.where(adjustable_type: 'Spree::Shipment').destroy_all
+        @order.adjustments.where(adjustable_type: 'Spree::Shipment').destroy_all
       end
 
       if params[:bill_id].present?
@@ -147,6 +147,8 @@ Spree::CheckoutController.class_eval do
       else
         render 'generate_shipments'
       end
+
+      @shipment_sorted = @order.sort_order_shipments_by_shipping_method
       @show_white_glove = (@order.shipments.joins(:shipping_methods).where('spree_shipping_methods.name = ?', 'Standard Freight Shipping').present? || @order.include_custom_product?)
     end
   end

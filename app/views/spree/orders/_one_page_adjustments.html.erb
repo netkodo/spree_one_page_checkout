@@ -17,17 +17,18 @@
   <% order.all_adjustments.tax.eligible.group_by(&:label).each do |label, adjustments| %>
     <%= render "spree/orders/adjustment_one_page_row", :label => label, :adjustments => adjustments, :type => Spree.t(:tax) %>
   <% end %>
+  <% if @shipment_sorted.present? %>
+    <% @shipment_sorted.each do |key, val| %>
+      <%- shipping_method = Spree::ShippingMethod.find_by_id(key) %>
+      <%- if shipping_method.present? %>
+        <div class="my_adjustment col-md-12">
 
-  <%# order.shipments.each do |shipment| %>
-      <%#- if shipment.shipping_method.present? %>
-          <!--<div class="my_adjustment col-md-12">-->
-
-            <!--<div class="adjustment_title col-md-6"><%#= shipment.shipping_method.name %></div>-->
-
-            <!--<div class="adjustment_title col-md-6"><strong>$<%#= '%.2f' % shipment.cost %></strong></div>-->
-          <!--</div>-->
-      <%#- end %>
-  <%# end %>
+          <div class="adjustment_title col-md-6"><%= shipping_method.name %></div>
+          <div class="adjustment_title col-md-6"><strong>$<%= '%.2f' % val.sum(&:cost) %></strong></div>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
 
   <% order.adjustments.eligible.group_by(&:label).each do |label, adjustments| %>
     <%= render "spree/orders/adjustment_one_page_row", :label => label, :adjustments => adjustments, :type => Spree.t(:adjustment) %>

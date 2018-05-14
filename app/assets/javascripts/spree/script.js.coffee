@@ -12,6 +12,22 @@ $ ->
       $("#freight_item_arrival_time").modal('show')
   , '.js-arrival-time-modal'
 
+  $(document).on
+    click: (e) ->
+      modal_id = $(@).parents('.modal').first().attr('id')
+      $("##{modal_id}").modal('hide')
+  , '.js-close-current-modal'
+
+  $(document).on
+    mouseleave: (e) ->
+      $(@).find('.js-sn-collapse').slideUp()
+  , '.sn-item-shipping-wrapper'
+
+  $(document).on
+    mouseenter: (e) ->
+      $(@).find('.js-sn-collapse').slideDown()
+  , '.sn-item-shipping-wrapper'
+
 
 
   if ($ '#checkout_form_payment').is('*')

@@ -57,4 +57,16 @@ Spree::Order.class_eval do
     f
   end
 
+  def sort_order_shipments_by_shipping_method
+    shipment_sorted = {}
+    # Gathering uniq shipping methods which occur in shipments, then sorting freight items as last, and then creating
+    # shipments sorted by shipment method
+    all_shipping_methods = self.shipments.map{|x| x.shipping_methods.where.not(name: 'White Glove Shipping').pluck(:id)}.flatten.uniq
+    all_shipping_methods = Spree::ShippingMethod.set_freight_items_as_last(all_shipping_methods)
+    all_shipping_methods.each do |id|
+      shipment_sorted[id] = self.shipments.joins(:shipping_methods).where('spree_shipping_methods.id = ?', id)
+    end
+    shipment_sorted
+  end
+
 end
