@@ -120,6 +120,7 @@
 }
 
 .sn-item-shipping-wrapper{
+    cursor: pointer;
     margin-bottom: 5px;
 }
 
@@ -226,4 +227,12 @@
     border: solid white;
     border-width: 4px;
     border-radius:100px;
+}
+
+.sn-pointer{
+    cursor: pointer;
+}
+
+.sn-margin-right-5px{
+    margin-right: 5px!important;
 }

@@ -18,14 +18,20 @@ $ ->
       $("##{modal_id}").modal('hide')
   , '.js-close-current-modal'
 
+  hoverTimer = undefined
   $(document).on
     mouseleave: (e) ->
+      clearTimeout hoverTimer
       $(@).find('.js-sn-collapse').slideUp()
   , '.sn-item-shipping-wrapper'
 
   $(document).on
     mouseenter: (e) ->
-      $(@).find('.js-sn-collapse').slideDown()
+      $this = $(@)
+      hoverTimer = setTimeout((->
+        $this.find('.js-sn-collapse').slideDown()
+        return
+      ), 500)
   , '.sn-item-shipping-wrapper'
 
 
