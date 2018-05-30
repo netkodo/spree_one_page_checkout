@@ -13,3 +13,13 @@
 .safe_payment_logo{
     padding: 10px 0 ;
 }
+
+.paypal-button{
+    cursor: pointer;
+    border: none;
+    padding: 0px;
+}
+
+.paypal-button:disabled{
+    cursor: not-allowed;
+}

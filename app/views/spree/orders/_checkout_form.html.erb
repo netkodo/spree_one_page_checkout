@@ -60,7 +60,7 @@
             <% @order.available_payment_methods.each do |method| %>
               <p>
                 <label>
-                  <%= radio_button_tag "order[payments_attributes][][payment_method_id]", method.id, true %>
+                  <%= radio_button_tag "order[payments_attributes][][payment_method_id]", method.id, true, class: 'js-payment-method' %>
                   <%= t(method.name, :scope => :payment_methods, :default => method.name) %>
                 </label>
               </p>
@@ -138,4 +138,7 @@
 <% end %>
 <div class="hidden">
   <%= link_to "#", check_adjustments_path, id: "js-check-adjustments-url" %>
+  <%-if @paypal_payment_id.present? %>
+    <span data-paypal-id="<%= "#{@paypal_payment_id}"%>" class="js-paypal-method-id"></span>
+  <% end %>
 </div>
