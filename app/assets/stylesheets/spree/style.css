@@ -236,3 +236,13 @@
 .sn-margin-right-5px{
     margin-right: 5px!important;
 }
+
+.paypal-button{
+    cursor: pointer;
+    border: none;
+    padding: 0px;
+}
+
+.paypal-button:disabled{
+    cursor: not-allowed;
+}

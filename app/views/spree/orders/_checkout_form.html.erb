@@ -63,7 +63,7 @@
                 <p>
                   <label class="sn-payment-label-wrapper">
                     <span class="sn-payment-label">
-                      <%= radio_button_tag "order[payments_attributes][][payment_method_id]", method.id, true %>
+                      <%= radio_button_tag "order[payments_attributes][][payment_method_id]", method.id, true, class: 'js-payment-method' %>
                       <span>
                         <%= t(method.name, :scope => :payment_methods, :default => method.name) %>
                       </span>
@@ -141,4 +141,7 @@
 <% end %>
 <div class="hidden">
   <%= link_to "#", check_adjustments_path, id: "js-check-adjustments-url" %>
+  <%-if @paypal_payment_id.present? %>
+    <span data-paypal-id="<%= "#{@paypal_payment_id}"%>" class="js-paypal-method-id"></span>
+  <% end %>
 </div>

@@ -26,6 +26,7 @@ Spree::OrdersController.class_eval do
   # change this to alias / spree
 
   def one_page_checkout
+    @paypal_payment_id = Spree::PaymentMethod.where(type: 'Spree::Gateway::PayPalExpress').first.try('id')
     @order = current_order
     @order.line_items.each do |item|
       v= Spree::Variant.find_by(id: item.variant_id)
