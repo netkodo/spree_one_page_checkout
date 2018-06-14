@@ -109,6 +109,11 @@ $ ->
 
   , 'input#order_use_billing'
 
+  $(document).on
+    click: (e)->
+      checkAdjustments()
+  , '.js-checked-radio'
+
 
   $(document).on
     click: (e)->
@@ -218,6 +223,7 @@ checkAdjustments = ()->
     dataType: 'html'
     method: 'POST'
     url: url
+    data:{payment_method: $('.js-checked-radio').find("input:checked").val()}
     success: (response)->
       $('#js-order-adjustments').html response
       $(".js-hidden-radio").each  ()->

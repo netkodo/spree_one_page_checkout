@@ -59,7 +59,7 @@
           <div class="col-md-12" data-hook="checkout_payment_step">
             <% @order.available_payment_methods.each do |method| %>
               <p>
-                <label>
+                <label class="js-checked-radio">
                   <%= radio_button_tag "order[payments_attributes][][payment_method_id]", method.id, true %>
                   <%= t(method.name, :scope => :payment_methods, :default => method.name) %>
                 </label>

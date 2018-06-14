@@ -65,7 +65,6 @@ Spree::OrdersController.class_eval do
 
   def check_adjustments
     @order = current_order
-
     p = nil
     promotions=Spree::PromotionRule.where(type:"Spree::Promotion::Rules::ItemTotal")
     promotions.each do |promo|
@@ -73,7 +72,7 @@ Spree::OrdersController.class_eval do
         p = promo
       end
     end
-
+    manage_payment_discount
     if p.present?
       if p.eligible?(@order)
         @order.payments.destroy_all if request.put?
@@ -161,5 +160,27 @@ Spree::OrdersController.class_eval do
     end
   end
 
+  private
+
+  def manage_payment_discount
+    if @order.present? && params[:payment_method]
+      payment_discount_adjustment = @order.adjustments.where(label: 'Payment Discount').first
+      payment_method = Spree::PaymentMethod.find_by(id: params[:payment_method])
+      if payment_method.present?
+        if payment_method.type == 'Spree::Gateway::AuthorizeNetEcheck'
+          if payment_discount_adjustment.blank?
+            @order.adjustments.create(
+                                  adjustable_type: "Spree::Order",
+                                  amount: -(@order.total*0.05).round(2),
+                                  eligible: true,
+                                  label: 'Payment Discount'
+            )
+          end
+        else
+          payment_discount_adjustment.destroy if payment_discount_adjustment.present?
+        end
+      end
+    end
+  end
 
 end
