@@ -171,7 +171,7 @@ Spree::OrdersController.class_eval do
           if payment_discount_adjustment.blank?
             @order.adjustments.create(
                                   adjustable_type: "Spree::Order",
-                                  amount: -(@order.total*0.05).round(2),
+                                  amount: -(@order.item_total*0.05).round(2),
                                   eligible: true,
                                   label: 'Payment Discount'
             )
