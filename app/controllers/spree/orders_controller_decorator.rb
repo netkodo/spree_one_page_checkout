@@ -64,7 +64,7 @@ Spree::OrdersController.class_eval do
   end
 
   def check_adjustments
-    @order = current_order
+    @order = Spree::Order.find_by_number(params[:admin_order_id]) || current_order
     p = nil
     promotions=Spree::PromotionRule.where(type:"Spree::Promotion::Rules::ItemTotal")
     promotions.each do |promo|
@@ -80,6 +80,11 @@ Spree::OrdersController.class_eval do
         shipment_total = @order.shipments.sum(&:cost)
         @order.update(total: @order.item_total + @order.adjustment_total+  @order.additional_tax_total + shipment_total + @order.promo_total,shipment_total: shipment_total)
       end
+    end
+    @order.update_totals
+    respond_to do |format|
+      format.js
+      format.json {render json: {order_total: @order.reload.total, order_subtotal: @order.reload.display_item_total}, status: :ok}
     end
   end
 
