@@ -83,7 +83,7 @@
                 <p class="field checkbox" data-hook="order_subscribe">
                   <%= form.check_box :subscribe %>
 
-                  <%= form.label :subscribe, "I’d like to receive exclusive discounts and news from Scout and Nimble by email.", :id => 'subscribe' %>
+                  <%= form.label :subscribe, "I’d like to receive exclusive discounts and news from Scout&Nimble by email.", :id => 'subscribe' %>
                 </p>
               </fieldset>
 
@@ -124,7 +124,7 @@
         <% end %>
 
         <div class="form-buttons" data-hook="buttons">
-          <%= submit_tag t(:checkout), :class => 'btn btn-primary one-page-checkout-button', 'data-hook' => 'one_page_checout_button' %>
+          <%= submit_tag 'Next', :class => 'btn btn-primary one-page-checkout-button', 'data-hook' => 'one_page_checout_button' %>
           <script>
             // disableSaveOnClick();
           </script>
