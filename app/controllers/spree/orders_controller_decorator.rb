@@ -169,7 +169,7 @@ Spree::OrdersController.class_eval do
 
   def manage_payment_discount
     if @order.present? && params[:payment_method]
-      payment_discount_adjustment = @order.adjustments.where(label: 'Payment Discount').first
+      payment_discount_adjustment = @order.adjustments.where(label: 'Pay by Check Discount').first
       payment_method = Spree::PaymentMethod.find_by(id: params[:payment_method])
       if payment_method.present?
         if payment_method.type == 'Spree::Gateway::AuthorizeNetEcheck'
@@ -178,7 +178,7 @@ Spree::OrdersController.class_eval do
                                   adjustable_type: "Spree::Order",
                                   amount: -(@order.item_total*0.05).round(2),
                                   eligible: true,
-                                  label: 'Payment Discount'
+                                  label: 'Pay by Check Discount'
             )
           end
         else
