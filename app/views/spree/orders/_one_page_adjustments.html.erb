@@ -31,7 +31,7 @@
   <% end %>
 
   <% order.adjustments.eligible.group_by(&:label).each do |label, adjustments| %>
-    <%= render "spree/orders/adjustment_one_page_row", :label => label, :adjustments => adjustments, :type => Spree.t(:adjustment) %>
+    <%= render "spree/orders/adjustment_one_page_row", :label => label == 'White Glove Shipping' ? 'White Glove Delivery' : label, :adjustments => adjustments, :type => Spree.t(:adjustment) %>
   <% end %>
 
   <% order.shipment_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments| %>

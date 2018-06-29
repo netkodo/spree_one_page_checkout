@@ -5,7 +5,7 @@ $ ->
       e.stopPropagation()
       data_serialized = $('#checkout_form_payment').serialize().replace(/patch/, 'post')
       console.log data_serialized
-      url = $('.js-paypal-button').data('url')
+      url = $(@).data('url')
       btn = $(this)
       $.ajax
         type: 'post'

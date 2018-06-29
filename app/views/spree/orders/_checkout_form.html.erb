@@ -69,7 +69,7 @@
                       </span>
                       <%= additional_payment_attribute(method.type) %>
                     </span>
-                    <%= payment_description(method.type) %>
+                    <%= payment_description(method.type, @order.item_total) %>
                   </label>
                   <li id="payment_method_<%= method.id %>" class="<%= 'last' if method == @order.available_payment_methods.last %>" data-hook>
                     <fieldset>
@@ -83,7 +83,7 @@
                 <p class="field checkbox" data-hook="order_subscribe">
                   <%= form.check_box :subscribe %>
 
-                  <%= form.label :subscribe, "I’d like to receive exclusive discounts and news from Scout&Nimble by email.", :id => 'subscribe' %>
+                  <%= form.label :subscribe, "I’d like to sign-up for emails from Scout & Nimble to receive exclusive discounts and the latest updates.", :id => 'subscribe' %>
                 </p>
               </fieldset>
 
