@@ -2,7 +2,7 @@ Spree::OrdersController.class_eval do
   def edit
     @order = current_order
     if @order.present?
-      @order.adjustments.delete_all
+      @order.adjustments.where(admin_adjustment: false).delete_all
       @order.update_promotion
 
       if @order.shipments.present?
