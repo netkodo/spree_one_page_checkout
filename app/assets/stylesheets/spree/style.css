@@ -1,5 +1,10 @@
 .one-page-checkout-button {
-  margin-top: 10px;
+  margin-top: 30px;
+    border-radius: 0;
+    color: #000000;
+    padding: 4px 60px;
+    /*background-color: #caa73b;*/
+    font-size: 24px;
 }
 
 .one-page-checkout-loader {
@@ -12,4 +17,54 @@
 }
 .safe_payment_logo{
     padding: 10px 0 ;
+}
+
+#order_summary .header{
+    color: #4f7a28;
+    text-decoration: underline;
+    margin: 10px 0;
+    font-size: 20px;
+}
+
+#order_summary .summary{
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+#order_summary .edit-action{
+    font-size: 18px;
+    color: #4f9ab2;
+    text-transform: uppercase;
+    text-align: center;
+    cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    width:100%;
+}
+
+.checkout-center{
+    text-align: center !important;
+}
+
+#order_summary .payment_information, #order_summary .billing_address, #order_summary .shipping_address{
+    min-height: 220px;
+}
+
+@media (max-width: 767px){
+    #order_summary .payment_information, #order_summary .billing_address, #order_summary .shipping_address{
+        min-height: 20px;
+        text-align: center;
+    }
+    #order_summary .edit-action{
+        position: relative;
+        border-bottom: 1px solid gray;
+    }
+}
+
+#use_shipping{
+    font-size: 16px;
+}
+
+fieldset#billing{
+    margin-bottom:30px;
 }
