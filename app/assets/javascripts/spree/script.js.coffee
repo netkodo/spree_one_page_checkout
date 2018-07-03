@@ -4,7 +4,7 @@ $ ->
       e.preventDefault()
       e.stopPropagation()
       data_serialized = $('#checkout_form_payment').serialize().replace(/patch/, 'post')
-      console.log data_serialized
+#      console.log data_serialized
       url = $(@).data('url')
       btn = $(this)
       $.ajax
@@ -13,11 +13,11 @@ $ ->
         url: url
         data: data_serialized
         success: (data) ->
-          console.log('sukces')
-          console.log data
+#          console.log('sukces')
+#          console.log data
           window.location = data.url
         error: (response) ->
-          console.log('error')
+#          console.log('error')
           $(this).prop("disabled", false);
         beforeSend:(jqXHR, settings) ->
           btn.prop("disabled", true);
