@@ -26,8 +26,8 @@ Spree::OrdersController.class_eval do
   # change this to alias / spree
 
   def one_page_checkout
+    @paypal_payment_id = Spree::PaymentMethod.where(type: 'Spree::Gateway::PayPalExpress').first.try('id')
     @order = current_order
-
     @order.line_items.each do |item|
       v= Spree::Variant.find_by(id: item.variant_id)
       if v.product.total_on_hand == 0 and (!v.backorderable or !v.stock_items.map(&:backorderable).include?(true))
@@ -54,7 +54,7 @@ Spree::OrdersController.class_eval do
         @order.update_totals
         @order.update(shipment_total: @order.shipments.sum(&:cost))
         @order.update(total: @order.item_total + @order.adjustment_total+  @order.additional_tax_total + @order.shipment_total + @order.promo_total)
-
+        @shipment_sorted = @order.sort_order_shipments_by_shipping_method
       else
         redirect_to cart_path
       end
@@ -82,6 +82,7 @@ Spree::OrdersController.class_eval do
         @order.update(total: @order.item_total + @order.adjustment_total+  @order.additional_tax_total + shipment_total + @order.promo_total,shipment_total: shipment_total)
       end
     end
+    @shipment_sorted = @order.sort_order_shipments_by_shipping_method
   end
 
   def set_shipping_rate
@@ -98,7 +99,8 @@ Spree::OrdersController.class_eval do
       if @order.include_custom_product?
         adj = @order.adjustments.where(label: "White Glove Shipping")
         adj.present? ? adj.destroy_all : ''
-        cost = @order.shipments.map{|x| x.shipping_rates.joins(:shipping_method).where('spree_shipping_methods.name = "White Glove Shipping"').first}.compact.first.cost
+        # cost = @order.shipments.map{|x| x.shipping_rates.joins(:shipping_method).where('spree_shipping_methods.name = "White Glove Shipping"').first}.compact.first.cost
+        cost = @order.white_glove_cost
         @order.adjustments.create(amount: cost, label: "White Glove Shipping")
       end
       @order.update_columns(adjustment_total: @order.adjustments.eligible.map(&:amount).sum)
@@ -118,7 +120,8 @@ Spree::OrdersController.class_eval do
       notification = ""
       if params[:check] == "true"
         @order.adjustments.where(label: "White Glove Shipping").destroy_all
-        cost = @order.shipments.map{|x| x.shipping_rates.joins(:shipping_method).where('spree_shipping_methods.name = "White Glove Shipping"').first}.compact.first.cost
+        # cost = @order.shipments.map{|x| x.shipping_rates.joins(:shipping_method).where('spree_shipping_methods.name = "White Glove Shipping"').first}.compact.first.cost
+        cost = @order.white_glove_cost
         @order.adjustments.create(amount: cost, label: "White Glove Shipping")
         state = true
       else
@@ -126,7 +129,8 @@ Spree::OrdersController.class_eval do
         state = false
         if @order.include_custom_product?
           notification =  "You have customize product in cart. Customized item requires White Glove Shipping."
-          cost = @order.shipments.map{|x| x.shipping_rates.joins(:shipping_method).where('spree_shipping_methods.name = "White Glove Shipping"').first}.compact.first.cost
+          # cost = @order.shipments.map{|x| x.shipping_rates.joins(:shipping_method).where('spree_shipping_methods.name = "White Glove Shipping"').first}.compact.first.cost
+          cost = @order.white_glove_cost
           @order.adjustments.create(amount: cost, label: "White Glove Shipping")
           state = true
         end

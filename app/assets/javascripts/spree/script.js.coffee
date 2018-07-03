@@ -1,7 +1,70 @@
 $ ->
+  $(document).on
+    click: (e) ->
+      e.preventDefault()
+      e.stopPropagation()
+      data_serialized = $('#checkout_form_payment').serialize().replace(/patch/, 'post')
+      console.log data_serialized
+      url = $(@).data('url')
+      btn = $(this)
+      $.ajax
+        type: 'post'
+        dataType: 'json'
+        url: url
+        data: data_serialized
+        success: (data) ->
+          console.log('sukces')
+          console.log data
+          window.location = data.url
+        error: (response) ->
+          console.log('error')
+          $(this).prop("disabled", false);
+        beforeSend:(jqXHR, settings) ->
+          btn.prop("disabled", true);
+  , '.js-paypal-button'
 
+  $(document).on
+    click: (e) ->
+      $('#more_details').modal('show')
+      data = $(@).data('modal-target')
+      $("a[href=##{data}]").click()
+  , '.js-more-details'
 
+  $(document).on
+    click: (e) ->
+      $("#freight_item_arrival_time").modal('show')
+  , '.js-arrival-time-modal'
 
+  $(document).on
+    click: (e) ->
+      modal_id = $(@).parents('.modal').first().attr('id')
+      $("##{modal_id}").modal('hide')
+  , '.js-close-current-modal'
+
+  hoverTimer = undefined
+  $(document).on
+    mouseleave: (e) ->
+      clearTimeout hoverTimer
+      $(@).find('.js-sn-collapse').slideUp()
+  , '.sn-item-shipping-wrapper'
+
+  $(document).on
+    mouseenter: (e) ->
+      $this = $(@)
+      hoverTimer = setTimeout((->
+        $this.find('.js-sn-collapse').slideDown()
+        return
+      ), 500)
+  , '.sn-item-shipping-wrapper'
+
+  $(document).on
+    click: (e) ->
+      if $('.js-paypal-method-id').length > 0
+        if $(@).val().toString() == $('.js-paypal-method-id').data('paypal-id').toString()
+          $('.one-page-checkout-button').addClass('hidden');
+        else
+          $('.one-page-checkout-button').removeClass('hidden');
+  , '.js-payment-method'
 
 
   if ($ '#checkout_form_payment').is('*')

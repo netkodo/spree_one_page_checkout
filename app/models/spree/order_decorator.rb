@@ -9,7 +9,22 @@ Spree::Order.class_eval do
     go_to_state :complete
   end
 
-
+  def get_white_glove_price
+    total = self.item_total
+    if (0..500).include? total
+      return Money.new(9900, self.currency).amount
+    elsif (501..1000).include? total
+      return Money.new(11900, self.currency).amount
+    elsif (1001..1500).include? total
+      return Money.new(15900, self.currency).amount
+    elsif (1501..2000).include? total
+      return Money.new(19900, self.currency).amount
+    elsif (2000..3000).include? total
+      return Money.new(22900, self.currency).amount
+    elsif (3001..BigDecimal::INFINITY).include? total
+      return Money.new(24900, self.currency).amount
+    end
+  end
 
   def generate_shipment_adjustments
 
@@ -40,6 +55,18 @@ Spree::Order.class_eval do
       end
     end
     f
+  end
+
+  def sort_order_shipments_by_shipping_method
+    shipment_sorted = {}
+    # Gathering uniq shipping methods which occur in shipments, then sorting freight items as last, and then creating
+    # shipments sorted by shipment method
+    all_shipping_methods = self.shipments.map{|x| x.shipping_methods.where.not(name: 'White Glove Shipping').pluck(:id)}.flatten.uniq
+    all_shipping_methods = Spree::ShippingMethod.set_freight_items_as_last(all_shipping_methods)
+    all_shipping_methods.each do |id|
+      shipment_sorted[id] = self.shipments.joins(:shipping_methods).where('spree_shipping_methods.id = ?', id)
+    end
+    shipment_sorted
   end
 
 end
