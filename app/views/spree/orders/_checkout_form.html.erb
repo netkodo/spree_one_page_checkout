@@ -63,7 +63,7 @@
                 <p>
                   <label class="sn-payment-label-wrapper">
                     <span class="sn-payment-label">
-                      <%= radio_button_tag "order[payments_attributes][][payment_method_id]", method.id, index == 0, class: 'js-payment-method' %>
+                      <%= radio_button_tag "order[payments_attributes][][payment_method_id]", method.id, method.type == 'Spree::Gateway::AuthorizeNetCim', class: 'js-payment-method' %>
                       <span>
                         <%= t(method.name, :scope => :payment_methods, :default => method.name) %>
                       </span>
