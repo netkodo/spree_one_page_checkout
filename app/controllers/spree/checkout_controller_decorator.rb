@@ -65,9 +65,14 @@ Spree::CheckoutController.class_eval do
             end
           end
 
+          if @order.user_id.nil? and @order.email.present?
+            user = Spree::User.find_by_email(@order.email)
+            @order.update_columns(user_id: user.id) if user
+          end
+
           flash.notice = Spree.t(:order_processed_successfully)
           flash[:commerce_tracking] = "nothing special"
-
+          cookies[:user_movement_id] = nil
           redirect_to order_confirmation_path
         else
           redirect_to checkout_state_path(@order.state)

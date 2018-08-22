@@ -68,6 +68,7 @@ $ ->
           if response.check == true
             if $('.white_glove_checkbox').length > 0
               $('.white_glove_checkbox input').prop('checked',true)
+              $('.js-whiteglove-checked').data('checked', true)
               if response.message.length > 0
                 $('.js-threshold').prop('checked', false)
                 $("<span class='notification-to-remove error'>#{response.message}</span>").insertAfter($('.white_glove_checkbox'))
@@ -76,6 +77,7 @@ $ ->
                 ), 3000
           else
             $('.white_glove_checkbox input').prop('checked',false)
+            $('.js-whiteglove-checked').data('checked', false)
             $('.js-threshold').prop('checked', true)
 
           checkAdjustments()
@@ -402,6 +404,10 @@ fetch_available_shipping_methods = (params_shippment) ->
         $(".js-hidden-radio").each  ()->
           if $(@).is(':checked') == true
             $('.js-special-radio', $('.shipping-method')).click()
+        if $('.js-whiteglove-checked').data('checked') == true
+          $('#js-select_white_glove').prop('checked', true).click()
+        else if $('#js-select_white_glove').prop('checked', false)
+          $('.js-threshold').prop('checked', true).click()
       else
         $('#methods').html "<center><p class='info'> #{$('#shipping_method').data('not-delivery')} </p></center>"
 
