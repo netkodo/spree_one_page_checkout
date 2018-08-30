@@ -10,7 +10,6 @@ Spree::CheckoutController.class_eval do
 
 
   def update
-
     @order.update_attribute(:state, 'cart')
     if params[:shipments_attributes].present?
       if cookies[:board_id].present?
