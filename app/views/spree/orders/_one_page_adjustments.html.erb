@@ -34,11 +34,17 @@
     <%= render "spree/orders/adjustment_one_page_row", :label => label == 'White Glove Shipping' ? 'White Glove Delivery' : display_designer_discount(label, order), :adjustments => adjustments, :type => Spree.t(:adjustment) %>
   <% end %>
 
-  <% order.shipment_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments| %>
-      <% if adjustments.sum(&:amount) != 0 %>
-        <%= render "spree/orders/adjustment_one_page_row", :label => label, :adjustments => adjustments, :type => Spree.t(:adjustment) %>
+  <%# order.shipment_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments| %>
+      <% if order.shipment_adjustments.sum(:amount) == 0 %>
+        <div class="my_adjustment col-md-12">
+          <div class="adjustment_title col-md-6">Shipping</div>
+
+          <div class="adjustment_title col-md-6"><strong>FREE</strong></div>
+        </div>
+      <% else %>
+        <%= render "spree/orders/adjustment_one_page_row", :label => "Shipping", :adjustments => order.shipment_adjustments, :type => Spree.t(:adjustment) %>
       <% end %>
-  <% end %>
+  <%# end %>
 
   <div class="summary_adjustment col-md-12">
     <div class="adjustment_title col-md-6"><strong><%=  Spree.t(:total)%></strong></div>

@@ -1,7 +1,9 @@
 Spree::OrdersController.class_eval do
   def edit
     @order = current_order
+
     if @order.present?
+      @order.update_column(:state, "cart")
       @order.adjustments.where(admin_adjustment: false).delete_all
       @order.update_promotion
 
@@ -54,6 +56,7 @@ Spree::OrdersController.class_eval do
         @order.update_totals
         @order.update(shipment_total: @order.shipments.sum(&:cost))
         @order.update(total: @order.item_total + @order.adjustment_total+  @order.additional_tax_total + @order.shipment_total + @order.promo_total)
+        @order.update_column(:state,"initial_checkout")
         @shipment_sorted = @order.sort_order_shipments_by_shipping_method
       else
         redirect_to cart_path
@@ -65,7 +68,7 @@ Spree::OrdersController.class_eval do
 
   def check_adjustments
     @order = current_order
-
+    @order.update_column(:state,"shipping")
     p = nil
     promotions=Spree::PromotionRule.where(type:"Spree::Promotion::Rules::ItemTotal")
     promotions.each do |promo|
@@ -162,6 +165,17 @@ Spree::OrdersController.class_eval do
 
       end
       format.json { render json: {message: 'OK'} }
+    end
+  end
+
+  def set_state
+    @order = current_order
+    respond_to do |format|
+      if @order.update_column(:state,params[:state])
+        format.json {render json: {message: "success"}, status: :ok}
+      else
+        format.json {render json: {message: "success"}, status: :unprocessable_entity}
+      end
     end
   end
 

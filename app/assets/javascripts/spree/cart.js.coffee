@@ -1,5 +1,15 @@
 $ ->
 
+  setState = (state) ->
+    $.ajax
+      dataType: 'json'
+      method: 'POST'
+      data: {state: state}
+      url: '/set_state'
+      success: (response) ->
+        console.log (response.message)
+      error: (response) ->
+        console.log (response.message)
   $(document).on
     click: (e) ->
       e.stopPropagation()
@@ -21,7 +31,7 @@ $ ->
 
 
   $(".js-inner:first").slideDown()
-  
+
 
   $(document).on
     keyup: (e)->
@@ -169,6 +179,7 @@ $ ->
         $('#shipping .js-inner').slideDown()
       else
         $('#payment .js-inner').slideDown()
+        setState( $(@).data('state') )
   , '.js-next-payment'
 
   UpdateAddressInSummary = (o,type='shipping') ->
