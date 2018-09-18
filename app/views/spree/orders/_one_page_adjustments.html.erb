@@ -8,6 +8,14 @@
     <div class="adjustment_title col-md-6"><strong><%= order.display_item_total.to_html %></strong></div>
   </div>
 
+  <% if order.promotions.present? && !is_start10_in_adjustments(order) && is_start10_in_promotions(order)%>
+    <div class="my_adjustment col-md-12">
+
+      <div class="adjustment_title col-md-6"><%= "START 10 Discount" %></div>
+      <div class="adjustment_title col-md-6"><strong>-$<%= '%.2f' % 0 %></strong></div>
+    </div>
+  <% end %>
+
   <% if order.line_item_adjustments.exists? %>
     <% order.line_item_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments| %>
       <%= render "spree/orders/adjustment_one_page_row", :label => display_start10_discount(adjustments, label), :adjustments => adjustments, :type => Spree.t(:promotion) %>
