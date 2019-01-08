@@ -25,7 +25,7 @@
           <%- else %>
               <%= small_image(line_item.product, :itemprop => 'image', :class => "board-lightbox-product-img") %>
           <% end %>
-          <h3><%= line_item.product.name %></h3>
+          <h3><%= line_item.product.name.html_safe %></h3>
 
           <div class="price">Price: <strong><%= line_item.display_amount.to_html %></strong></div>
           <div class="quantity">Quantity: <strong> <%= line_item.quantity %></strong></div>
