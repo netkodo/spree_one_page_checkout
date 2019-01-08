@@ -39,7 +39,7 @@
                 <% @line_item = item %>
                 <tr class="stock-item">
                   <td class="item-image"><%= mini_image(item.variant) %> </td>
-                  <td class="item-name"><%= item.variant.name %>
+                  <td class="item-name"><%= item.variant.name.html_safe %>
                     <br/>
                     <br/>
                     <% arrival_time = estimated_arrival(item) %>
