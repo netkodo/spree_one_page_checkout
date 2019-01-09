@@ -371,6 +371,8 @@ checkAddress = (value, my_this)->
       if $(@).val() == ""
         value_check = false
         return false
+  if $('#order_ship_address_attributes_state_id').val() == ''
+    value_check = false
   if value_check == false
     $("[id$=#{value}] .js-inner").slideToggle()
   else
