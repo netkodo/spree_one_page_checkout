@@ -28,15 +28,15 @@ Spree::OrdersController.class_eval do
   def one_page_checkout
     @paypal_payment_id = Spree::PaymentMethod.where(type: 'Spree::Gateway::PayPalExpress').first.try('id')
     @order = current_order
-    @order.line_items.each do |item|
-      v= Spree::Variant.find_by(id: item.variant_id)
-      if item.variant.deleted_at.present? || (v.product.total_on_hand == 0 && (!v.backorderable || !v.stock_items.map(&:backorderable).include?(true)))
-        flash[:error] = "You have items in cart which are no longer available, please remove them"
-        redirect_to cart_path
-      end
-    end
-
     if @order.present?
+      @order.line_items.each do |item|
+        v= Spree::Variant.find_by(id: item.variant_id)
+        if item.variant.deleted_at.present? || (v.product.total_on_hand == 0 && (!v.backorderable || !v.stock_items.map(&:backorderable).include?(true)))
+          flash[:error] = "You have items in cart which are no longer available, please remove them"
+          redirect_to cart_path
+        end
+      end
+
 
       associate_user
       if @order.present?
