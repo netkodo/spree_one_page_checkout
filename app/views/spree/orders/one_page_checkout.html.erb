@@ -41,3 +41,10 @@
 <%= render :template => 'spree/modals/shipping_modal' %>
 <%= render :template => 'spree/modals/freight_item_arrival' %>
 <%# end %>
+
+
+<script>
+    function disableButtonSubmit () {
+      $('.one-page-checkout-button').prop("disabled", true)
+    }
+</script>
