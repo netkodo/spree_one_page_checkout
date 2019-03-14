@@ -33,9 +33,9 @@
     <% end %>
   </div>
 </div>
-
 <div class="hidden">
   <div class="js-whiteglove-checked"></div>
+
 </div>
 <%# else %>
 <%= render :template => 'spree/modals/shipping_modal' %>
@@ -45,8 +45,10 @@
 
 <script>
     function disableButtonSubmit () {
-      $('.one-page-checkout-button').prop("disabled", true)
-      $('.one-page-checkout-button').val('Processing')
+      $('.one-page-checkout-button').prop("disabled", true);
+      $('.one-page-checkout-button').val('Processing');
+      $('.js-spinner-checkout-button').toggleClass('hidden');
 
     }
+
 </script>

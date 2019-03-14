@@ -166,6 +166,7 @@
           </div>
           <div class="form-buttons checkout-center" data-hook="buttons">
             <%= submit_tag t(:checkout), :class => 'btn btn-primary one-page-checkout-button', 'data-hook' => 'one_page_checout_button' %>
+            <div class="js-spinner-checkout-button hidden"><%= image_tag "/assets/frontend/transparent-preloader64.gif" %></div>
           </div>
         </div>
       </fieldset>
