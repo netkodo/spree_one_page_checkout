@@ -1,5 +1,5 @@
 <%= form_for @order, :url => update_checkout_path('payment'),
-             :html => {:id => "checkout_form_payment", :onsubmit => "updateCart();updateCordialSubscriber()"} do |form| %>
+             :html => {:id => "checkout_form_payment", :onsubmit => "disableButtonSubmit();updateCart();updateCordialSubscriber()"} do |form| %>
   <div class="columns omega eight" data-hook="shipping_fieldset_wrapper">
     <fieldset id="shipping" data-hook>
       <legend align="center" class="js-bookmark left-text">1 <%= t(:shipping_address) %></legend>
@@ -156,7 +156,7 @@
               <span class="header">Billing Address</span>
               <div class="summary data"></div>
               <div class="summary phone"></div>
-              <div class="edit-action js-edit-checkout-step" data-step="payment">EDIT</div>
+              <div class="edit-action js-edit-checkout-step" data-step="shipping">EDIT</div>
             </div>
 
             <div class="col-md-4 col-sm-4 col-xs-12 payment_information">
@@ -169,6 +169,7 @@
           </div>
           <div class="form-buttons checkout-center" data-hook="buttons">
             <%= submit_tag t(:checkout), :class => 'btn btn-primary one-page-checkout-button', 'data-hook' => 'one_page_checout_button' %>
+            <div class="js-spinner-checkout-button hidden"><%= image_tag "/assets/frontend/transparent-preloader64.gif" %></div>
           </div>
         </div>
       </fieldset>
@@ -183,3 +184,4 @@
     <span data-paypal-id="<%= "#{@paypal_payment_id}"%>" class="js-paypal-method-id"></span>
   <% end %>
 </div>
+

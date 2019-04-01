@@ -13,15 +13,15 @@ Spree::Order.class_eval do
     total = self.item_total
     if (0..500).include? total
       return Money.new(9900, self.currency).amount
-    elsif (501..1000).include? total
+    elsif (500.01..1000).include? total
       return Money.new(11900, self.currency).amount
-    elsif (1001..1500).include? total
+    elsif (1000.01..1500).include? total
       return Money.new(15900, self.currency).amount
-    elsif (1501..2000).include? total
+    elsif (1500.01..2000).include? total
       return Money.new(19900, self.currency).amount
-    elsif (2000..3000).include? total
+    elsif (2000.01..3000).include? total
       return Money.new(22900, self.currency).amount
-    elsif (3001..BigDecimal::INFINITY).include? total
+    elsif (3000.01..BigDecimal::INFINITY).include? total
       return Money.new(24900, self.currency).amount
     end
   end
