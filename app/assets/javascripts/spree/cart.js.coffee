@@ -263,6 +263,7 @@ $ ->
   $(document).on
     click: (e)->
       e.preventDefault()
+      that = $(@)
       $('#methods .temporary-show').html ''
       shipping = $(@).data('check')
 #      console.log shipping
@@ -277,8 +278,9 @@ $ ->
       $('.js-inner').each ()->
         $(@).slideUp()
       if shipping? and shipping == 'shipping'
-        checkAddress('shipping', my_this)
-        checkValid('shipping')
+        if checkAccountSignUp('shipping', that) == 'true'
+          checkAddress('shipping', my_this)
+          checkValid('shipping')
       else
         if summary? and (summary == 'true' or summary == true)
           UpdateOrderSummary()
@@ -422,3 +424,22 @@ liveEmailCheck = () ->
     if validateEmail( $('#order_email').val() )
       $(@).closest('.field').find('label.error').remove()
       $(@).closest('.field').removeClass('error')
+
+
+checkAccountSignUp = (value, button) ->
+  output = ''
+  $.ajax
+    type: 'POST'
+    dataType: 'json'
+    data: {email: $('#order_email').val()}
+    async: false
+    url: button.data('user-url')
+    success: (data) ->
+      output = 'true'
+    error: (data) ->
+      output = 'false'
+      $('.sn-front-login-mail-found').toggleClass('hidden')
+      $('#login-link').click()
+      $("[id$=#{value}] .js-inner").slideToggle()
+      output = 'false'
+  return output

@@ -13,7 +13,7 @@
         <%= form.fields_for :ship_address do |ship_form| %>
 
           <%= render :partial => 'spree/address/form', :locals => {:form => ship_form, :address_type => 'shipping', :address => @order.ship_address} %>
-          <button class="btn js-next js-shipping-sub btn-primary btn-left" data-next="next" data-check="shipping" type="button" onclick="updateCordialSubscriber()">Next</button>
+          <button class="btn js-next js-shipping-sub btn-primary btn-left" data-next="next" data-check="shipping" data-user-url=<%= one_page_checkout_user_check_orders_path %> type="button" onclick="updateCordialSubscriber()">Next</button>
           </div>
         <% end %>
         </fieldset>
