@@ -61,6 +61,11 @@
         position: relative;
         border-bottom: 1px solid gray;
     }
+    .time-load{
+        display: none;
+        text-align: center;
+        width: 20px;
+        margin: auto;
 }
 
 #use_shipping{
