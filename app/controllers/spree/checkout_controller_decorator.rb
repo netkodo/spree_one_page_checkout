@@ -1,6 +1,7 @@
 Spree::CheckoutController.class_eval do
 
   skip_filter(:check_registration)
+  before_filter :prevent_order_action
 
   #helper 'spree/products'
 
@@ -174,5 +175,8 @@ Spree::CheckoutController.class_eval do
     true
   end
 
-
+  def prevent_order_action
+    redirect_to root_path if Spree::IpAddress.pluck(:value).include?(request.remote_ip)
+    # redirect_to root_path if ['192.168.56.1'].include?(request.remote_ip)
+  end
 end
