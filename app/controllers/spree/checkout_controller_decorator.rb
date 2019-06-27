@@ -176,7 +176,7 @@ Spree::CheckoutController.class_eval do
   end
 
   def prevent_order_action
-    redirect_to root_path if ['71.251.204.87', '75.118.32.140'].include?(request.remote_ip)
+    redirect_to root_path if Spree::IpAddress.pluck(:value).include?(request.remote_ip)
     # redirect_to root_path if ['192.168.56.1'].include?(request.remote_ip)
   end
 end
